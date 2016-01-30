@@ -14,22 +14,17 @@ var Group = function (game, centerX, centerY) {
 	this.selection.width = 100;
 	this.selection.height = 100;
 	this.selection.visible = false;
+	this.velocity = {x : 0, y : 0};
+	this.speed = .05;
 }
 Group.prototype.constructor = Group;
 Group.prototype.update = function() {
-	//console.log('update');
-	//calculate center point
-	/*
-	var centerPoint = {x:0, y:0};
-	for (var member in this.members) {
-		member = this.members[member];
-		centerPoint.x += member.x;
-		centerPoint.y += member.y;
-	}
-	centerPoint.x /= this.members.length;
-	centerPoint.y /= this.members.length;
-	*/
-	// aim towards center then push
+	//update center
+	var newX = this.center.x + this.velocity.x * this.speed;
+	var newY = this.center.y + this.velocity.y * this.speed;
+	this.changeCenter({x : newX, y : newY});
+	//console.log(this.center);
+	//aim towards center then push
 	for (var member in this.members) {
 		member = this.members[member];
 		//if (member.id == '1') { console.log('1', member.velocity); };
@@ -76,7 +71,24 @@ Group.prototype.update = function() {
 Group.prototype.addMember = function(member) {
 	this.members.push(member);
 };
-Group.prototype.click = function(member) {
+Group.prototype.clicked = function() {
+	var mouseX = this.game.input.x;
+	var mouseY = this.game.input.y;
+	var diffX = mouseX - this.center.x;
+	var diffY = mouseY - this.center.y;
+	var totalDiff = util.hypotenuse(diffX, diffY);
+	if (totalDiff <= this.clickDist) {
+		return true;
+	}
+	return false;
+};
+Group.prototype.click = function() {
+	if (this.selected) {
+		this.setSelected(false);
+	} else {
+		this.setSelected(true);
+	}
+	/*
 	var mouseX = this.game.input.x;
 	var mouseY = this.game.input.y;
 	var diffX = mouseX - this.center.x;
@@ -99,6 +111,14 @@ Group.prototype.click = function(member) {
 			
 		}
 	}
+	*/
+};
+Group.prototype.move = function() {
+	var mouseX = this.game.input.x;
+	var mouseY = this.game.input.y;
+	this.changeCenter({x : mouseX, y : mouseY});
+	this.setSelected(false);
+	// console.log({x : mouseX, y : mouseY});s
 };
 Group.prototype.setSelected = function(newSelected) {
 	this.selected = newSelected;

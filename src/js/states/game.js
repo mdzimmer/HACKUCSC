@@ -8,6 +8,7 @@ var Game = function () {
   this.testentity = null;
   this.flocks = [];
   this.bg_mg = null;
+  this.selectedGroup = null;
 };
 
 module.exports = Game;
@@ -28,47 +29,58 @@ Game.prototype = {
 	
     this.input.onDown.add(this.onInputDown, this);
 	
+    this.gm = groupManager = new GroupManager(this.game, 600, 600, {x : this.game.width / 2, y : this.game.height / 2});
     var testFlock = new Group(this.game, this.game.width / 2 + 100, this.game.height / 2 + 100);
     this.flocks.push(testFlock);
-	
     for (var i = 0; i < 10; i++) {
-    	var testPerson = new Person(this.game, this.game.width/2 + i * 15, this.game.height/2 + i * 15, i);
+    	var testPerson = new Person(this.game, this.game.width / 2 + i * 15, this.game.height / 2 + i * 15, i);
     	this.game.add.existing(testPerson);
     	testFlock.addMember(testPerson);
     }
-    var groupManager = new GroupManager(this.game);
     groupManager.addMember(testFlock);
+	testFlock = new Group(this.game, this.game.width / 2 - 100, this.game.height / 2 + 100);
+	for (var i = 0; i < 10; i++) {
+    	var testPerson = new Person(this.game, this.game.width / 2 + i * 15 - 100, this.game.height / 2 + i * 15 + 100, i);
+    	this.game.add.existing(testPerson);
+    	testFlock.addMember(testPerson);
+    }
+	this.flocks.push(testFlock);
+    groupManager.addMember(testFlock);
+	// console.log(Person.EduLevel.foo);
+	// if (myPerson.eduLevel === Person.EduLevel.low) {
+	  
+	// }
   },
 
   update: function () {
-	/*
-    var x, y, cx, cy, dx, dy, angle, scale;
-
-    x = this.input.position.x;
-    y = this.input.position.y;
-    cx = this.world.centerX;
-    cy = this.world.centerY;
-
-    angle = Math.atan2(y - cy, x - cx) * (180 / Math.PI);
-    this.testentity.angle = angle;
-
-    dx = x - cx;
-    dy = y - cy;
-    scale = Math.sqrt(dx * dx + dy * dy) / 100;
-
-    this.testentity.scale.x = scale * 0.6;
-    this.testentity.scale.y = scale * 0.6;
-	*/
-	
-	this.flocks[0].update();
   this.bg_mg.update();
+	this.gm.update();
   },
 
   onInputDown: function () {
     //this.game.state.start('Menu');
 	//console.log(this.game.input.x, this.game.input.y);
 	if (this.game.input.activePointer.leftButton.isDown) {
-		this.flocks[0].click();
+		if (this.selectedGroup) {
+			//console.log('a');
+			// this.selectedGroup.move();
+			// this.selectedGroup = null;
+			var bg = this.bg_mg.whereClicked();
+			if (bg_mg.canTransfer(bg, this.selectedGroup)) {
+				bg_mg.sendTo(this.selectedGroup.myManager.background, bg, this.selectedGroup);
+			}
+			this.selectedGroup = null;
+		} else {
+			//console.log('b');
+			for (flock in this.flocks) {
+				flock = this.flocks[flock];
+				if (flock.clicked()) {
+					flock.click();
+					this.selectedGroup = flock;
+					break;
+				}
+			}
+		}
 	}
   }
 };
