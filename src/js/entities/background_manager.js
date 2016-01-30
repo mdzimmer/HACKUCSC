@@ -12,13 +12,13 @@ var Background_Manager = function(game, state) {
 
 	//Create array of backgrounds
 	this.bgArray = [
-		new Background(this.game, 0, 0, .33, .33, Person.EDULEVEL.low, 'work', state),		// this.bgArray[0] == workLow
-		new Background(this.game, 1, 0, .33, .33, Person.EDULEVEL.mid, 'work', state),		// this.bgArray[1] == workMid
-		new Background(this.game, 2, 0, .33, .33, Person.EDULEVEL.high, 'work', state),	// this.bgArray[2] == workMid
-		new Background(this.game, 0, 1, .33, .33, Person.EDULEVEL.low, 'house', state),	// this.bgArray[3] == houseLow
-		new Background(this.game, 1, 1, .33, .33, Person.EDULEVEL.mid, 'house', state),	// this.bgArray[4] == houseMid
+		new Background(this.game, 0, 0, .33, .33, Person.EDULEVEL.low , 'work' , state),	// this.bgArray[0] == workLow
+		new Background(this.game, 1, 0, .33, .33, Person.EDULEVEL.mid , 'work' , state),	// this.bgArray[1] == workMid
+		new Background(this.game, 2, 0, .33, .33, Person.EDULEVEL.high, 'work' , state),	// this.bgArray[2] == workMid
+		new Background(this.game, 0, 1, .33, .33, Person.EDULEVEL.low , 'house', state),	// this.bgArray[3] == houseLow
+		new Background(this.game, 1, 1, .33, .33, Person.EDULEVEL.mid , 'house', state),	// this.bgArray[4] == houseMid
 		new Background(this.game, 2, 1, .33, .33, Person.EDULEVEL.high, 'house', state),	// this.bgArray[5] == houseMid
-		new Background(this.game, 0, 2, .33, .33, '', 'unemployed', state),				// this.bgArray[6] == unemployed
+		new Background(this.game, 0, 2,   1, .33, '',              'unemployed', state),	// this.bgArray[6] == unemployed
 	];
 	for (bg in this.bgArray) {
 		this.bgArray[bg].myManager = this;
@@ -54,21 +54,19 @@ var Background_Manager = function(game, state) {
 	
 	var test = this.bgArray[6].group_manager;
 	var testFlock = new Group(this.game, this.game.width / 2 + 100, this.game.height / 2 + 100, state);
-    //this.flocks.push(testFlock);
     for (var i = 0; i < 10; i++) {
     	var testPerson = new Person(this.game, this.game.width / 2 + i * 15, this.game.height / 2 + i * 15, i);
     	this.game.add.existing(testPerson);
     	testFlock.addMember(testPerson);
     }
     test.addMember(testFlock);
-	testFlock = new Group(this.game, this.game.width / 2 - 100, this.game.height / 2 + 100, state);
-	for (var i = 0; i < 10; i++) {
-    	var testPerson = new Person(this.game, this.game.width / 2 + i * 15 - 100, this.game.height / 2 + i * 15 + 100, i);
-    	this.game.add.existing(testPerson);
-    	testFlock.addMember(testPerson);
-    }
-	//this.flocks.push(testFlock);
-    test.addMember(testFlock);
+	// testFlock = new Group(this.game, this.game.width / 2 - 100, this.game.height / 2 + 100, state);
+	// for (var i = 0; i < 10; i++) {
+    	// var testPerson = new Person(this.game, this.game.width / 2 + i * 15 - 100, this.game.height / 2 + i * 15 + 100, i);
+    	// this.game.add.existing(testPerson);
+    	// testFlock.addMember(testPerson);
+    // }
+    // test.addMember(testFlock);
 	
 };
 
@@ -88,10 +86,10 @@ Background_Manager.prototype.sendTo = function(source, destination, group) {
 	var transType = this.transferType(source, destination, group)
 	if (transType.can) {	// Check if they can transfer up
 		source.group_manager.transfer(destination.group_manager, group);
-		// group.startEducation();
 		if (transType.educate) {
 			group.startEducation();
 		}
+		this.updateRatios();
 	}
 };
 Background_Manager.prototype.transferType = function(source, destination, group) {
@@ -150,44 +148,69 @@ Background_Manager.prototype.whereClicked = function() {
 };
 
 Background_Manager.prototype.findOther = function(source, destination) {
-	/*if (source.type === 'work' && destination.type === 'work') {
-		if (source.incomeLevel === 'low') {
-			if (destination.incomeLevel === 'mid') return this.bgNames.workHigh;
-			else if (destination.incomeLevel === 'high') return this.bgNames.workMid;
+	if (source.type === 'work' && destination.type === 'work') {
+		if (source.incomeLevel === Person.EDULEVEL.low) {
+			if (destination.incomeLevel === Person.EDULEVEL.mid) return this.bgArray[2];
+			else if (destination.incomeLevel === Person.EDULEVEL.high) return this.bgArray[1];
 		}
-		else if (source.incomeLevel === 'mid') {
-			if (destination.incomeLevel === 'low') return this.bgNames.workHigh;
-			else if (destination.incomeLevel === 'high') return this.bgNames.workLow;
+		else if (source.incomeLevel === Person.EDULEVEL.mid) {
+			if (destination.incomeLevel === Person.EDULEVEL.low) return this.bgArray[2];
+			else if (destination.incomeLevel === Person.EDULEVEL.high) return this.bgArray[0];
 		}
-		else if (source.incomeLevel === 'high') {
-			if (destination.incomeLevel === 'low') return this.bgNames.workMid;
-			else if (destination.incomeLevel === 'mid') return this.bgNames.workLow;
+		else if (source.incomeLevel === Person.EDULEVEL.high) {
+			if (destination.incomeLevel === Person.EDULEVEL.low) return this.bgArray[1];
+			else if (destination.incomeLevel === Person.EDULEVEL.mid) return this.bgArray[0];
 		}
 	}
 	else if (source.type === 'house' && destination.type === 'house') {
-		if (source.incomeLevel === 'low') {
-			if (destination.incomeLevel === 'mid') return this.bgNames.houseHigh;
-			else if (destination.incomeLevel === 'high') return this.bgNames.houseMid;
+		if (source.incomeLevel === Person.EDULEVEL.low) {
+			if (destination.incomeLevel === Person.EDULEVEL.mid) return this.bgArray[5];
+			else if (destination.incomeLevel === Person.EDULEVEL.high) return this.bgArray[4];
 		}
-		else if (source.incomeLevel === 'mid') {
-			if (destination.incomeLevel === 'low') return this.bgNames.houseHigh;
-			else if (destination.incomeLevel === 'high') return this.bgNames.houseLow;
+		else if (source.incomeLevel === Person.EDULEVEL.mid) {
+			if (destination.incomeLevel === Person.EDULEVEL.low) return this.bgArray[5];
+			else if (destination.incomeLevel === Person.EDULEVEL.high) return this.bgArray[3];
 		}
-		else if (source.incomeLevel === 'high') {
-			if (destination.incomeLevel === 'low') return this.bgNames.houseMid;
-			else if (destination.incomeLevel === 'mid') return this.bgNames.houseLow;
+		else if (source.incomeLevel === Person.EDULEVEL.high) {
+			if (destination.incomeLevel === Person.EDULEVEL.low) return this.bgArray[4];
+			else if (destination.incomeLevel === Person.EDULEVEL.mid) return this.bgArray[3];
 		}
-	}*/
+	}
+};
+
+Background_Manager.prototype.updateRatios = function() {
+	var hWorkRatios = util.ratio(this.bgArray[0].group_manager.numPeople(), this.bgArray[1].group_manager.numPeople(), this.bgArray[2].group_manager.numPeople());
+	var hHouseRatios = util.ratio(this.bgArray[3].group_manager.numPeople(), this.bgArray[4].group_manager.numPeople(), this.bgArray[5].group_manager.numPeople());
+	var employed = 0;
+	for (var j = 0; j < 6; j++)
+		employed += this.bgArray[j].group_manager.numPeople();
+	var vRatios = util.ratio(this.bgArray[6].group_manager.numPeople(), employed);
+	console.log('this.bgArray[0].group_manager.numPeople(): ' + this.bgArray[0].group_manager.numPeople());
+	console.log('hWorkRatios: ' + hWorkRatios);
+
+	for (var i = 0 in this.bgArray) {
+		if (i !== 6) {		// If not unemployed bg
+			if (i < 3) {	// If work bg
+				this.bgArray[i].newHRatio = hWorkRatios[i];
+				this.bgArray[i].newVRatio = vRatios[1] / 2;
+			}
+			else {			// If house bg
+				this.bgArray[i].newHRatio = hHouseRatios[i - 3];
+				this.bgArray[i].newVRatio = vRatios[1] / 2;
+			}
+		}
+		else bgArray[i].newVRatio = vRatios[0]; // Unemployed bg
+	}
 };
 
 Background_Manager.prototype.getDimensions = function(background) {
 
 };
 
-// Background_Manager.prototype.update = function() {
-	// for (var i in this.bgArray) {
-		// this.bgArray[i].update();
-	// }
-// };
+Background_Manager.prototype.update = function() {
+	for (var i in this.bgArray) {
+		this.bgArray[i].update();
+	}
+};
 
 module.exports = Background_Manager;

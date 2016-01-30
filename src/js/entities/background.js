@@ -6,6 +6,8 @@ var Background = function (game, baseX, baseY, hRatio, vRatio, income, type, sta
     game.add.existing(this);
     this.hRatio = hRatio;
     this.vRatio = vRatio;
+    this.newHRatio = hRatio;
+    this.newVRatio = vRatio;
     this.group_manager = new Group_Manager(this.game, state);
 	this.group_manager.background = this;
    	this.type = type;
@@ -28,8 +30,17 @@ Background.prototype.getVarsCenter = function() {
     return {width : visWidth, height : visHeight, center : {x : this.x + visWidth / 2, y : this.y + visHeight / 2}};
 };
 
-Background.prototype.update = function(ratio) {
-	// console.log('update');
+Background.prototype.update = function() {
+    if (this.hRatio !== this.newHRatio) {
+        if (this.hRatio + .1 < this.newHRatio) this.hRatio += .1;
+        else if (this.hRatio - .1 > this.newHRatio) this.hRatio -= .1;
+        else this.hRatio = this.newHRatio;
+    }
+    if (this.vRatio !== this.newVRatio) {
+        if (this.vRatio + .1 < this.newVRatio) this.vRatio += .1;
+        else if (this.vRatio - .1 > this.newVRatio) this.vRatio -= .1;
+        else this.vRatio = this.newVRatio;
+    }
 	this.group_manager.update();
 };
 

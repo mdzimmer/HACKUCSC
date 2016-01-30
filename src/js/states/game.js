@@ -70,7 +70,7 @@ Game.prototype = {
   },
 
   update: function () {
-	// this.bg_mg.update();
+	this.bg_mg.update();
 	//this.gm.update();
 	this.uib.render();
   },

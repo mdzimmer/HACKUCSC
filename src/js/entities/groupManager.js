@@ -96,6 +96,7 @@ GroupManager.prototype.numPeople = function() {
 		member = this.members[member];
 		count += member.numPeople();
 	}
+	return count;
 };
 
 module.exports = GroupManager;
