@@ -17,6 +17,12 @@ var Group = function (game, centerX, centerY, state) {
 	this.velocity = {x : 0, y : 0};
 	this.speed = .05;
 	this.state = state;
+	this.book = this.game.add.sprite(this.center.x, this.center.y, 'book');
+	this.book.anchor.setTo(0.5, 0.5);
+	this.book.width = 25;
+	this.book.height = 25;
+	this.book.visible = false;
+	this.learningTime = 5;
 	
 	this.state.input.onDown.add(this.onInputDown, this);
 }
@@ -26,22 +32,14 @@ Group.prototype.update = function() {
 	var newX = this.center.x + this.velocity.x * this.speed;
 	var newY = this.center.y + this.velocity.y * this.speed;
 	this.changeCenter({x : newX, y : newY});
-	//console.log(this.center);
-	//aim towards center then push
 	for (var member in this.members) {
 		member = this.members[member];
-		//if (member.id == '1') { console.log('1', member.velocity); };
 		var velocity = {x:0, y:0};
 		var diff = {x:0, y:0};
-		/*
-		diff.x = centerPoint.x - member.x;
-		diff.y = centerPoint.y - member.y;
-		*/
 		diff.x = this.center.x - member.x;
 		diff.y = this.center.y - member.y;
 		velocity.x += diff.x;
 		velocity.y += diff.y;
-		//if (member.id == '1') { console.log('2', member.velocity); };
 		for (var other in this.members) {
 			other = this.members[other];
 			//ignore self
@@ -53,22 +51,12 @@ Group.prototype.update = function() {
 			oDiff.y = other.y - member.y;
 			var totalDist = util.hypotenuse(oDiff.x, oDiff.y);
 			if (totalDist <= this.minDist) {
-				//if (member.id == '1') { console.log(oDiff, totalDist); };
 				velocity.x = -1 * oDiff.x;
 				velocity.y = -1 * oDiff.y;
 				continue;
-				//if (member.id == '1') { console.log('3', member.velocity); };
 			}
 		}
-		//add noise
-		/*
-		velocity.x += Math.random() * this.noise - this.noise / 2;
-		velocity.y += Math.random() * this.noise - this.noise / 2;
-		*/
-		//set new velocity
-		//if (member.id == '1') { console.log(member.velocity); };
 		member.velocity = velocity;
-		//console.log(velocity);
 	}
 };
 Group.prototype.addMember = function(member) {
@@ -86,6 +74,18 @@ Group.prototype.onInputDown = function() {
 	} else if (this.clicked()) {
 		this.click();
 	}
+};
+Group.prototype.startEducation = function() {
+	this.learning = false;
+	this.book.visible = true;
+	this.state.game.time.events.add(Phaser.Timer.SECOND * this.learningTime, this.endEducation, this);
+};
+Group.prototype.endEducation = function() {
+	for (var member in this.members) {
+		this.members[member].eduLevel += 1;
+	}
+	this.learning = false;
+	this.book.visible = false;
 };
 Group.prototype.clicked = function() {
 	var mouseX = this.game.input.x;
@@ -119,6 +119,8 @@ Group.prototype.setSelected = function(newSelected) {
 Group.prototype.changeCenter = function(newCenter) {
 	this.selection.x = newCenter.x;
 	this.selection.y = newCenter.y;
+	this.book.x = newCenter.x;
+	this.book.y = newCenter.y;
 	this.center = newCenter;
 };
 Group.prototype.numPeople = function() {
@@ -127,15 +129,6 @@ Group.prototype.numPeople = function() {
 Group.prototype.mouseDown = function() {
 	
 };
-/*
-Group.prototype.tryMove = function() {
-	if (!this.selected) {
-		return;
-	}
-	var newCenter = {x : this.game.input.x, y : this.game.input.y};
-	this.changeCenter(newCenter);
-};
-*/
 
 module.exports = Group;
 
