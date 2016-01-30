@@ -61,6 +61,7 @@ Game.prototype = {
 	*/
 	
 	this.flocks[0].update();
+  this.bg_mg.update();
   },
 
   onInputDown: function () {

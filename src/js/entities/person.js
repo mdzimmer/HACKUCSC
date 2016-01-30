@@ -8,6 +8,13 @@ var Person = function (game, x, y, id) {
 };
 Person.prototype = Object.create(Phaser.Sprite.prototype);
 Person.prototype.constructor = Person;
+
+Person.EDULEVEL = {
+	low  : 0,
+	mid  : 1,
+	high : 2
+};
+
 Person.prototype.update = function() {
 	this.x += this.velocity.x * this.speed;
 	this.y += this.velocity.y * this.speed;
