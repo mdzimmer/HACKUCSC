@@ -1,7 +1,9 @@
 //Controls background elements
 
-var Background = require('./background')
-var Player = require('./player')
+var Background = require('./background');
+var Player = require('./player');
+var util = require('../utils');
+
 var Background_Manager = function(game) {
 	this.game = game;
 
@@ -27,7 +29,7 @@ var Background_Manager = function(game) {
 	};
 	
 	for (var i in bgArray) {
-		if (bgArray[i].type == 'work') { 										// Work backgrounds
+		if (bgArray[i].type == 'work') {
 			if (bgArray[i].incomeLevel === 'low') {
 				bgArray[i].tint = 0xe2402b;
 			}
@@ -38,7 +40,7 @@ var Background_Manager = function(game) {
 				bgArray[i].tint = 0x2b59e2;
 			}
 		}
-		else if (bgArray[i].type == 'house') {									// House backgrounds
+		else if (bgArray[i].type == 'house') {
 			if (bgArray[i].incomeLevel === 'low') {
 				bgArray[i].tint = 0xe55340;
 			}
@@ -49,7 +51,7 @@ var Background_Manager = function(game) {
 				bgArray[i].tint = 0x5476dd;
 			}
 		}
-		else {												// Unemployed background
+		else { // Unemployed background
 			bgArray[i].tint = 0x939393;
 		}
 	}
@@ -58,13 +60,24 @@ var Background_Manager = function(game) {
 Background_Manager.prototype.constructor = Background_Manager;
 
 
-function moveGroup(source, destination, group) {
-	/*source.numPeople -= group.members.length;
+Background_Manager.prototype.changeWork = function(source, destination, group) {
+	
+	// canTransfer(source, destination, group) Check if they can transfer up
+	
+	var index = source.groups.indexOf(group);
+	if (index > -1) {
+    	source.groups.splice(index, 1);
+	}
+	destination.groups.push(group);
 	source.update(); // Used for changing background size
-	destination.numPeople += group.members.length;
-	source.update();
-	*/
-	// Check if they can transfer up
-	// Automatically update work level?
-}
+	destination.update();
+
+	
+};
+
+Background_Manager.prototype.changeHouse = function(source, destination, group) {
+
+};
+
+
 module.exports = Background_Manager;
