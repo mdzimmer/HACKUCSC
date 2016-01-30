@@ -9,7 +9,6 @@ var Group = require('./group');
 var Background_Manager = function(game, state) {
 	this.game = game;
 	this.state = state;
-
 	//Create array of backgrounds
 	this.bgArray = [
 		new Background(this.game, 0, 0, .33, .33, Person.EDULEVEL.low , 'work' , state),	// this.bgArray[0] == workLow
@@ -18,7 +17,7 @@ var Background_Manager = function(game, state) {
 		new Background(this.game, 0, 1, .33, .33, Person.EDULEVEL.low , 'house', state),	// this.bgArray[3] == houseLow
 		new Background(this.game, 1, 1, .33, .33, Person.EDULEVEL.mid , 'house', state),	// this.bgArray[4] == houseMid
 		new Background(this.game, 2, 1, .33, .33, Person.EDULEVEL.high, 'house', state),	// this.bgArray[5] == houseMid
-		new Background(this.game, 0, 2,   1, .33, '',              'unemployed', state),	// this.bgArray[6] == unemployed
+		new Background(this.game, 0, 2,   1, .33, '',              'unemployed', state)	// this.bgArray[6] == unemployed
 	];
 	for (bg in this.bgArray) {
 		this.bgArray[bg].myManager = this;
@@ -67,7 +66,6 @@ var Background_Manager = function(game, state) {
     	// testFlock.addMember(testPerson);
     // }
     // test.addMember(testFlock);
-	
 };
 
 Background_Manager.prototype.constructor = Background_Manager;
