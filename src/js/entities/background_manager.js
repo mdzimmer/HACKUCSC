@@ -9,7 +9,6 @@ var Group = require('./group');
 var Background_Manager = function(game, state) {
 	this.game = game;
 	this.state = state;
-
 	//Create array of backgrounds
 	this.bgArray = [
 		new Background(this.game, 0, 0, .33, .33, Person.EDULEVEL.low , 'work' , state),	// this.bgArray[0] == workLow
@@ -52,7 +51,7 @@ var Background_Manager = function(game, state) {
 		}
 	}
 	
-	var test = this.bgArray[0].group_manager;
+	var test = this.bgArray[6].group_manager;
 	var testFlock = new Group(this.game, this.game.width / 2 + 100, this.game.height / 2 + 100, state);
     for (var i = 0; i < 10; i++) {
     	var testPerson = new Person(this.game, this.game.width / 2 + i * 15, this.game.height / 2 + i * 15, i);
@@ -67,7 +66,6 @@ var Background_Manager = function(game, state) {
     	// testFlock.addMember(testPerson);
     // }
     // test.addMember(testFlock);
-	
 };
 
 Background_Manager.prototype.constructor = Background_Manager;
@@ -83,13 +81,23 @@ Background_Manager.prototype.constructor = Background_Manager;
 };*/
 
 Background_Manager.prototype.sendTo = function(source, destination, group) {
-	if (this.canTransfer(source, destination, group)) {	// Check if they can transfer up
+	var transType = this.transferType(source, destination, group)
+	if (transType.can) {	// Check if they can transfer up
 		source.group_manager.transfer(destination.group_manager, group);
+		if (transType.educate) {
+			group.startEducation();
+		}
 		this.updateRatios();
 	}
 };
-
+Background_Manager.prototype.transferType = function(source, destination, group) {
+	var groupEdu = group.members[0].eduLevel;
+	var can = this.canTransfer(source, destination, group);
+	var educate = destination.type === 'house' && destination.incomeLevel > groupEdu
+	return {can : can, educate : educate};
+};
 Background_Manager.prototype.canTransfer = function(source, destination, group) {
+	// console.log(source, destination, group);
 	if (source === null || destination === null) return false;
 	var sourceEdu = group.members[0].eduLevel;
 	if (destination.type === 'unemployed') {
