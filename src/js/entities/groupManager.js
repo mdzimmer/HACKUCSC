@@ -1,6 +1,6 @@
 var Util = require('../utils');
 
-var GroupManager = function (game, width, height, center) {
+var GroupManager = function (game) {
 	this.game = game;
 	this.members = [];
 	/*
@@ -28,7 +28,7 @@ GroupManager.prototype.constructor = GroupManager;
 GroupManager.prototype.update = function() {
 	//update bounds
 	if (this.background) {
-		var vars = this.background.getVars();
+		var vars = this.background.getVarsCenter();
 		this.width = vars.width;
 		this.height = vars.height;
 		this.center = vars.center;
