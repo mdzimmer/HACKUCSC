@@ -12,7 +12,10 @@ var GroupManager = function (game) {
 };
 GroupManager.prototype.constructor = GroupManager;
 GroupManager.prototype.update = function() {
-	
+	for (var member in members) {
+		member = members[member];
+		
+	}
 	/*
 	this.x += this.velocity.x * this.speed;
 	this.y += this.velocity.y * this.speed;
