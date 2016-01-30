@@ -63,9 +63,15 @@ Background_Manager.prototype.sendTo = function(source, destination, group) {
 	if (canTransfer(source, destination, group)) {	// Check if they can transfer up
 		source.group_manager.transfer(destination.group_manager, group);
 		
-		// var ratio = util.ratio(source.numPeople, destination.numPeople, findOther(source, destination).numPeople);
-		// source.myUpdate(ratio);							// Used for changing background size
-		// destination.myUpdate(ratio);
+		if (source.type === 'unemployed' || destination.type === unemployed) {
+			var hRatio = util.ratio(A, B, other);
+			var vRatio = util.ratio(A, B);
+		}
+		else {
+			var ratio = util.ratio(source.group_manager.numPeople(), destination.group_manager.numPeople(), findOther(source, destination).group_manager.numPeople());
+			source.myUpdate(ratio);							// Used for changing background size
+			destination.myUpdate(ratio);
+		}
 	}
 };
 
@@ -95,34 +101,34 @@ Background_Manager.prototype.whereClicked = function() {
 };
 
 Background_Manager.prototype.findOther = function(source, destination) {
-	/*if (source.type === 'work' && destination.type === 'work') {
-		if (source.incomeLevel === 'low') {
-			if (destination.incomeLevel === 'mid') return this.bgNames.workHigh;
-			else if (destination.incomeLevel === 'high') return this.bgNames.workMid;
+	if (source.type === 'work' && destination.type === 'work') {
+		if (source.incomeLevel === Person.EDULEVEL.low) {
+			if (destination.incomeLevel === Person.EDULEVEL.mid) return this.bgArray[2];
+			else if (destination.incomeLevel === Person.EDULEVEL.high) return this.bgArray[1];
 		}
-		else if (source.incomeLevel === 'mid') {
-			if (destination.incomeLevel === 'low') return this.bgNames.workHigh;
-			else if (destination.incomeLevel === 'high') return this.bgNames.workLow;
+		else if (source.incomeLevel === Person.EDULEVEL.mid) {
+			if (destination.incomeLevel === Person.EDULEVEL.low) return this.bgArray[2];
+			else if (destination.incomeLevel === Person.EDULEVEL.high) return this.bgArray[0];
 		}
-		else if (source.incomeLevel === 'high') {
-			if (destination.incomeLevel === 'low') return this.bgNames.workMid;
-			else if (destination.incomeLevel === 'mid') return this.bgNames.workLow;
+		else if (source.incomeLevel === Person.EDULEVEL.high) {
+			if (destination.incomeLevel === Person.EDULEVEL.low) return this.bgArray[1];
+			else if (destination.incomeLevel === Person.EDULEVEL.mid) return this.bgArray[0];
 		}
 	}
 	else if (source.type === 'house' && destination.type === 'house') {
-		if (source.incomeLevel === 'low') {
-			if (destination.incomeLevel === 'mid') return this.bgNames.houseHigh;
-			else if (destination.incomeLevel === 'high') return this.bgNames.houseMid;
+		if (source.incomeLevel === Person.EDULEVEL.low) {
+			if (destination.incomeLevel === Person.EDULEVEL.mid) return this.bgArray[5];
+			else if (destination.incomeLevel === Person.EDULEVEL.high) return this.bgArray[4];
 		}
-		else if (source.incomeLevel === 'mid') {
-			if (destination.incomeLevel === 'low') return this.bgNames.houseHigh;
-			else if (destination.incomeLevel === 'high') return this.bgNames.houseLow;
+		else if (source.incomeLevel === Person.EDULEVEL.mid) {
+			if (destination.incomeLevel === Person.EDULEVEL.low) return this.bgArray[5];
+			else if (destination.incomeLevel === Person.EDULEVEL.high) return this.bgArray[3];
 		}
-		else if (source.incomeLevel === 'high') {
-			if (destination.incomeLevel === 'low') return this.bgNames.houseMid;
-			else if (destination.incomeLevel === 'mid') return this.bgNames.houseLow;
+		else if (source.incomeLevel === Person.EDULEVEL.high) {
+			if (destination.incomeLevel === Person.EDULEVEL.low) return this.bgArray[4];
+			else if (destination.incomeLevel === Person.EDULEVEL.mid) return this.bgArray[3];
 		}
-	}*/
+	}
 };
 
 Background_Manager.prototype.getDimensions = function(background) {

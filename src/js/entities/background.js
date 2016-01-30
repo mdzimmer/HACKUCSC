@@ -26,8 +26,8 @@ Background.prototype.getVarsCenter = function() {
     return [(this.x + visWidth) / 2, (this.y + visHeight) / 2, visWidth, visHeight];
 };
 
-Background.prototype.myUpdate = function(ratio) {
-
+Background.prototype.update = function(ratio) {
+    if (this.)
 };
 
 
