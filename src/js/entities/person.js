@@ -22,5 +22,27 @@ Person.prototype.update = function() {
 	this.y += this.velocity.y * this.speed;
 	//console.log(this.velocity);
 };
+//TODO adjust tax by tax rate and happiness
+Person.prototype.getTax = function() {
+	console.log('get tax', this.group.myManager.background.type);
+	if (this.group.myManager.background.type === 'house') {
+		if (this.group.myManager.background.incomeLevel === Person.EDULEVEL.low) {
+			return -1;
+		} else if (this.group.myManager.background.incomeLevel === Person.EDULEVEL.mid) {
+			return -2;
+		} else if (this.group.myManager.background.incomeLevel === Person.EDULEVEL.high) {
+			return -3;
+		}
+	} else if (this.group.myManager.background.type === 'work') {
+		if (this.group.myManager.background.incomeLevel === Person.EDULEVEL.low) {
+			return 1;
+		} else if (this.group.myManager.background.incomeLevel === Person.EDULEVEL.mid) {
+			return 2;
+		} else if (this.group.myManager.background.incomeLevel === Person.EDULEVEL.high) {
+			return 3;
+		}
+	}
+	return 0;
+};
 
 module.exports = Person;

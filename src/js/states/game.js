@@ -19,6 +19,7 @@ var Game = function () {
   this.curHappiness = 0;
   this.happinessUpdateDelay = 0.001;
   this.happinessIncrementing = false;
+  this.taxTime = 3;
 };
 
 module.exports = Game;
@@ -75,6 +76,8 @@ Game.prototype = {
 	this.happy.width = 40;
 	this.happy.height = 40;
 	this.happy.anchor.setTo(0.5, 0.5);
+	
+	this.game.time.events.add(Phaser.Timer.SECOND * this.taxTime, this.collectTax, this);
   },
 
   update: function () {
@@ -84,7 +87,7 @@ Game.prototype = {
   },
 
   onInputDown: function () {
-	  this.addHappiness(10);
+	  // this.addHappiness(10);
 	  // console.log(this.game.input.x, this.game.input.y);
     //this.game.state.start('Menu');
 	//console.log(this.game.input.x, this.game.input.y);
@@ -105,6 +108,19 @@ Game.prototype = {
 			// }
 		// }
 	// }
+  },
+  collectTax: function () {
+	  console.log('collect tax');
+	  var taxes = 0;
+	  for (var bg in this.bg_mg.bgArray) {
+		  for (var group in this.bg_mg.bgArray[bg].group_manager.members) {
+			  for (var person in this.bg_mg.bgArray[bg].group_manager.members[group].members) {
+				  taxes += this.bg_mg.bgArray[bg].group_manager.members[group].members[person].getTax();
+			  }
+		  }
+	  }
+	  this.addMoney(taxes);
+	  this.game.time.events.add(Phaser.Timer.SECOND * this.taxTime, this.collectTax, this);
   },
   addHappiness: function (amt) {
 	  this.curHappiness += amt;
