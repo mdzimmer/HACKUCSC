@@ -88,6 +88,9 @@ Background_Manager.prototype.sendTo = function(source, destination, group) {
 			group.startEducation();
 		}
 		this.updateRatios();
+		
+		var test = destination.getVarsCenter();
+		console.log(test);
 	}
 };
 Background_Manager.prototype.transferType = function(source, destination, group) {
@@ -183,8 +186,8 @@ Background_Manager.prototype.updateRatios = function() {
 	for (var j = 0; j < 6; j++)
 		employed += this.bgArray[j].group_manager.numPeople();
 	var vRatios = util.ratio(this.bgArray[6].group_manager.numPeople(), employed);
-	console.log('this.bgArray[0].group_manager.numPeople(): ' + this.bgArray[0].group_manager.numPeople());
-	console.log('hWorkRatios: ' + hWorkRatios);
+	// console.log('this.bgArray[0].group_manager.numPeople(): ' + this.bgArray[0].group_manager.numPeople());
+	// console.log('hWorkRatios: ' + hWorkRatios);
 
 	for (var i = 0 in this.bgArray) {
 		if (i !== 6) {		// If not unemployed bg
@@ -209,6 +212,10 @@ Background_Manager.prototype.update = function() {
 	for (var i in this.bgArray) {
 		this.bgArray[i].update();
 	}
+	
+	var test = this.bgArray[3].getVarsCenter();
+	// console.log(test.center.x, test.center.y);
+	// console.log(this.bgArray[3].group_manager.center);
 };
 
 module.exports = Background_Manager;

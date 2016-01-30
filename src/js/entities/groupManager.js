@@ -26,6 +26,7 @@ var GroupManager = function (game) {
 };
 GroupManager.prototype.constructor = GroupManager;
 GroupManager.prototype.update = function() {
+	// console.log(this.center);
 	//update bounds
 	if (this.background) {
 		var vars = this.background.getVarsCenter();

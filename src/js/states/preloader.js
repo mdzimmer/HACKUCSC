@@ -18,6 +18,9 @@ Preloader.prototype = {
     this.load.image('person', 'assets/person.png');
     this.load.image('selection', 'assets/selection.png');
     this.load.image('book', 'assets/book.png');
+    // this.load.image('happyface', 'assets/happyface.png');
+    // this.load.image('sadface', 'assets/sadface.png');
+	this.load.image('happyface', 'assets/happyface_better.png');
 	this.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
   },
 

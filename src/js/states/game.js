@@ -15,6 +15,10 @@ var Game = function () {
   this.curMoney = 0;
   this.moneyUpdateDelay = 0.001;
   this.moneyIncrementing = false;
+  this.happinessVal = 0;
+  this.curHappiness = 0;
+  this.happinessUpdateDelay = 0.001;
+  this.happinessIncrementing = false;
 };
 
 module.exports = Game;
@@ -66,7 +70,11 @@ Game.prototype = {
     this.money.setShadow(3, 3, 'rgba(0,0,0,0.5)', 5);
 	
 	this.uib = new UIBuilder(this);
-	this.uib.buildProgressBar("growing", this.game.width / 2, 25, 300, 25, 100);
+	this.bar = this.uib.buildProgressBar("growing", this.game.width / 2, 25, 300, 25, 100);
+	this.happy = this.game.add.sprite(this.game.width * .73, 25, 'happyface');
+	this.happy.width = 40;
+	this.happy.height = 40;
+	this.happy.anchor.setTo(0.5, 0.5);
   },
 
   update: function () {
@@ -76,6 +84,7 @@ Game.prototype = {
   },
 
   onInputDown: function () {
+	  this.addHappiness(10);
 	  // console.log(this.game.input.x, this.game.input.y);
     //this.game.state.start('Menu');
 	//console.log(this.game.input.x, this.game.input.y);
@@ -96,6 +105,27 @@ Game.prototype = {
 			// }
 		// }
 	// }
+  },
+  addHappiness: function (amt) {
+	  this.curHappiness += amt;
+	  if (!this.happinessIncrementing) {
+		  this.game.time.events.add(Phaser.Timer.SECOND * this.happinessUpdateDelay, this.incrementHappiness, this);
+		  this.happinessIncrementing = true;
+	  }
+  },
+  incrementHappiness: function () {
+	if (this.happinessVal === this.curHappiness) {
+		this.happinessIncrementing = false;
+		return;
+	}
+	if (this.curHappiness > this.happinessVal) {
+		this.bar.addValue(1);
+		this.happinessVal += 1;
+	} else if (this.curHappiness < this.happinessVal) {
+		this.bar.addValue(-1);
+		this.happinessVal -= 1;
+	}
+	this.game.time.events.add(Phaser.Timer.SECOND * this.happinessUpdateDelay, this.incrementHappiness, this);
   },
   addMoney: function (amt) {
 	  this.curMoney += amt;
