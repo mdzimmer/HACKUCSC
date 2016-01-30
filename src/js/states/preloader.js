@@ -15,6 +15,8 @@ Preloader.prototype = {
     this.load.setPreloadSprite(this.asset);
     this.load.image('testsprite', 'assets/test.png');
     this.load.image('background', 'assets/sectorBG.png')
+    this.load.image('person', 'assets/person.png');
+    this.load.image('selection', 'assets/selection.png');
   },
 
   create: function () {
@@ -23,7 +25,7 @@ Preloader.prototype = {
 
   update: function () {
     if (!!this.ready) {
-      this.game.state.start('Menu');
+      this.game.state.start('Game');
     }
   },
 
