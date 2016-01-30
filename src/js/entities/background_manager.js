@@ -4,19 +4,25 @@ var Background = require('./background');
 var Person = require('./person');
 var util = require('../utils');
 
-var Background_Manager = function(game) {
+var Group = require('./group');
+
+var Background_Manager = function(game, state) {
 	this.game = game;
+	this.state = state;
 
 	//Create array of backgrounds
 	this.bgArray = [
-		new Background(this.game, 0, 0, .33, .33, Person.EDULEVEL.low, 'work'),		// this.bgArray[0] == workLow
-		new Background(this.game, 1, 0, .33, .33, Person.EDULEVEL.mid, 'work'),		// this.bgArray[1] == workMid
-		new Background(this.game, 2, 0, .33, .33, Person.EDULEVEL.high, 'work'),	// this.bgArray[2] == workMid
-		new Background(this.game, 0, 1, .33, .33, Person.EDULEVEL.low, 'house'),	// this.bgArray[3] == houseLow
-		new Background(this.game, 1, 1, .33, .33, Person.EDULEVEL.mid, 'house'),	// this.bgArray[4] == houseMid
-		new Background(this.game, 2, 1, .33, .33, Person.EDULEVEL.high, 'house'),	// this.bgArray[5] == houseMid
-		new Background(this.game, 0, 2, .33, .33, '', 'unemployed'),				// this.bgArray[6] == unemployed
+		new Background(this.game, 0, 0, .33, .33, Person.EDULEVEL.low , 'work' , state),	// this.bgArray[0] == workLow
+		new Background(this.game, 1, 0, .33, .33, Person.EDULEVEL.mid , 'work' , state),	// this.bgArray[1] == workMid
+		new Background(this.game, 2, 0, .33, .33, Person.EDULEVEL.high, 'work' , state),	// this.bgArray[2] == workMid
+		new Background(this.game, 0, 1, .33, .33, Person.EDULEVEL.low , 'house', state),	// this.bgArray[3] == houseLow
+		new Background(this.game, 1, 1, .33, .33, Person.EDULEVEL.mid , 'house', state),	// this.bgArray[4] == houseMid
+		new Background(this.game, 2, 1, .33, .33, Person.EDULEVEL.high, 'house', state),	// this.bgArray[5] == houseMid
+		new Background(this.game, 0, 2,   1, .33, '',              'unemployed', state),	// this.bgArray[6] == unemployed
 	];
+	for (bg in this.bgArray) {
+		this.bgArray[bg].myManager = this;
+	}
 	
 	for (var i in this.bgArray) {
 		if (this.bgArray[i].type == 'work') {
@@ -45,6 +51,23 @@ var Background_Manager = function(game) {
 			this.bgArray[i].tint = 0x939393;
 		}
 	}
+	
+	var test = this.bgArray[0].group_manager;
+	var testFlock = new Group(this.game, this.game.width / 2 + 100, this.game.height / 2 + 100, state);
+    for (var i = 0; i < 10; i++) {
+    	var testPerson = new Person(this.game, this.game.width / 2 + i * 15, this.game.height / 2 + i * 15, i);
+    	this.game.add.existing(testPerson);
+    	testFlock.addMember(testPerson);
+    }
+    test.addMember(testFlock);
+	testFlock = new Group(this.game, this.game.width / 2 - 100, this.game.height / 2 + 100, state);
+	for (var i = 0; i < 10; i++) {
+    	var testPerson = new Person(this.game, this.game.width / 2 + i * 15 - 100, this.game.height / 2 + i * 15 + 100, i);
+    	this.game.add.existing(testPerson);
+    	testFlock.addMember(testPerson);
+    }
+    test.addMember(testFlock);
+	
 };
 
 Background_Manager.prototype.constructor = Background_Manager;
@@ -60,18 +83,9 @@ Background_Manager.prototype.constructor = Background_Manager;
 };*/
 
 Background_Manager.prototype.sendTo = function(source, destination, group) {
-	if (canTransfer(source, destination, group)) {	// Check if they can transfer up
+	if (this.canTransfer(source, destination, group)) {	// Check if they can transfer up
 		source.group_manager.transfer(destination.group_manager, group);
-		
-		if (source.type === 'unemployed' || destination.type === unemployed) {
-			var hRatio = util.ratio(A, B, other);
-			var vRatio = util.ratio(A, B);
-		}
-		else {
-			var ratio = util.ratio(source.group_manager.numPeople(), destination.group_manager.numPeople(), findOther(source, destination).group_manager.numPeople());
-			source.myUpdate(ratio);							// Used for changing background size
-			destination.myUpdate(ratio);
-		}
+		this.updateRatios();
 	}
 };
 
@@ -131,14 +145,37 @@ Background_Manager.prototype.findOther = function(source, destination) {
 	}
 };
 
+Background_Manager.prototype.updateRatios = function() {
+	var hWorkRatios = util.ratio(this.bgArray[0].group_manager.numPeople(), this.bgArray[1].group_manager.numPeople(), this.bgArray[2].group_manager.numPeople());
+	var hHouseRatios = util.ratio(this.bgArray[3].group_manager.numPeople(), this.bgArray[4].group_manager.numPeople(), this.bgArray[5].group_manager.numPeople());
+	var employed = 0;
+	for (var i = 0; i < 6; i++)
+		employed += bgArray[i].group_manager.numPeople();
+	var vRatios = util.ratio(this.bgArray[6].group_manager.numPeople(), employed);
+	
+	for (var i = 0 in bgArray) {
+		if (i !== 6) {		// If not unemployed bg
+			if (i < 3) {	// If work bg
+				bgArray[i].newHRatio = hWorkRatios[i];
+				bgArray[i].newVRatio = vRatios[1] / 2;
+			}
+			else {			// If house bg
+				bgArray[i].newHRatio = hHouseRatios[i - 3];
+				bgArray[i].newVRatio = vRatios[1] / 2;
+			}
+		}
+		else bgArray[i].newVRatio = vRatios[0]; // Unemployed bg
+	}
+};
+
 Background_Manager.prototype.getDimensions = function(background) {
 
 };
 
 Background_Manager.prototype.update = function() {
-	/*for (var i in this.bgArray) {
+	for (var i in this.bgArray) {
 		this.bgArray[i].update();
-	}*/
+	}
 };
 
 module.exports = Background_Manager;

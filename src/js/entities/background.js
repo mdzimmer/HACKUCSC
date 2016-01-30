@@ -1,14 +1,18 @@
 var Group_Manager = require('./groupManager');
 
 
-var Background = function (game, baseX, baseY, hRatio, vRatio, income, type) {
+var Background = function (game, baseX, baseY, hRatio, vRatio, income, type, state) {
     Phaser.Sprite.call(this, game, baseX * hRatio * game.width, baseY * vRatio * game.height, 'background');
     game.add.existing(this);
     this.hRatio = hRatio;
     this.vRatio = vRatio;
-    this.group_manager = new Group_Manager(this.game)
+    this.newHRatio = hRatio;
+    this.newVRatio = vRatio;
+    this.group_manager = new Group_Manager(this.game, state);
+	this.group_manager.background = this;
    	this.type = type;
     this.incomeLevel = income;
+	this.state = state
 };
 
 Background.prototype = Object.create(Phaser.Sprite.prototype);
@@ -20,14 +24,24 @@ Background.prototype.getVars = function() {
 };
 
 Background.prototype.getVarsCenter = function() {
-    // //return x & y of center and width & height of visible
-    var visWidth = x + this.hRatio * this.game.width;
-    var visHeight = y + this.vRatio * this.game.height;
-    return [(this.x + visWidth) / 2, (this.y + visHeight) / 2, visWidth, visHeight];
+    //return x & y of center and width & height of visible
+    var visWidth = this.x + this.hRatio * this.game.width;
+    var visHeight = this.y + this.vRatio * this.game.height;
+    return {width : visWidth, height : visHeight, center : {x : this.x + visWidth / 2, y : this.y + visHeight / 2}};
 };
 
-Background.prototype.update = function(ratio) {
-    if (this.)
+Background.prototype.update = function() {
+    if (this.hRatio !== this.newHRatio) {
+        if (this.hRatio + .1 < this.newHRatio) this.hRatio += .1;
+        else if (this.hRatio - .1 > this.newHRatio) this.hRatio -= .1;
+        else this.hRatio = this.newHRatio;
+    }
+    if (this.vRatio !== this.newVRatio) {
+        if (this.vRatio + .1 < this.newVRatio) this.vRatio += .1;
+        else if (this.vRatio - .1 > this.newVRatio) this.vRatio -= .1;
+        else this.vRatio = this.newVRatio;
+    }
+	this.group_manager.update();
 };
 
 

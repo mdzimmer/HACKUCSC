@@ -1,6 +1,6 @@
 var Util = require('../utils');
 
-var GroupManager = function (game, width, height, center) {
+var GroupManager = function (game) {
 	this.game = game;
 	this.members = [];
 	/*
@@ -28,10 +28,11 @@ GroupManager.prototype.constructor = GroupManager;
 GroupManager.prototype.update = function() {
 	//update bounds
 	if (this.background) {
-		var vars = this.background.getVars();
+		var vars = this.background.getVarsCenter();
 		this.width = vars.width;
 		this.height = vars.height;
 		this.center = vars.center;
+		console.log(vars);
 	} else {
 		return;
 	}
@@ -39,6 +40,7 @@ GroupManager.prototype.update = function() {
 	for (var member in this.members) {
 		member = this.members[member];
 		var velocity = {x : 0, y : 0};
+		// console.log(this.center, member.center);
 		var diffX = this.center.x - member.center.x;
 		var diffY = this.center.y - member.center.y;
 		velocity.x = diffX;
@@ -68,7 +70,8 @@ GroupManager.prototype.update = function() {
 		this.members[member].update();
 	}
 };
-GroupManager.prototype.transfer = function(otherGM, myMember) {
+GroupManager.prototype.transfer = function(otherGM, myMember, state) {
+	console.log('transfer', otherGM, myMember);
 	if (!(myMember in this.members)) {
 		console.log('ERROR', myMember, 'not in', this);
 		return;
@@ -93,3 +96,14 @@ GroupManager.prototype.numPeople = function() {
 };
 
 module.exports = GroupManager;
+
+
+
+
+
+
+
+
+
+
+
