@@ -96,12 +96,35 @@ Background_Manager.prototype.sendTo = function(source, destination, group) {
 
 Background_Manager.prototype.canTransfer = function(source, destination, group) {
 	if (source === null || destination === null) return false;
-	else if (destination.type === 'work' && group.members[0].eduLevel >= destination.incomeLevel) return true;
-	else if (destination.type === 'house') {
-		if (group.members[0].eduLevel === Person.EDULEVEL.low && destination.incomeLevel === Person.EDULEVEL.high) return false;
-		else return true;
+	var sourceEdu = group.members[0].eduLevel;
+	if (destination.type === 'unemployed') {
+		return true;
 	}
-	else if (destination.type === 'unemployed') return true;
+	if (sourceEdu === Person.EDULEVEL.unemployed) {
+		if (destination.incomeLevel === Person.EDULEVEL.low && destination.type === 'house') {
+			return true;
+		}
+	} else if (sourceEdu === Person.EDULEVEL.low) {
+		if (destination.incomeLevel === Person.EDULEVEL.low) {
+			return true;
+		} else if (destination.incomeLevel === Person.EDULEVEL.mid) {
+			if (destination.type === 'house') {
+				return true;
+			}
+		}
+	} else if (sourceEdu === Person.EDULEVEL.mid) {
+		if (destination.incomeLevel === Person.EDULEVEL.low) {
+			return true;
+		} else if (destination.incomeLevel === Person.EDULEVEL.mid) {
+			return true;
+		} else if (destination.incomeLevel === Person.EDULEVEL.high) {
+			if (destination.type === 'house') {
+				return true;
+			}
+		}
+	} else if (sourceEdu === Person.EDULEVEL.high) {
+		return true;
+	}
 	return false;
 };
 
