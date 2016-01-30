@@ -1,7 +1,10 @@
 var Player = require('../entities/player');
+var Person = require('../entities/person');
+var Group = require('../entities/group');
 
 var Game = function () {
   this.testentity = null;
+  this.flocks = [];
 };
 
 module.exports = Game;
@@ -9,6 +12,8 @@ module.exports = Game;
 Game.prototype = {
 
   create: function () {
+	this.game.stage.backgroundColor = "#ffffff";
+	  
     var x = (this.game.width / 2) - 100;
     var y = (this.game.height / 2) - 50;
 
@@ -16,6 +21,15 @@ Game.prototype = {
     this.testentity.anchor.setTo(0.5, 0.5);
 
     this.input.onDown.add(this.onInputDown, this);
+	
+	var testFlock = new Group(this.game);
+	this.flocks.push(testFlock);
+	
+	for (var i = 0; i < 10; i++) {
+		var testPerson = new Person(this.game, this.game.width/2 + i * 15, this.game.height/2 + i * 15);
+		this.game.add.existing(testPerson);
+		testFlock.addMember(testPerson);
+	}
   },
 
   update: function () {
@@ -35,6 +49,8 @@ Game.prototype = {
 
     this.testentity.scale.x = scale * 0.6;
     this.testentity.scale.y = scale * 0.6;
+	
+	this.flocks[0].update();
   },
 
   onInputDown: function () {

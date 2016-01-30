@@ -14,3 +14,5 @@ game.state.add('Menu', require('./states/menu'));
 game.state.add('Game', require('./states/game'));
 
 game.state.start('Boot');
+
+//game.stage.backgroundColor = "#ffffff";
