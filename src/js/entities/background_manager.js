@@ -93,6 +93,13 @@ Background_Manager.prototype.sendTo = function(source, destination, group) {
 		console.log(test);
 	}
 };
+Background_Manager.prototype.numPeople = function() {
+	var count = 0;
+	for (var i in this.bgArray) {
+		count += this.bgArray[i].group_manager.numPeople();
+	}
+	return count;
+};
 Background_Manager.prototype.transferType = function(source, destination, group) {
 	var groupEdu = group.members[0].eduLevel;
 	var can = this.canTransfer(source, destination, group);
