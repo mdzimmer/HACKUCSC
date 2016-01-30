@@ -1,7 +1,9 @@
 var Player = require('../entities/player');
+var Background_Manager = require('../entities/background_manager');
 
 var Game = function () {
   this.testentity = null;
+  this.bg_mg = null;
 };
 
 module.exports = Game;
@@ -11,6 +13,8 @@ Game.prototype = {
   create: function () {
     var x = (this.game.width / 2) - 100;
     var y = (this.game.height / 2) - 50;
+
+    this.bg_mg = new Background_Manager(this.game);
 
     this.testentity = new Player(this.game, x, y);
     this.testentity.anchor.setTo(0.5, 0.5);
