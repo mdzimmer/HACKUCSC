@@ -7,6 +7,13 @@ var Group = function (game, centerX, centerY) {
 	this.minDist = 20;
 	//this.noise = 10;
 	this.center = {x : centerX, y : centerY};
+	this.clickDist = 50;
+	this.selected = false;
+	this.selection = this.game.add.sprite(this.center.x, this.center.y, 'selection');
+	this.selection.anchor.setTo(0.5, 0.5);
+	this.selection.width = 100;
+	this.selection.height = 100;
+	this.selection.visible = false;
 }
 Group.prototype.constructor = Group;
 Group.prototype.update = function() {
@@ -68,5 +75,59 @@ Group.prototype.update = function() {
 Group.prototype.addMember = function(member) {
 	this.members.push(member);
 };
+Group.prototype.click = function(member) {
+	var mouseX = this.game.input.x;
+	var mouseY = this.game.input.y;
+	var diffX = mouseX - this.center.x;
+	var diffY = mouseY - this.center.y;
+	var totalDiff = util.hypotenuse(diffX, diffY);
+	//console.log(totalDiff);
+	if (totalDiff <= this.clickDist) {
+		//this.setSelected(true);
+		if (this.selected) {
+			this.setSelected(false);
+		} else {
+			this.setSelected(true);
+		}
+	} else {
+		//this.setSelected(false);
+		if (this.selected) {
+			this.changeCenter({x : mouseX, y : mouseY});
+			this.setSelected(false);
+		} else {
+			
+		}
+	}
+};
+Group.prototype.setSelected = function(newSelected) {
+	this.selected = newSelected;
+	this.selection.visible = newSelected;
+};
+Group.prototype.changeCenter = function(newCenter) {
+	this.selection.x = newCenter.x;
+	this.selection.y = newCenter.y;
+	this.center = newCenter;
+};
+/*
+Group.prototype.tryMove = function() {
+	if (!this.selected) {
+		return;
+	}
+	var newCenter = {x : this.game.input.x, y : this.game.input.y};
+	this.changeCenter(newCenter);
+};
+*/
 
 module.exports = Group;
+
+
+
+
+
+
+
+
+
+
+
+

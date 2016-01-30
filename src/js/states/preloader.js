@@ -15,6 +15,7 @@ Preloader.prototype = {
     this.load.setPreloadSprite(this.asset);
     this.load.image('testsprite', 'assets/test.png');
 	this.load.image('person', 'assets/person.png');
+	this.load.image('selection', 'assets/selection.png');
   },
 
   create: function () {

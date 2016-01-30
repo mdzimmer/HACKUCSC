@@ -1,6 +1,7 @@
 var Player = require('../entities/player');
 var Person = require('../entities/person');
 var Group = require('../entities/group');
+var GroupManager = require('../entities/groupManager');
 
 var Game = function () {
   this.testentity = null;
@@ -30,6 +31,8 @@ Game.prototype = {
 		this.game.add.existing(testPerson);
 		testFlock.addMember(testPerson);
 	}
+	var groupManager = new GroupManager(this.game);
+	groupManager.addMember(testFlock);
   },
 
   update: function () {
@@ -54,6 +57,10 @@ Game.prototype = {
   },
 
   onInputDown: function () {
-    this.game.state.start('Menu');
+    //this.game.state.start('Menu');
+	//console.log(this.game.input.x, this.game.input.y);
+	if (this.game.input.activePointer.leftButton.isDown) {
+		this.flocks[0].click();
+	}
   }
 };
