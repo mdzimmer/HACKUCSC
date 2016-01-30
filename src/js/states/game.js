@@ -76,6 +76,7 @@ Game.prototype = {
   },
 
   onInputDown: function () {
+	  // console.log(this.game.input.x, this.game.input.y);
     //this.game.state.start('Menu');
 	//console.log(this.game.input.x, this.game.input.y);
 	// if (this.game.input.activePointer.leftButton.isDown) {

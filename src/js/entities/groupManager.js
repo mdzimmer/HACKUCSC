@@ -32,7 +32,7 @@ GroupManager.prototype.update = function() {
 		this.width = vars.width;
 		this.height = vars.height;
 		this.center = vars.center;
-		console.log(vars);
+		// console.log(vars);
 	} else {
 		return;
 	}
@@ -70,12 +70,15 @@ GroupManager.prototype.update = function() {
 		this.members[member].update();
 	}
 };
-GroupManager.prototype.transfer = function(otherGM, myMember, state) {
-	console.log('transfer', otherGM, myMember);
+GroupManager.prototype.transfer = function(otherGM, myMember) {
+	var testVals = otherGM.background.getVarsCenter();
+	// console.log('transfer to', otherGM.background.type, otherGM.background.incomeLevel, testVals.center.y, testVals.y, testVals.visHeight, testVals.vRatio);
+	/*
 	if (!(myMember in this.members)) {
 		console.log('ERROR', myMember, 'not in', this);
 		return;
 	}
+	*/
 	var index = this.members.indexOf(myMember);
 	this.members.splice(index, 1);
 	otherGM.addMember(myMember);

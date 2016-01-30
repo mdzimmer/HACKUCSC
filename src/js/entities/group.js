@@ -75,14 +75,16 @@ Group.prototype.addMember = function(member) {
 	this.members.push(member);
 };
 Group.prototype.onInputDown = function() {
-	if (this.clicked()) {
-		if (this.selected) {
-			var bg = this.myManager.whereClicked();
-			this.myManager.background.bg_mg.sendTo(this.myManager.background, bg, this);
-			this.setSelected(false);
-		} else {
-			this.click();
-		}
+	// console.log('a');
+	if (this.selected) {
+		// console.log('c');
+		// console.log(this.myManager, this.myManager.background);
+		var bg = this.myManager.background.myManager.whereClicked();
+		// console.log(bg);
+		this.myManager.background.myManager.sendTo(this.myManager.background, bg, this);
+		this.setSelected(false);
+	} else if (this.clicked()) {
+		this.click();
 	}
 };
 Group.prototype.clicked = function() {
