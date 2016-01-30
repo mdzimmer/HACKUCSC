@@ -1,4 +1,5 @@
 var Player = require('../entities/player');
+var Background_Manager = require('../entities/background_manager');
 var Person = require('../entities/person');
 var Group = require('../entities/group');
 var GroupManager = require('../entities/groupManager');
@@ -6,6 +7,7 @@ var GroupManager = require('../entities/groupManager');
 var Game = function () {
   this.testentity = null;
   this.flocks = [];
+  this.bg_mg = null;
 };
 
 module.exports = Game;
@@ -17,24 +19,25 @@ Game.prototype = {
 	  
     var x = (this.game.width / 2) - 100;
     var y = (this.game.height / 2) - 50;
-	
-	/*
+
+    this.bg_mg = new Background_Manager(this.game);
+    /*
     this.testentity = new Player(this.game, x, y);
     this.testentity.anchor.setTo(0.5, 0.5);
-	*/
+    */
 	
     this.input.onDown.add(this.onInputDown, this);
 	
-	var testFlock = new Group(this.game, this.game.width / 2 + 100, this.game.height / 2 + 100);
-	this.flocks.push(testFlock);
+    var testFlock = new Group(this.game, this.game.width / 2 + 100, this.game.height / 2 + 100);
+    this.flocks.push(testFlock);
 	
-	for (var i = 0; i < 10; i++) {
-		var testPerson = new Person(this.game, this.game.width/2 + i * 15, this.game.height/2 + i * 15, i);
-		this.game.add.existing(testPerson);
-		testFlock.addMember(testPerson);
-	}
-	var groupManager = new GroupManager(this.game);
-	groupManager.addMember(testFlock);
+    for (var i = 0; i < 10; i++) {
+    	var testPerson = new Person(this.game, this.game.width/2 + i * 15, this.game.height/2 + i * 15, i);
+    	this.game.add.existing(testPerson);
+    	testFlock.addMember(testPerson);
+    }
+    var groupManager = new GroupManager(this.game);
+    groupManager.addMember(testFlock);
   },
 
   update: function () {
