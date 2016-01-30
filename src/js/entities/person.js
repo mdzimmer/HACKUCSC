@@ -20,8 +20,5 @@ Person.prototype.update = function() {
 	this.y += this.velocity.y * this.speed;
 	//console.log(this.velocity);
 };
-// Person.EduLevel = {
-	// foo : 1
-// };
 
 module.exports = Person;

@@ -77,7 +77,6 @@ Game.prototype = {
 	//console.log(this.game.input.x, this.game.input.y);
 	if (this.game.input.activePointer.leftButton.isDown) {
 		this.addMoney(100);
-		/*
 		if (this.selectedGroup) {
 			//console.log('a');
 			// this.selectedGroup.move();
@@ -96,7 +95,6 @@ Game.prototype = {
 				}
 			}
 		}
-		*/
 	}
   },
   addMoney: function (amt) {

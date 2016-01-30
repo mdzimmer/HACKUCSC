@@ -11,11 +11,11 @@ var Background_Manager = function(game) {
 	this.bgArray = [
 		new Background(this.game, 0, 0, .33, .33, Person.EDULEVEL.low, 'work'),		// this.bgArray[0] == workLow
 		new Background(this.game, 1, 0, .33, .33, Person.EDULEVEL.mid, 'work'),		// this.bgArray[1] == workMid
-		new Background(this.game, 2, 0, .33, .33, Person.EDULEVEL.high, 'work'),		// this.bgArray[2] == workMid
-		new Background(this.game, 0, 1, .33, .33, Person.EDULEVEL.low, 'house'),		// this.bgArray[3] == houseLow
-		new Background(this.game, 1, 1, .33, .33, Person.EDULEVEL.mid, 'house'),		// this.bgArray[4] == houseMid
-		new Background(this.game, 2, 1, .33, .33, Person.EDULEVEL.high, 'house'),		// this.bgArray[5] == houseMid
-		new Background(this.game, 0, 2, .33, .33, '', 'unemployed'),	// this.bgArray[6] == unemployed
+		new Background(this.game, 2, 0, .33, .33, Person.EDULEVEL.high, 'work'),	// this.bgArray[2] == workMid
+		new Background(this.game, 0, 1, .33, .33, Person.EDULEVEL.low, 'house'),	// this.bgArray[3] == houseLow
+		new Background(this.game, 1, 1, .33, .33, Person.EDULEVEL.mid, 'house'),	// this.bgArray[4] == houseMid
+		new Background(this.game, 2, 1, .33, .33, Person.EDULEVEL.high, 'house'),	// this.bgArray[5] == houseMid
+		new Background(this.game, 0, 2, .33, .33, '', 'unemployed'),				// this.bgArray[6] == unemployed
 	];
 	
 	for (var i in this.bgArray) {
@@ -49,7 +49,7 @@ var Background_Manager = function(game) {
 
 Background_Manager.prototype.constructor = Background_Manager;
 
-Background_Manager.BGNAMES = {
+/*Background_Manager.BGNAMES = {
 		workLow    : this.bgArray[0],
 		workMid    : this.bgArray[1],
 		workHigh   : this.bgArray[2],
@@ -57,7 +57,7 @@ Background_Manager.BGNAMES = {
 		houseMid   : this.bgArray[4],
 		houseHigh  : this.bgArray[5],
 		unemployed : this.bgArray[6]
-};
+};*/
 
 Background_Manager.prototype.sendTo = function(source, destination, group) {
 	if (canTransfer(source, destination, group)) {	// Check if they can transfer up
@@ -80,7 +80,7 @@ Background_Manager.prototype.canTransfer = function(source, destination, group) 
 	return false;
 };
 
-Background_Manager.prototype.whereClicked() {
+Background_Manager.prototype.whereClicked = function() {
 	for (var i in this.bgArray) {
 		var curDimensions = this.bgArray[i].getVars();
 		var mouseX = this.game.input.x;
@@ -95,7 +95,7 @@ Background_Manager.prototype.whereClicked() {
 };
 
 Background_Manager.prototype.findOther = function(source, destination) {
-	if (source.type === 'work' && destination.type === 'work') {
+	/*if (source.type === 'work' && destination.type === 'work') {
 		if (source.incomeLevel === 'low') {
 			if (destination.incomeLevel === 'mid') return this.bgNames.workHigh;
 			else if (destination.incomeLevel === 'high') return this.bgNames.workMid;
@@ -122,7 +122,7 @@ Background_Manager.prototype.findOther = function(source, destination) {
 			if (destination.incomeLevel === 'low') return this.bgNames.houseMid;
 			else if (destination.incomeLevel === 'mid') return this.bgNames.houseLow;
 		}
-	}
+	}*/
 };
 
 Background_Manager.prototype.getDimensions = function(background) {
@@ -130,9 +130,9 @@ Background_Manager.prototype.getDimensions = function(background) {
 };
 
 Background_Manager.prototype.update = function() {
-	for (var i in this.bgArray) {
+	/*for (var i in this.bgArray) {
 		this.bgArray[i].update();
-	}
+	}*/
 };
 
 module.exports = Background_Manager;
