@@ -22,11 +22,11 @@ Game.prototype = {
 
     this.input.onDown.add(this.onInputDown, this);
 	
-	var testFlock = new Group(this.game);
+	var testFlock = new Group(this.game, this.game.width / 2 + 100, this.game.height / 2 + 100);
 	this.flocks.push(testFlock);
 	
 	for (var i = 0; i < 10; i++) {
-		var testPerson = new Person(this.game, this.game.width/2 + i * 15, this.game.height/2 + i * 15);
+		var testPerson = new Person(this.game, this.game.width/2 + i * 15, this.game.height/2 + i * 15, i);
 		this.game.add.existing(testPerson);
 		testFlock.addMember(testPerson);
 	}
