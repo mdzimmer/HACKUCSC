@@ -60,13 +60,13 @@ var Background_Manager = function(game, state) {
     	testFlock.addMember(testPerson);
     }
     test.addMember(testFlock);
-	testFlock = new Group(this.game, this.game.width / 2 - 100, this.game.height / 2 + 100, state);
-	for (var i = 0; i < 10; i++) {
-    	var testPerson = new Person(this.game, this.game.width / 2 + i * 15 - 100, this.game.height / 2 + i * 15 + 100, i);
-    	this.game.add.existing(testPerson);
-    	testFlock.addMember(testPerson);
-    }
-    test.addMember(testFlock);
+	// testFlock = new Group(this.game, this.game.width / 2 - 100, this.game.height / 2 + 100, state);
+	// for (var i = 0; i < 10; i++) {
+    	// var testPerson = new Person(this.game, this.game.width / 2 + i * 15 - 100, this.game.height / 2 + i * 15 + 100, i);
+    	// this.game.add.existing(testPerson);
+    	// testFlock.addMember(testPerson);
+    // }
+    // test.addMember(testFlock);
 	
 };
 
@@ -91,12 +91,35 @@ Background_Manager.prototype.sendTo = function(source, destination, group) {
 
 Background_Manager.prototype.canTransfer = function(source, destination, group) {
 	if (source === null || destination === null) return false;
-	else if (destination.type === 'work' && group.members[0].eduLevel >= destination.incomeLevel) return true;
-	else if (destination.type === 'house') {
-		if (group.members[0].eduLevel === Person.EDULEVEL.low && destination.incomeLevel === Person.EDULEVEL.high) return false;
-		else return true;
+	var sourceEdu = group.members[0].eduLevel;
+	if (destination.type === 'unemployed') {
+		return true;
 	}
-	else if (destination.type === 'unemployed') return true;
+	if (sourceEdu === Person.EDULEVEL.unemployed) {
+		if (destination.incomeLevel === Person.EDULEVEL.low && destination.type === 'house') {
+			return true;
+		}
+	} else if (sourceEdu === Person.EDULEVEL.low) {
+		if (destination.incomeLevel === Person.EDULEVEL.low) {
+			return true;
+		} else if (destination.incomeLevel === Person.EDULEVEL.mid) {
+			if (destination.type === 'house') {
+				return true;
+			}
+		}
+	} else if (sourceEdu === Person.EDULEVEL.mid) {
+		if (destination.incomeLevel === Person.EDULEVEL.low) {
+			return true;
+		} else if (destination.incomeLevel === Person.EDULEVEL.mid) {
+			return true;
+		} else if (destination.incomeLevel === Person.EDULEVEL.high) {
+			if (destination.type === 'house') {
+				return true;
+			}
+		}
+	} else if (sourceEdu === Person.EDULEVEL.high) {
+		return true;
+	}
 	return false;
 };
 
@@ -149,19 +172,21 @@ Background_Manager.prototype.updateRatios = function() {
 	var hWorkRatios = util.ratio(this.bgArray[0].group_manager.numPeople(), this.bgArray[1].group_manager.numPeople(), this.bgArray[2].group_manager.numPeople());
 	var hHouseRatios = util.ratio(this.bgArray[3].group_manager.numPeople(), this.bgArray[4].group_manager.numPeople(), this.bgArray[5].group_manager.numPeople());
 	var employed = 0;
-	for (var i = 0; i < 6; i++)
-		employed += bgArray[i].group_manager.numPeople();
+	for (var j = 0; j < 6; j++)
+		employed += this.bgArray[j].group_manager.numPeople();
 	var vRatios = util.ratio(this.bgArray[6].group_manager.numPeople(), employed);
-	
-	for (var i = 0 in bgArray) {
+	console.log('this.bgArray[0].group_manager.numPeople(): ' + this.bgArray[0].group_manager.numPeople());
+	console.log('hWorkRatios: ' + hWorkRatios);
+
+	for (var i = 0 in this.bgArray) {
 		if (i !== 6) {		// If not unemployed bg
 			if (i < 3) {	// If work bg
-				bgArray[i].newHRatio = hWorkRatios[i];
-				bgArray[i].newVRatio = vRatios[1] / 2;
+				this.bgArray[i].newHRatio = hWorkRatios[i];
+				this.bgArray[i].newVRatio = vRatios[1] / 2;
 			}
 			else {			// If house bg
-				bgArray[i].newHRatio = hHouseRatios[i - 3];
-				bgArray[i].newVRatio = vRatios[1] / 2;
+				this.bgArray[i].newHRatio = hHouseRatios[i - 3];
+				this.bgArray[i].newVRatio = vRatios[1] / 2;
 			}
 		}
 		else bgArray[i].newVRatio = vRatios[0]; // Unemployed bg

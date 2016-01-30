@@ -24,9 +24,9 @@ Background.prototype.getVars = function() {
 };
 
 Background.prototype.getVarsCenter = function() {
-    //return x & y of center and width & height of visible
-    var visWidth = this.x + this.hRatio * this.game.width;
-    var visHeight = this.y + this.vRatio * this.game.height;
+    // //return x & y of center and width & height of visible
+    var visWidth = this.hRatio * this.game.width;
+    var visHeight = this.vRatio * this.game.height;
     return {width : visWidth, height : visHeight, center : {x : this.x + visWidth / 2, y : this.y + visHeight / 2}};
 };
 
