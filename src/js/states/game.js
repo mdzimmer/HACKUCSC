@@ -66,8 +66,8 @@ Game.prototype = {
 			// this.selectedGroup.move();
 			// this.selectedGroup = null;
 			var bg = this.bg_mg.whereClicked();
-			if (bg_mg.canTransfer(bg, this.selectedGroup)) {
-				bg_mg.sendTo(this.selectedGroup.myManager.background, bg, this.selectedGroup);
+			if (this.bg_mg.canTransfer(bg, this.selectedGroup)) {
+				this.bg_mg.sendTo(this.selectedGroup.myManager.background, bg, this.selectedGroup);
 			}
 			this.selectedGroup = null;
 		} else {
