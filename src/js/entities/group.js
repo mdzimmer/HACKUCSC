@@ -58,6 +58,7 @@ Group.prototype.update = function() {
 				//if (member.id == '1') { console.log(oDiff, totalDist); };
 				velocity.x = -1 * oDiff.x;
 				velocity.y = -1 * oDiff.y;
+				continue;
 				//if (member.id == '1') { console.log('3', member.velocity); };
 			}
 		}

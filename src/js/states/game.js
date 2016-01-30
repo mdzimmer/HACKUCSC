@@ -17,10 +17,12 @@ Game.prototype = {
 	  
     var x = (this.game.width / 2) - 100;
     var y = (this.game.height / 2) - 50;
-
+	
+	/*
     this.testentity = new Player(this.game, x, y);
     this.testentity.anchor.setTo(0.5, 0.5);
-
+	*/
+	
     this.input.onDown.add(this.onInputDown, this);
 	
 	var testFlock = new Group(this.game, this.game.width / 2 + 100, this.game.height / 2 + 100);
@@ -36,6 +38,7 @@ Game.prototype = {
   },
 
   update: function () {
+	/*
     var x, y, cx, cy, dx, dy, angle, scale;
 
     x = this.input.position.x;
@@ -52,6 +55,7 @@ Game.prototype = {
 
     this.testentity.scale.x = scale * 0.6;
     this.testentity.scale.y = scale * 0.6;
+	*/
 	
 	this.flocks[0].update();
   },
