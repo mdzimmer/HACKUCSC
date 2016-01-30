@@ -1,7 +1,7 @@
 //controls flocking for a group of person objects
 var util = require('../utils');
 
-var Group = function (game, centerX, centerY) {
+var Group = function (game, centerX, centerY, state) {
 	this.game = game;
 	this.members = [];
 	this.minDist = 20;
@@ -16,6 +16,9 @@ var Group = function (game, centerX, centerY) {
 	this.selection.visible = false;
 	this.velocity = {x : 0, y : 0};
 	this.speed = .05;
+	this.state = state;
+	
+	this.state.input.onDown.add(this.onInputDown, this);
 }
 Group.prototype.constructor = Group;
 Group.prototype.update = function() {
@@ -71,6 +74,17 @@ Group.prototype.update = function() {
 Group.prototype.addMember = function(member) {
 	this.members.push(member);
 };
+Group.prototype.onInputDown = function() {
+	if (this.clicked()) {
+		if (this.selected) {
+			var bg = this.myManager.whereClicked();
+			this.myManager.background.bg_mg.sendTo(this.myManager.background, bg, this);
+			this.setSelected(false);
+		} else {
+			this.click();
+		}
+	}
+};
 Group.prototype.clicked = function() {
 	var mouseX = this.game.input.x;
 	var mouseY = this.game.input.y;
@@ -88,30 +102,6 @@ Group.prototype.click = function() {
 	} else {
 		this.setSelected(true);
 	}
-	/*
-	var mouseX = this.game.input.x;
-	var mouseY = this.game.input.y;
-	var diffX = mouseX - this.center.x;
-	var diffY = mouseY - this.center.y;
-	var totalDiff = util.hypotenuse(diffX, diffY);
-	//console.log(totalDiff);
-	if (totalDiff <= this.clickDist) {
-		//this.setSelected(true);
-		if (this.selected) {
-			this.setSelected(false);
-		} else {
-			this.setSelected(true);
-		}
-	} else {
-		//this.setSelected(false);
-		if (this.selected) {
-			this.changeCenter({x : mouseX, y : mouseY});
-			this.setSelected(false);
-		} else {
-			
-		}
-	}
-	*/
 };
 Group.prototype.move = function() {
 	var mouseX = this.game.input.x;
@@ -128,6 +118,12 @@ Group.prototype.changeCenter = function(newCenter) {
 	this.selection.x = newCenter.x;
 	this.selection.y = newCenter.y;
 	this.center = newCenter;
+};
+Group.prototype.numPeople = function() {
+	return this.members.length;
+};
+Group.prototype.mouseDown = function() {
+	
 };
 /*
 Group.prototype.tryMove = function() {
