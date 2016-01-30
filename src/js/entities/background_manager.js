@@ -18,7 +18,7 @@ var Background_Manager = function(game, state) {
 		new Background(this.game, 0, 1, .33, .33, Person.EDULEVEL.low , 'house', state),	// this.bgArray[3] == houseLow
 		new Background(this.game, 1, 1, .33, .33, Person.EDULEVEL.mid , 'house', state),	// this.bgArray[4] == houseMid
 		new Background(this.game, 2, 1, .33, .33, Person.EDULEVEL.high, 'house', state),	// this.bgArray[5] == houseMid
-		new Background(this.game, 0, 2,   1, .33, '',              'unemployed', state),	// this.bgArray[6] == unemployed
+		new Background(this.game, 0, 2,   1, .33, '',              'unemployed', state)		// this.bgArray[6] == unemployed
 	];
 	for (bg in this.bgArray) {
 		this.bgArray[bg].myManager = this;
@@ -169,23 +169,22 @@ Background_Manager.prototype.findOther = function(source, destination) {
 };
 
 Background_Manager.prototype.updateRatios = function() {
-	var hWorkRatios = util.ratio(this.bgArray[0].group_manager.numPeople(), this.bgArray[1].group_manager.numPeople(), this.bgArray[2].group_manager.numPeople());
-	var hHouseRatios = util.ratio(this.bgArray[3].group_manager.numPeople(), this.bgArray[4].group_manager.numPeople(), this.bgArray[5].group_manager.numPeople());
+	var hRatios = util.ratio(this.bgArray[0].numPeople(), this.bgArray[1].numPeople(), this.bgArray[2].numPeople());
 	var employed = 0;
 	for (var j = 0; j < 6; j++)
-		employed += this.bgArray[j].group_manager.numPeople();
-	var vRatios = util.ratio(this.bgArray[6].group_manager.numPeople(), employed);
-	console.log('this.bgArray[0].group_manager.numPeople(): ' + this.bgArray[0].group_manager.numPeople());
-	console.log('hWorkRatios: ' + hWorkRatios);
+		employed += this.bgArray[j].numPeople();
+	var vRatios = util.ratio(this.bgArray[6].numPeople(), employed);
+	console.log('this.bgArray[3].group_manager.numPeople(): ' + this.bgArray[3].numPeople());
+	console.log('hRatios : ' + hRatios);
 
 	for (var i = 0 in this.bgArray) {
 		if (i !== 6) {		// If not unemployed bg
 			if (i < 3) {	// If work bg
-				this.bgArray[i].newHRatio = hWorkRatios[i];
+				this.bgArray[i].newHRatio = hRatios[i];
 				this.bgArray[i].newVRatio = vRatios[1] / 2;
 			}
 			else {			// If house bg
-				this.bgArray[i].newHRatio = hHouseRatios[i - 3];
+				this.bgArray[i].newHRatio = hRatios[i - 3];
 				this.bgArray[i].newVRatio = vRatios[1] / 2;
 			}
 		}
