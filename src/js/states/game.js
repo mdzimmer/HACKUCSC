@@ -20,9 +20,10 @@ var Game = function () {
   this.curHappiness = 0;
   this.happinessUpdateDelay = 0.001;
   this.happinessIncrementing = false;
-  this.taxTime = 3;
+  this.taxTime = 2;
   this.taxMod = {low: 1, mid: 1, high: 1};
   this.minHappiness = 50;
+	this.fatiguePerTick = 10;
 };
 
 module.exports = Game;
@@ -30,6 +31,7 @@ module.exports = Game;
 Game.prototype = {
 
   create: function () {
+  	// console.log('fooff');
 	  // console.log(this);
     this.game.stage.backgroundColor = "#ededed";
     this.menu_bg = this.game.add.image(0, 0, 'menu_bg');  
@@ -124,6 +126,15 @@ Game.prototype = {
 		  for (var group in this.bg_mg.bgArray[bg].group_manager.members) {
 			  for (var person in this.bg_mg.bgArray[bg].group_manager.members[group].members) {
 				  taxes += this.bg_mg.bgArray[bg].group_manager.members[group].members[person].getTax();
+				  this.bg_mg.bgArray[bg].group_manager.members[group].members[person].ageTick();
+			  }
+			  if (this.bg_mg.bgArray[bg].group_manager.background.type == 'work') {
+			  	this.bg_mg.bgArray[bg].group_manager.members[group].addFatigue(this.fatiguePerTick);
+			  } else {
+			  	this.bg_mg.bgArray[bg].group_manager.members[group].addFatigue(-1 * this.fatiguePerTick);
+			  }
+			  if (this.bg_mg.bgArray[bg].group_manager.members[group]) {
+			  	this.bg_mg.bgArray[bg].group_manager.members[group].applyHappiness();
 			  }
 		  }
 	  }
