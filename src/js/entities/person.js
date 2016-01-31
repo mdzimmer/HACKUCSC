@@ -31,19 +31,20 @@ Person.prototype.getTax = function() {
 	// console.log('get tax', this.group.myManager.background.type);
 	if (this.group.myManager.background.type === 'house') {
 		if (this.group.myManager.background.incomeLevel === Person.EDULEVEL.low) {
-			return -1;
+			console.log(this.group.myManager.background.myManager.state.taxMod.low);
+			return -10;
 		} else if (this.group.myManager.background.incomeLevel === Person.EDULEVEL.mid) {
-			return -2;
+			return -20;
 		} else if (this.group.myManager.background.incomeLevel === Person.EDULEVEL.high) {
-			return -3;
+			return -30;
 		}
 	} else if (this.group.myManager.background.type === 'work') {
 		if (this.group.myManager.background.incomeLevel === Person.EDULEVEL.low) {
-			return 1;
+			return 10 * this.group.myManager.background.myManager.state.taxMod.low;
 		} else if (this.group.myManager.background.incomeLevel === Person.EDULEVEL.mid) {
-			return 2;
+			return 20 * this.group.myManager.background.myManager.state.taxMod.mid;
 		} else if (this.group.myManager.background.incomeLevel === Person.EDULEVEL.high) {
-			return 3;
+			return 30 * this.group.myManager.background.myManager.state.taxMod.high;
 		}
 	}
 	return 0;
