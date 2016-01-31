@@ -104,6 +104,18 @@ Group.prototype.update = function() {
 	var newSelectionSize = this.minSelectionSize + this.members.length * this.selectionWeight;
 	this.selection.width = newSelectionSize;
 	this.selection.height = newSelectionSize;
+
+	var mouseX = this.game.input.x;
+	var mouseY = this.game.input.y;
+    var dist = util.hypotenuse(this.center.x - mouseX, this.center.y - mouseY);
+    if (dist <= this.clickDist) {
+        if (!this.state.hm.groupSelected || this.state.hm.groupSelected == this) {
+            // console.log('a');
+            // console.log(this.happinessModifier);
+            this.state.hm.showStatic({people : this.numPeople(), education : this.lowestEducation(), happiness : this.averageHappiness(), fatigue : this.averageFatigue(), income : this.income(), happinessModifier : this.happinessModifier}, this.center.x, this.center.y - 50, 100);
+            // this.hover = true;
+        }
+    }
 };
 Group.prototype.addMember = function(member, special) {
 	this.members.push(member);
