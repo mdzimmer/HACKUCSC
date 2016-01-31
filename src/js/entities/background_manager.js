@@ -91,8 +91,7 @@ Background_Manager.prototype.sendTo = function(source, destination, group) {
 		if (transType.educate) {
 			group.startEducation();
 		}
-		this.updateRatios();
-		
+		this.updateRatios(destination);
 		var test = destination.getVarsCenter();
 		// console.log(test);
 	}
@@ -192,14 +191,17 @@ Background_Manager.prototype.findOther = function(source, destination) {
 	}
 };
 
-Background_Manager.prototype.updateRatios = function() {
-	var hRatios = util.ratio(this.bgArray[0].numPeople(), this.bgArray[1].numPeople(), this.bgArray[2].numPeople());
-	var employed = 0;
-	for (var j = 0; j < 6; j++) {
-		employed += this.bgArray[j].group_manager.numPeople();
+Background_Manager.prototype.updateRatios = function(destination) {
+	if (destination.type === 'work') {
+		var hRatios = util.ratio(this.bgArray[0].numPeople(), this.bgArray[1].numPeople(), this.bgArray[2].numPeople());
 	}
-	var vRatios = util.ratio(this.bgArray[6].group_manager.numPeople(), employed);
-
+	else{
+		var hRatios = util.ratio(this.bgArray[3].numPeople(), this.bgArray[4].numPeople(), this.bgArray[5].numPeople());
+	}
+	var employed = 0;
+	for (var j = 0; j < 6; j++)
+		employed += this.bgArray[j].numPeople();
+	var vRatios = util.ratio(this.bgArray[6].numPeople(), employed);
 	for (var i = 0 in this.bgArray) {
 		if (i !== 6) {		// If not unemployed bg
 			if (i < 3) {	// If work bg
@@ -213,17 +215,22 @@ Background_Manager.prototype.updateRatios = function() {
 		}
 		else bgArray[i].newVRatio = vRatios[0]; // Unemployed bg
 	}
-};
-
-Background_Manager.prototype.getDimensions = function(background) {
-
+	console.log(this.bgArray[0].hRatio);
+	console.log(this.bgArray[3].hRatio);
+	console.log(this.bgArray[6].minRatio);
 };
 
 Background_Manager.prototype.update = function() {
 	for (var i in this.bgArray) {
+    	if (this.bgArray[i].incomeLevel === Person.EDULEVEL.mid) {
+    		this.bgArray[i].x = this.bgArray[0].getVars()[2];
+    	}
+    	else if (this.bgArray[i].incomeLevel === Person.EDULEVEL.high) {
+    	    this.bgArray[i].x = this.bgArray[1].getVars()[0] + this.bgArray[1].getVars()[2];
+    	}
+    	this.bgArray[i].y = this.bgArray[i].baseY * this.bgArray[i].vRatio * this.game.height;
 		this.bgArray[i].update();
 	}
-	
 	var test = this.bgArray[3].getVarsCenter();
 	// console.log(test.center.x, test.center.y);
 	// console.log(this.bgArray[3].group_manager.center);

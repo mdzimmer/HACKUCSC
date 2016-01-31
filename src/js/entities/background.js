@@ -1,9 +1,11 @@
 var Group_Manager = require('./groupManager');
-
+var Person = require('./person');
 
 var Background = function (game, baseX, baseY, hRatio, vRatio, income, type, state) {
     Phaser.Sprite.call(this, game, baseX * hRatio * game.width, baseY * vRatio * game.height, 'background');
     game.add.existing(this);
+    this.baseX = baseX;
+    this.baseY = baseY;
     this.hRatio = hRatio;
     this.vRatio = vRatio;
     this.newHRatio = hRatio;
@@ -38,7 +40,7 @@ Background.prototype.numPeople = function() {
 };
 
 Background.prototype.update = function() {
-    if (this.newHRatio < this.minRatio) this.newHRatio = this.minRatio;
+	if (this.newHRatio < this.minRatio) this.newHRatio = this.minRatio;
     if (this.newVRatio < this.minRatio) this.newVRatio = this.minRatio;
     if (this.hRatio !== this.newHRatio) {
         if (this.hRatio + .01 < this.newHRatio) this.hRatio += .01;
@@ -50,7 +52,7 @@ Background.prototype.update = function() {
         else if (this.vRatio - .01 > this.newVRatio) this.vRatio -= .01;
         else this.vRatio = this.newVRatio;
     }
-	this.group_manager.update();
+    this.group_manager.update();
 };
 
 
