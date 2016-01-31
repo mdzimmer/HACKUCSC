@@ -20,7 +20,7 @@ var Group = function (game, centerX, centerY, state) {
 	this.book = this.game.add.sprite(this.center.x, this.center.y, 'book');
 	this.book.anchor.setTo(0.5, 0.5);
 	this.book.visible = false;
-	this.learningTime = .01;
+	this.learningTime = 6;
     this.hover = false;
     this.lock = this.game.add.sprite(this.center.x, this.center.y, 'lock');
 	this.lock.anchor.setTo(0.5, 0.5);
@@ -104,6 +104,18 @@ Group.prototype.update = function() {
 	var newSelectionSize = this.minSelectionSize + this.members.length * this.selectionWeight;
 	this.selection.width = newSelectionSize;
 	this.selection.height = newSelectionSize;
+
+	var mouseX = this.game.input.x;
+	var mouseY = this.game.input.y;
+    var dist = util.hypotenuse(this.center.x - mouseX, this.center.y - mouseY);
+    if (dist <= this.clickDist) {
+        if (!this.state.hm.groupSelected || this.state.hm.groupSelected == this) {
+            // console.log('a');
+            // console.log(this.happinessModifier);
+            this.state.hm.showStatic({people : this.numPeople(), education : this.lowestEducation(), happiness : this.averageHappiness(), fatigue : this.averageFatigue(), income : this.income(), happinessModifier : this.happinessModifier}, this.center.x, this.center.y - 50, 100);
+            // this.hover = true;
+        }
+    }
 };
 Group.prototype.addMember = function(member, special) {
 	this.members.push(member);
@@ -249,6 +261,19 @@ Group.prototype.onMove = function() {
         //     this.state.hm.hide();
         // }
         if (this.state.hm.groupSelected == this) {
+<<<<<<< HEAD
+	    	if (this.myManager.background.myManager.whereClicked() != this.myManager.background && this.myManager.background.myManager.canTransfer(this.myManager.background, this.myManager.background.myManager.whereClicked(), this)) {
+		        // console.log('a');
+		        var bgManager = this.myManager.background.myManager
+		        var transferType = bgManager.transferType(this.myManager.background, bgManager.whereClicked(), this);
+		        this.state.hm.showChange(transferType.can, {happinessChange : transferType.happinessChange, incomeChange : transferType.incomeChange}, mouseX, mouseY);
+	    	}
+        } 
+        // else {
+        //     // console.log('b');
+        //     this.state.hm.hide();
+        // }
+=======
 			if (this.myManager.background.myManager.whereClicked() != this.myManager.background && this.myManager.background.myManager.canTransfer(this.myManager.background, this.myManager.background.myManager.whereClicked(), this)) {
 			    console.log('a');
 			    var bgManager = this.myManager.background.myManager;
@@ -256,6 +281,7 @@ Group.prototype.onMove = function() {
 			    this.state.hm.showChange(transferType.can, {happinessChange : transferType.happinessChange, incomeChange : transferType.incomeChange}, mouseX, mouseY);
 			} 
         } 
+>>>>>>> gh-pages
     }
 // Group.prototype.happinessModifier = function() {
 //     return this.happinessModifier;
