@@ -1,5 +1,6 @@
 var Person = function (game, x, y, id) {
-	Phaser.Sprite.call(this, game, x, y, 'person');
+	Phaser.Sprite.call(this, game, x, y, 'ages');
+	this.frame = 2;
 	this.velocity = {x:0, y:0};
 	this.width = 10;
 	this.height = 10;
@@ -9,7 +10,9 @@ var Person = function (game, x, y, id) {
 	this.happiness = 100;
     this.fatigue = 0;
     this.happinessModifier = 0;
-    this.fatigue = 0;
+    this.age = Person.AGE.young;
+    this.turnCount = 0;
+    this.ageThreshold = 5;
 };
 Person.prototype = Object.create(Phaser.Sprite.prototype);
 Person.prototype.constructor = Person;
@@ -21,45 +24,61 @@ Person.EDULEVEL = {
 	high : 2
 };
 
+Person.INCOMES = {
+	low : 10,
+	mid : 20,
+	high : 30
+};
+
+Person.AGE = {
+	young : 0,
+	adult : 1,
+	old : 2
+};
+
 Person.prototype.update = function() {
 	this.x += this.velocity.x * this.speed;
 	this.y += this.velocity.y * this.speed;
 	//console.log(this.velocity);
 };
 
+Person.prototype.ageTick = function() {
+	// this.turnCount += 1;
+	// if (this.turnCount >= this.ageThreshold) {
+	// 	// console.log('happy birthday');
+	// 	if (this.age == 0) {
+	// 		this.age = Person.AGE.adult;
+	// 		this.frame = 3;
+	// 	} else if (this.age == 1) {
+	// 		this.age = Person.AGE.old;
+	// 		this.frame = 1;
+	// 	} else if (this.age == 2) {
+
+	// 	}
+	// }
+};
+
 Person.prototype.getTax = function() {
 	// console.log('get tax', this.group.myManager.background.type);
 	if (this.group.myManager.background.type === 'house') {
 		if (this.group.myManager.background.incomeLevel === Person.EDULEVEL.low) {
-			console.log(this.group.myManager.background.myManager.state.taxMod.low);
-			return -10;
+			// console.log(this.group.myManager.background.myManager.state.taxMod.low);
+			return -1 * Person.INCOMES.low;
 		} else if (this.group.myManager.background.incomeLevel === Person.EDULEVEL.mid) {
-			return -20;
+			return -2 * Person.INCOMES.mid;
 		} else if (this.group.myManager.background.incomeLevel === Person.EDULEVEL.high) {
-			return -30;
+			return -3 * Person.INCOMES.high;
 		}
 	} else if (this.group.myManager.background.type === 'work') {
 		if (this.group.myManager.background.incomeLevel === Person.EDULEVEL.low) {
-			return 10 * this.group.myManager.background.myManager.state.taxMod.low;
+			return Person.INCOMES.low * this.group.myManager.background.myManager.state.taxMod.low;
 		} else if (this.group.myManager.background.incomeLevel === Person.EDULEVEL.mid) {
-			return 20 * this.group.myManager.background.myManager.state.taxMod.mid;
+			return Person.INCOMES.mid * this.group.myManager.background.myManager.state.taxMod.mid;
 		} else if (this.group.myManager.background.incomeLevel === Person.EDULEVEL.high) {
-			return 30 * this.group.myManager.background.myManager.state.taxMod.high;
+			return Person.INCOMES.high * this.group.myManager.background.myManager.state.taxMod.high;
 		}
 	}
 	return 0;
 };
-
-Person.prototype.addFatigue = function(amt) {
-	this.fatigue += amt;
-	if (this.fatigue >= 100) {
-		var newBG = this.group.myManager.background.myManager.backgroundBy('house', this.group.myManager.background.incomeLevel);
-		if (!newBG) {
-			console.log('ERROR');
-			return;
-		}
-		
-	}
-}
 
 module.exports = Person;

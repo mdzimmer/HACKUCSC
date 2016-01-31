@@ -14,6 +14,7 @@ Preloader.prototype = {
     this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
     this.load.setPreloadSprite(this.asset);
     this.load.image('testsprite', 'assets/test.png');
+    this.load.image('menu_bg', 'assets/menu_bg.png');
     this.load.image('background', 'assets/sectorBG.png')
     this.load.image('person', 'assets/person.png');
     this.load.image('selection', 'assets/selection.png');
@@ -23,9 +24,16 @@ Preloader.prototype = {
     this.load.image('old', 'assets/old.png');
     this.load.image('taxReduce', 'assets/taxReduce.png');
     this.load.image('taxAdd', 'assets/taxAdd.png');
-	this.load.image('happyface', 'assets/happyface_better.png');
-	this.load.image('bordered', 'assets/bordered.png');
-	this.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
+    this.load.image('lock', 'assets/lock.png');
+    this.load.spritesheet('chevrons', 'assets/chevron_sheet.png', 40, 50);
+    // this.load.atlasJSONHash('chevrons', 'assets/chevrons.png', 'assets/chevrons.json');
+    this.load.atlasJSONHash('ages', 'assets/ages.png', 'assets/ages.json');
+    this.load.image('happyface', 'assets/happyface_better.png');
+    this.load.image('bordered', 'assets/bordered.png');
+    this.load.image('low_dollar', 'assets/low_dollar.png');
+    this.load.image('med_dollar', 'assets/med_dollar.png');
+    this.load.image('high_dollar', 'assets/high_dollar.png');
+    this.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
   },
 
   create: function () {

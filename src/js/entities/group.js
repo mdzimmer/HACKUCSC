@@ -19,15 +19,26 @@ var Group = function (game, centerX, centerY, state) {
 	this.state = state;
 	this.book = this.game.add.sprite(this.center.x, this.center.y, 'book');
 	this.book.anchor.setTo(0.5, 0.5);
-	this.book.width = 25;
-	this.book.height = 25;
 	this.book.visible = false;
 	this.learningTime = .01;
     this.hover = false;
+    this.lock = this.game.add.sprite(this.center.x, this.center.y, 'lock');
+	this.lock.anchor.setTo(0.5, 0.5);
+	this.lock.width = 25;
+	this.lock.height = 35;
+	this.lock.visible = false;
+	this.lockTime = 5;
+	this.happinessModifier = 0;
+	this.selectionWeight = 2.5;
+	this.minSelectionSize = 40;
+	this.clickWeight = 10;
+	this.maxClickDist = 40;
+	this.minClickDist = 20;
+	this.maxMembers = 10;
 	
 	this.state.input.onDown.add(this.onInputDown, this);
     this.state.input.addMoveCallback(this.onMove, this);
-}
+};
 Group.prototype.constructor = Group;
 Group.prototype.update = function() {
 	// console.log(this.center);
@@ -66,16 +77,45 @@ Group.prototype.update = function() {
 		// }
 		member.velocity = velocity;
 	}
+
+	// var average = 0;
+	// for (var member in this.members) {
+	// 	member = this.members[member];
+	// 	var dist = util.hypotenuse(this.center.x - member.x, this.center.y - member.y);
+	// 	// if (dist > furthest) {
+	// 	// 	furthest = dist;
+	// 	// }
+	// 	average += dist;
+	// }
+	// average /= this.members.length;
+	// // console.log(this.selectionWeight);
+	// var newSelectionSize = average * this.selectionWeight;
+	// if (newSelectionSize <= this.minSelectionSize) {
+	// 	// console.log('a');
+	// 	newSelectionSize = this.minSelectionSize;
+	// }
+	var newClickDist = 0;
+	if (this.members.length >= this.maxMembers) {
+		newClickDist = this.maxClickDist;
+	} else {
+		newClickDist = this.minClickDist + (this.maxClickDist - this.minClickDist) * (this.members.length / this.maxMembers);
+	}
+	this.clickDist = newClickDist;
+	var newSelectionSize = this.minSelectionSize + this.members.length * this.selectionWeight;
+	this.selection.width = newSelectionSize;
+	this.selection.height = newSelectionSize;
 };
-Group.prototype.addMember = function(member) {
+Group.prototype.addMember = function(member, special) {
 	this.members.push(member);
 	member.group = this;
+	if (special) {
+		this.myManager.background.myManager.updateRatios();
+	}
+	// console.log(this.members);
 };
 Group.prototype.onInputDown = function() {
 	// console.log('a');
 	if (this.selected) {
-		// console.log('c');
-		// console.log(this.myManager, this.myManager.background);
 		var bg = this.myManager.background.myManager.whereClicked();
 		// console.log(bg);
 		this.myManager.background.myManager.sendTo(this.myManager.background, bg, this);
@@ -114,20 +154,11 @@ Group.prototype.click = function() {
 	if (this.selected) {
         // this.state.hm.groupSelected = false;
 		this.setSelected(false);
-	} else {
+	} else if (!this.locked) {
         // this.state.hm.groupSelected = true;
 		this.setSelected(true);
 	}
 };
-/*
-Group.prototype.move = function() {
-	var mouseX = this.game.input.x;
-	var mouseY = this.game.input.y;
-	this.changeCenter({x : mouseX, y : mouseY});
-	this.setSelected(false);
-    this.state.hm.groupSelected = false;
-};
-*/
 Group.prototype.setSelected = function(newSelected) {
 	this.selected = newSelected;
 	this.selection.visible = newSelected;
@@ -144,6 +175,8 @@ Group.prototype.changeCenter = function(newCenter) {
 	this.selection.y = newCenter.y;
 	this.book.x = newCenter.x;
 	this.book.y = newCenter.y;
+	this.lock.x = newCenter.x;
+	this.lock.y = newCenter.y;
 	this.center = newCenter;
 };
 Group.prototype.numPeople = function() {
@@ -198,13 +231,15 @@ Group.prototype.onMove = function() {
     if (this.members.length == 0) {
         return;
     }
+    // console.log(this.members);
 	var mouseX = this.game.input.x;
 	var mouseY = this.game.input.y;
     var dist = util.hypotenuse(this.center.x - mouseX, this.center.y - mouseY);
     if (dist <= this.clickDist) {
-        if (!this.state.hm.groupSelected && this.state.hm.groupSelected != this) {
+        if (!this.state.hm.groupSelected || this.state.hm.groupSelected == this) {
             // console.log('a');
-            this.state.hm.showStatic({people : this.numPeople(), education : this.lowestEducation(), happiness : this.averageHappiness(), fatigue : this.averageFatigue(), income : this.income()}, this.center.x, this.center.y - 50, 100);
+            // console.log(this.happinessModifier);
+            this.state.hm.showStatic({people : this.numPeople(), education : this.lowestEducation(), happiness : this.averageHappiness(), fatigue : this.averageFatigue(), income : this.income(), happinessModifier : this.happinessModifier}, this.center.x, this.center.y - 50, 100);
             this.hover = true;
         }
     } else {
@@ -224,8 +259,64 @@ Group.prototype.onMove = function() {
         }
     }
 };
-Group.prototype.happinessModifier = function() {
-    return this.members[0].happinessModifier;
+// Group.prototype.happinessModifier = function() {
+//     return this.happinessModifier;
+// };
+Group.prototype.applyHappiness = function() {
+	// console.log('apply');
+	var flag = false;
+	for (var member in this.members) {
+		member = this.members[member];
+		// console.log(member.happiness, this.happinessModifier);
+		// console.logqmember.happiness, this.happinessModifier);
+		member.happiness += this.happinessModifier;
+		// member.happiness -= 50;
+		if (member.happiness > 100) {
+			member.happiness = 100;
+		} else if (member.happiness <= 0) {
+			member.happiness = 0;
+			flag = true;
+		}
+	}
+	if (flag) {
+		this.getOutOfTown();
+	}
+};
+Group.prototype.addFatigue = function(amt) {
+	// console.log(amt);
+	if (this.members[0].fatigue <= 0 && amt <= 0) {
+		return;
+	}
+	var flag = false;
+	for (var member in this.members) {
+		this.members[member].fatigue += amt;
+		if (this.members[member].fatigue >= 100) {
+			flag = true;
+		}
+	}
+	if (flag) {
+		// console.log(this);
+		this.getOutOfTown();
+		//console.log('fatigue too dam high');
+	}
+};
+Group.prototype.getOutOfTown = function() {
+	var newBG = this.myManager.background.myManager.backgroundBy('house', this.myManager.background.incomeLevel);
+	if (!newBG) {
+		console.log('ERROR');
+		return;
+	}
+	this.myManager.background.myManager.sendTo(this.myManager.background, newBG, this);
+	this.lockIt();
+}
+Group.prototype.lockIt = function() {
+    this.locked = true;
+    this.lock.visible = true;
+	this.state.game.time.events.add(Phaser.Timer.SECOND * this.lockTime, this.endLock, this);
+};
+Group.prototype.endLock = function() {
+    this.locked = false;
+    this.lock.visible = false;
 };
 
 module.exports = Group;
