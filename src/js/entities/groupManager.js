@@ -85,6 +85,17 @@ GroupManager.prototype.update = function() {
 		this.members[member].update();
 	}
 };
+GroupManager.prototype.updateVars = function() {
+	var vars = this.background.getVarsCenter();
+	this.width = vars.width;
+	this.height = vars.height;
+	this.center = vars.center;
+	for (var member in this.members) {
+		member = this.members[member];
+		member.center.x = this.center.x - this.width / 2 + this.margin + (this.width - this.margin) * Math.random();
+		member.center.y = this.center.y - this.height / 2 + this.margin + (this.height - this.margin) * Math.random();
+	}
+};
 GroupManager.prototype.transfer = function(otherGM, myMember) {
 	// var testVals = otherGM.background.getVarsCenter();
 	// console.log('transfer to', otherGM.background.type, otherGM.background.incomeLevel, testVals.center.y, testVals.y, testVals.visHeight, testVals.vRatio);
