@@ -44,6 +44,7 @@ Game.prototype = {
 	this.money.font = 'VT323';
 	this.money.fontSize = 24;
 	this.money.fill = '#000000';
+	this.fatiguePerTick = 1;
 	this.uib = new UIBuilder(this);
 	this.bar = this.uib.buildProgressBar("growing", this.game.width / 2, 25, 300, 25, 100 - this.minHappiness);
 	//this.bar.addValue(100);
@@ -116,6 +117,7 @@ Game.prototype = {
 		  for (var group in this.bg_mg.bgArray[bg].group_manager.members) {
 			  for (var person in this.bg_mg.bgArray[bg].group_manager.members[group].members) {
 				  taxes += this.bg_mg.bgArray[bg].group_manager.members[group].members[person].getTax();
+				  this.bg_mg.bgArray[bg].group_manager.members[group].members[person].addFatigue(this.fatiguePerTick);
 			  }
 		  }
 	  }
