@@ -94,6 +94,7 @@ Group.prototype.update = function() {
 Group.prototype.addMember = function(member) {
 	this.members.push(member);
 	member.group = this;
+	// console.log(this.members);
 };
 Group.prototype.onInputDown = function() {
 	// console.log('a');

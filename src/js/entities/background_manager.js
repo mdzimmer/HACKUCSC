@@ -52,14 +52,14 @@ var Background_Manager = function(game, state) {
 		this.border = 100;
 	}
 	
-	var test = this.bgArray[6].group_manager;
-	var testFlock = new Group(this.game, this.game.width / 2 + 100, (this.game.height - this.border) / 2 + 100, state);
-    for (var i = 0; i < 10; i++) {
-    	var testPerson = new Person(this.game, this.game.width / 2 + i * 15, (this.game.height - this.border) / 2 + i * 15, i);
-    	this.game.add.existing(testPerson);
-    	testFlock.addMember(testPerson);
-    }
-    test.addMember(testFlock);
+	// var test = this.bgArray[6].group_manager;
+	// var testFlock = new Group(this.game, this.game.width / 2 + 100, (this.game.height - this.border) / 2 + 100, state);
+ //    for (var i = 0; i < 10; i++) {
+ //    	var testPerson = new Person(this.game, this.game.width / 2 + i * 15, (this.game.height - this.border) / 2 + i * 15, i);
+ //    	this.game.add.existing(testPerson);
+ //    	testFlock.addMember(testPerson);
+ //    }
+ //    test.addMember(testFlock);
 	// testFlock = new Group(this.game, this.game.width / 2 - 100, (this.game.height - this.border) / 2 + 100, state);
 	// for (var i = 0; i < 10; i++) {
     	// var testPerson = new Person(this.game, this.game.width / 2 + i * 15 - 100, (this.game.height - this.border) / 2 + i * 15 + 100, i);
