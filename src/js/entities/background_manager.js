@@ -26,10 +26,10 @@ var Background_Manager = function(game, state) {
 	for (var i in this.bgArray) {
 		if (this.bgArray[i].type == 'work') {
 			if (this.bgArray[i].incomeLevel === Person.EDULEVEL.low) {
-				this.bgArray[i].tint = 0xe2402b;
+				this.bgArray[i].tint = 0xed5c5a;
 			}
 			else if (this.bgArray[i].incomeLevel === Person.EDULEVEL.mid) {
-				this.bgArray[i].tint = 0x56e22b;
+				this.bgArray[i].tint = 0x6ae246;
 			}
 			else if (this.bgArray[i].incomeLevel === Person.EDULEVEL.high) {
 				this.bgArray[i].tint = 0x2b59e2;
@@ -37,10 +37,10 @@ var Background_Manager = function(game, state) {
 		}
 		else if (this.bgArray[i].type == 'house') {
 			if (this.bgArray[i].incomeLevel === Person.EDULEVEL.low) {
-				this.bgArray[i].tint = 0xe55340;
+				this.bgArray[i].tint = 0xed8180;
 			}
 			else if (this.bgArray[i].incomeLevel === Person.EDULEVEL.mid) {
-				this.bgArray[i].tint = 0x6ae246;
+				this.bgArray[i].tint = 0x94ea79;
 			}
 			else if (this.bgArray[i].incomeLevel === Person.EDULEVEL.high) {
 				this.bgArray[i].tint = 0x5476dd;
@@ -217,9 +217,6 @@ Background_Manager.prototype.updateRatios = function(destination) {
 		}
 		else bgArray[i].newVRatio = vRatios[0]; // Unemployed bg
 	}
-	// console.log(this.bgArray[0].hRatio);
-	// console.log(this.bgArray[3].hRatio);
-	// console.log(this.bgArray[6].minRatio);
 };
 
 Background_Manager.prototype.update = function() {
