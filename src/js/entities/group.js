@@ -24,6 +24,12 @@ var Group = function (game, centerX, centerY, state) {
 	this.book.visible = false;
 	this.learningTime = .01;
     this.hover = false;
+    this.lock = this.game.add.sprite(this.center.x, this.center.y, 'lock');
+	this.lock.anchor.setTo(0.5, 0.5);
+	this.lock.width = 25;
+	this.lock.height = 35;
+	this.lock.visible = false;
+	this.lockTime = 5;
 	
 	this.state.input.onDown.add(this.onInputDown, this);
     this.state.input.addMoveCallback(this.onMove, this);
@@ -114,7 +120,7 @@ Group.prototype.click = function() {
 	if (this.selected) {
         // this.state.hm.groupSelected = false;
 		this.setSelected(false);
-	} else {
+	} else if (!this.locked) {
         // this.state.hm.groupSelected = true;
 		this.setSelected(true);
 	}
@@ -144,6 +150,8 @@ Group.prototype.changeCenter = function(newCenter) {
 	this.selection.y = newCenter.y;
 	this.book.x = newCenter.x;
 	this.book.y = newCenter.y;
+	this.lock.x = newCenter.x;
+	this.lock.y = newCenter.y;
 	this.center = newCenter;
 };
 Group.prototype.numPeople = function() {
@@ -228,6 +236,10 @@ Group.prototype.happinessModifier = function() {
     return this.members[0].happinessModifier;
 };
 Group.prototype.addFatigue = function(amt) {
+	console.log(amt);
+	if (this.members[0].fatigue <= 0 && amt <= 0) {
+		return;
+	}
 	var flag = false;
 	for (var member in this.members) {
 		this.members[member].fatigue += amt;
@@ -243,9 +255,19 @@ Group.prototype.addFatigue = function(amt) {
 			return;
 		}
 		this.myManager.background.myManager.sendTo(this.myManager.background, newBG.group_manager.background, this);
+		this.lockIt();
 		//console.log('fatigue too dam high');
 	}
 }
+Group.prototype.lockIt = function() {
+    this.locked = true;
+    this.lock.visible = true;
+	this.state.game.time.events.add(Phaser.Timer.SECOND * this.lockTime, this.endLock, this);
+};
+Group.prototype.endLock = function() {
+    this.locked = false;
+    this.lock.visible = false;
+};
 
 module.exports = Group;
 

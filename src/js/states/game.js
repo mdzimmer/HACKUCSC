@@ -119,7 +119,11 @@ Game.prototype = {
 				  taxes += this.bg_mg.bgArray[bg].group_manager.members[group].members[person].getTax();
 				  // this.bg_mg.bgArray[bg].group_manager.members[group].members[person].addFatigue(this.fatiguePerTick);
 			  }
-			  this.bg_mg.bgArray[bg].group_manager.members[group].addFatigue(this.fatiguePerTick);
+			  if (this.bg_mg.bgArray[bg].group_manager.background.type == 'work') {
+			  	this.bg_mg.bgArray[bg].group_manager.members[group].addFatigue(this.fatiguePerTick);
+			  } else {
+			  	this.bg_mg.bgArray[bg].group_manager.members[group].addFatigue(-1 * this.fatiguePerTick);
+			  }
 		  }
 	  }
 	  this.addMoney(taxes);
