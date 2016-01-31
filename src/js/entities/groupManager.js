@@ -6,11 +6,15 @@ var GroupManager = function (game, state) {
 	this.members = [];
 	this.state = state;
 	this.splitChance = 0.1;
-	this.maxSize = 8;
+	this.maxSize = 2;
 	this.margin = 50;
+	this.width = 0;
+	this.height = 0;
+	this.center = {x : 0, y : 0};
 };
 GroupManager.prototype.constructor = GroupManager;
 GroupManager.prototype.update = function() {
+	// this.updateVars();
 	// console.log(this.members);
 	// console.log(this.center);
 	//update bounds
@@ -43,57 +47,33 @@ GroupManager.prototype.update = function() {
 			this.transferPeople(largest, newGroup, largest.members[0]);
 		}
 	}
-	//update member velocity
-	// for (var member in this.members) {
-	// 	member = this.members[member];
-	// 	var velocity = {x : 0, y : 0};
-	// 	// console.log(this.center, member.center);
-	// 	var diffX = this.center.x - member.center.x;
-	// 	var diffY = this.center.y - member.center.y;
-	// 	velocity.x = diffX;
-	// 	velocity.y = diffY;
-	// 	for (var other in this.members) {
-	// 		other = this.members[other];
-	// 		if (other === member) {
-	// 			continue;
-	// 		}
-	// 		var oDiffx = other.center.x - member.center.x;
-	// 		var oDiffy = other.center.y - member.center.y;
-	// 		var hyp = Util.hypotenuse(oDiffx, oDiffy);
-	// 		//console.log(hyp);
-	// 		if (hyp <= this.minDist) {
-	// 			// console.log('b', hyp);
-	// 			velocity.x = -1 * oDiffx;
-	// 			velocity.y = -1 * oDiffy;
-	// 			// console.log(velocity);
-	// 			if (velocity.x <= 0 && velocity.y <= 0) {
-	// 				// console.log('c3');
-	// 				// velocity.x = 10 * Math.random - 5;
-	// 				// velocity.y = 10 * Math.random - 5;
-	// 				member.center.x += 50 * Math.random() - 25;
-	// 				member.center.y += 50 * Math.random() - 25;
-	// 			}
-	// 			break;
-	// 		} else {
-	// 			// console.log('a');
-	// 		}
-	// 	}
-	// 	member.velocity = velocity;
-	// }
 	//update members
 	for (member in this.members) {
 		this.members[member].update();
 	}
 };
 GroupManager.prototype.updateVars = function() {
-	var vars = this.background.getVarsCenter();
+	var vars = this.background.getVarsTrue();
 	this.width = vars.width;
 	this.height = vars.height;
 	this.center = vars.center;
+	// console.log(this.background.type, this.background.incomeLevel, vars.width, vars.height, vars.center.x, vars.center.y);
+	var leftBound = this.center.x - this.width / 2;
+	var rightBound = this.center.x + this.width / 2;
+	var upperBound = this.center.y - this.height / 2;
+	var lowerBound = this.center.y + this.height / 2;
+
+	// var myBG = this.background;
+	// console.log(myBG.type, myBG.incomeLevel, leftBound, rightBound, upperBound, lowerBound)
+
 	for (var member in this.members) {
 		member = this.members[member];
-		member.center.x = this.center.x - this.width / 2 + this.margin + (this.width - this.margin) * Math.random();
-		member.center.y = this.center.y - this.height / 2 + this.margin + (this.height - this.margin) * Math.random();
+		if (member.center.x - this.margin <= leftBound || member.center.x + this.margin >= rightBound || member.center.y - this.margin <= upperBound || member.center.y + this.margin >= lowerBound) {
+			// console.log('person', member.center, leftBound, rightBound, upperBound, lowerBound);
+			// console.log('group manager', this.center, this.width, this.height);
+			member.center.x = this.center.x - this.width / 2 + this.margin + (this.width - this.margin * 2) * Math.random();
+			member.center.y = this.center.y - this.height / 2 + this.margin + (this.height - this.margin * 2) * Math.random();
+		}
 	}
 };
 GroupManager.prototype.transfer = function(otherGM, myMember) {
@@ -111,18 +91,13 @@ GroupManager.prototype.transferPeople = function(source, destination, tPerson) {
 GroupManager.prototype.addMember = function(member) {
 	this.members.push(member);
 	member.myManager = this;
-	member.center.x = this.center.x - this.width / 2 + this.margin + (this.width - this.margin) * Math.random();
-	member.center.y = this.center.y - this.height / 2 + this.margin + (this.height - this.margin) * Math.random();
-	// var smaller = (this.width < this.height) ? this.width : this.height;
-	// this.minDist = smaller / this.members.length;
-	// this.minDist = smaller / 2;
-	// console.log(this.minDist);
-	// console.log(this.minDist);
+	member.center.x = this.center.x - this.width / 2 + this.margin + (this.width - this.margin * 2) * Math.random();
+	member.center.y = this.center.y - this.height / 2 + this.margin + (this.height - this.margin * 2) * Math.random();
 };
 GroupManager.prototype.addPerson = function(newPerson) {
 	if (this.members.length == 0) {
 		// console.log(this.center);
-		this.addMember(new Group(this.game, this.center.x, this.center.y, this.state));
+		this.addMember(new Group(this.game, this.center.x, this.center.y, this.state), true);
 		// console.log('new group');
 	}
 	this.members[0].addMember(newPerson);

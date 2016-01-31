@@ -31,6 +31,10 @@ var Group = function (game, centerX, centerY, state) {
 	this.happinessModifier = 0;
 	this.selectionWeight = 2.5;
 	this.minSelectionSize = 40;
+	this.clickWeight = 10;
+	this.maxClickDist = 40;
+	this.minClickDist = 20;
+	this.maxMembers = 10;
 	
 	this.state.input.onDown.add(this.onInputDown, this);
     this.state.input.addMoveCallback(this.onMove, this);
@@ -90,19 +94,30 @@ Group.prototype.update = function() {
 	// 	// console.log('a');
 	// 	newSelectionSize = this.minSelectionSize;
 	// }
+	var newClickDist = 0;
+	if (this.members.length >= this.maxMembers) {
+		newClickDist = this.maxClickDist;
+	} else {
+		newClickDist = this.minClickDist + (this.maxClickDist - this.minClickDist) * (this.members.length / this.maxMembers);
+	}
+	this.clickDist = newClickDist;
 	var newSelectionSize = this.minSelectionSize + this.members.length * this.selectionWeight;
 	this.selection.width = newSelectionSize;
 	this.selection.height = newSelectionSize;
 };
-Group.prototype.addMember = function(member) {
+Group.prototype.addMember = function(member, special) {
 	this.members.push(member);
 	member.group = this;
+	if (special) {
+		this.myManager.background.myManager.updateRatios();
+	}
 	// console.log(this.members);
 };
 Group.prototype.onInputDown = function() {
 	// console.log('a');
 	if (this.selected) {
 		var bg = this.myManager.background.myManager.whereClicked();
+		// console.log(bg);
 		this.myManager.background.myManager.sendTo(this.myManager.background, bg, this);
 		this.setSelected(false);
 	} else if (this.clicked()) {
@@ -216,6 +231,7 @@ Group.prototype.onMove = function() {
     if (this.members.length == 0) {
         return;
     }
+    // console.log(this.members);
 	var mouseX = this.game.input.x;
 	var mouseY = this.game.input.y;
     var dist = util.hypotenuse(this.center.x - mouseX, this.center.y - mouseY);
