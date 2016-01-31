@@ -128,6 +128,13 @@ Background_Manager.prototype.transferType = function(source, destination, group)
 	// console.log(destination.type, destination.incomeLevel);
 	var educate = (destination.type === 'house' && destination.incomeLevel) > groupEdu;
     var happinessModifier = 0;
+    if (this.state.curMoney < 0) {
+    	happinessModifier -= 1;
+    	this.negMoney = true;
+    }
+    else if (this.negMoney){
+    	happinessModifier += 1;
+    }
     if (destination.type == 'unemployed' && source.type != 'unemployed') {
     	// console.log('unemployment');
         happinessModifier -= 1;
@@ -312,6 +319,7 @@ Background_Manager.prototype.updateRatios = function(destination) {
 		}
 		else bgArray[i].newVRatio = vRatios[0]; // Unemployed bg
 	}
+	console.log(vRatios);
 };
 
 Background_Manager.prototype.update = function() {
@@ -326,6 +334,10 @@ Background_Manager.prototype.update = function() {
 		this.bgArray[i].update();
 	}
 	var test = this.bgArray[3].getVarsCenter();
+};
+
+Background_Manager.prototype.endQuit = function() {
+    this.justQuit = false;
 };
 
 module.exports = Background_Manager;
