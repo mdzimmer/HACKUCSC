@@ -240,23 +240,25 @@ Group.prototype.onMove = function() {
             // console.log('a');
             // console.log(this.happinessModifier);
             this.state.hm.showStatic({people : this.numPeople(), education : this.lowestEducation(), happiness : this.averageHappiness(), fatigue : this.averageFatigue(), income : this.income(), happinessModifier : this.happinessModifier}, this.center.x, this.center.y - 50, 100);
-            this.hover = true;
+            // this.hover = true;
         }
     } else {
-        if (this.hover) {
-            this.hover = false;
-            this.state.hm.hide();
-        }
-        if (this.state.hm.groupSelected == this && this.myManager.background.myManager.whereClicked() != this.myManager.background
-            && this.myManager.background.myManager.canTransfer(this.myManager.background, this.myManager.background.myManager.whereClicked(), this)) {
-            // console.log('a');
-            var bgManager = this.myManager.background.myManager
-            var transferType = bgManager.transferType(this.myManager.background, bgManager.whereClicked(), this);
-            this.state.hm.showChange(transferType.can, {happinessChange : transferType.happinessChange, incomeChange : transferType.incomeChange}, mouseX, mouseY);
-        } else {
-            // console.log('b');
-            this.state.hm.hide();
-        }
+        // if (this.hover) {
+        //     this.hover = false;
+        //     this.state.hm.hide();
+        // }
+        if (this.state.hm.groupSelected == this) {
+	    	if (this.myManager.background.myManager.whereClicked() != this.myManager.background && this.myManager.background.myManager.canTransfer(this.myManager.background, this.myManager.background.myManager.whereClicked(), this)) {
+		        // console.log('a');
+		        var bgManager = this.myManager.background.myManager
+		        var transferType = bgManager.transferType(this.myManager.background, bgManager.whereClicked(), this);
+		        this.state.hm.showChange(transferType.can, {happinessChange : transferType.happinessChange, incomeChange : transferType.incomeChange}, mouseX, mouseY);
+	    	}
+        } 
+        // else {
+        //     // console.log('b');
+        //     this.state.hm.hide();
+        // }
     }
 };
 // Group.prototype.happinessModifier = function() {
