@@ -23,6 +23,7 @@ Background.prototype.constructor = Background;
 
 Background.prototype.getVars = function() {
     //return x & y and width & height of visible
+    console.log('this.hRatio: ' + this.hRatio);
     return [this.x, this.y, this.hRatio * this.game.width, this.vRatio * this.game.height];
 };
 
@@ -52,6 +53,8 @@ Background.prototype.update = function() {
         else if (this.vRatio - .01 > this.newVRatio) this.vRatio -= .01;
         else this.vRatio = this.newVRatio;
     }
+    if (this.type === 'unemployed')
+        this.hRatio = 1;
     this.group_manager.update();
 };
 

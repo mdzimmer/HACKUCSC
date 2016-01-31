@@ -83,6 +83,7 @@ Background_Manager.prototype.constructor = Background_Manager;
 Background_Manager.prototype.sendTo = function(source, destination, group) {
 	// console.log(destination);
 	if (destination === null) {
+		console.log('sadasasdhasdjhadjkad')
 		return;
 	}
 	var transType = this.transferType(source, destination, group)
@@ -151,6 +152,7 @@ Background_Manager.prototype.whereClicked = function() {
 		var curDimensions = this.bgArray[i].getVars();
 		var mouseX = this.game.input.x;
 		var mouseY = this.game.input.y;
+		if(i == 6) console.log('curDimensions: ' + curDimensions);
 		if (mouseX > curDimensions[0] && mouseX <= curDimensions[0] + curDimensions[2]) {
 			if (mouseY > curDimensions[1] && mouseY <= curDimensions[1] + curDimensions[3]) {
 				return this.bgArray[i];
