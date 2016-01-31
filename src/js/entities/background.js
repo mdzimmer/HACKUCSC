@@ -2,7 +2,7 @@ var Group_Manager = require('./groupManager');
 var Person = require('./person');
 
 var Background = function (game, baseX, baseY, hRatio, vRatio, income, type, state) {
-    Phaser.Sprite.call(this, game, baseX * hRatio * game.width, baseY * vRatio * game.height, 'background');
+    Phaser.Sprite.call(this, game, (baseX * hRatio * game.width), (baseY * vRatio * game.height) + 100, 'background');
     game.add.existing(this);
     this.baseX = baseX;
     this.baseY = baseY;
@@ -23,14 +23,13 @@ Background.prototype.constructor = Background;
 
 Background.prototype.getVars = function() {
     //return x & y and width & height of visible
-    // console.log('this.hRatio: ' + this.hRatio);
-    return [this.x, this.y, this.hRatio * this.game.width, this.vRatio * this.game.height];
+    return [this.x, this.y, this.hRatio * (this.game.width), this.vRatio * (this.game.height - this.myManager.border)];
 };
 
 Background.prototype.getVarsCenter = function() {
     // //return x & y of center and width & height of visible
-    var visWidth = this.hRatio * this.game.width;
-    var visHeight = this.vRatio * this.game.height;
+    var visWidth = this.hRatio * (this.game.width);
+    var visHeight = this.vRatio * (this.game.height - this.myManager.border);
     return {width : visWidth, height : visHeight, center : {x : this.x + visWidth / 2, y : this.y + visHeight / 2}};
 };
 
