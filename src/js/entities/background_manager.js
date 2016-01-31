@@ -94,7 +94,8 @@ Background_Manager.prototype.sendTo = function(source, destination, group) {
 		if (transType.educate) {
 			group.startEducation();
 		}
-		this.updateRatios(destination);
+		if (source.incomeLevel !== destination.incomeLevel)
+			this.updateRatios(destination);
         // console.log(transType.happinessModifier);
         for (var person in group.members) {
         	// console.log(transType.happinessModifier);
