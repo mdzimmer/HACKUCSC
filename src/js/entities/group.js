@@ -28,6 +28,7 @@ var Group = function (game, centerX, centerY, state) {
 }
 Group.prototype.constructor = Group;
 Group.prototype.update = function() {
+	// console.log(this.center);
 	//update center
 	var newX = this.center.x + this.velocity.x * this.speed;
 	var newY = this.center.y + this.velocity.y * this.speed;
@@ -61,6 +62,7 @@ Group.prototype.update = function() {
 };
 Group.prototype.addMember = function(member) {
 	this.members.push(member);
+	member.group = this;
 };
 Group.prototype.onInputDown = function() {
 	// console.log('a');

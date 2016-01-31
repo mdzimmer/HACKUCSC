@@ -87,8 +87,22 @@ Background_Manager.prototype.sendTo = function(source, destination, group) {
 		if (transType.educate) {
 			group.startEducation();
 		}
+<<<<<<< HEAD
 		this.updateRatios(destination);
+=======
+		this.updateRatios();
+		
+		var test = destination.getVarsCenter();
+		console.log(test);
+>>>>>>> 6d73f46710311f798e73e9ffe861b51356a76c03
 	}
+};
+Background_Manager.prototype.numPeople = function() {
+	var count = 0;
+	for (var i in this.bgArray) {
+		count += this.bgArray[i].group_manager.numPeople();
+	}
+	return count;
 };
 Background_Manager.prototype.transferType = function(source, destination, group) {
 	var groupEdu = group.members[0].eduLevel;
@@ -187,9 +201,6 @@ Background_Manager.prototype.updateRatios = function(destination) {
 	for (var j = 0; j < 6; j++)
 		employed += this.bgArray[j].numPeople();
 	var vRatios = util.ratio(this.bgArray[6].numPeople(), employed);
-	console.log('hRatios : ' + hRatios);
-	console.log('workLow: ' + this.bgArray[0].getVars());
-	console.log('workHigh: ' + this.bgArray[5].getVars());
 
 	for (var i = 0 in this.bgArray) {
 		if (i !== 6) {		// If not unemployed bg
@@ -220,7 +231,8 @@ Background_Manager.prototype.update = function() {
     	this.bgArray[i].y = this.bgArray[i].baseY * this.bgArray[i].vRatio * this.game.height;
 		this.bgArray[i].update();
 	}
-	//console.log('this.bgArray[i].x: ' + this.bgArray[i].x);
+	
+	var test = this.bgArray[3].getVarsCenter();
 };
 
 module.exports = Background_Manager;
