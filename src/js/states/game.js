@@ -98,10 +98,10 @@ Game.prototype = {
 		  }
 	  }
 	  happiness /= this.bg_mg.numPeople();
+	  this.setHappiness(happiness);
 	  happiness -= this.minHappiness;
 	  // console.log(happiness);
 	  // console.log(happiness);
-	  this.setHappiness(happiness);
     this.redTaxLow.x   = this.bg_mg.bgArray[0].getVarsCenter().center.x - 30;
     this.textTaxLow.x  = this.bg_mg.bgArray[0].getVarsCenter().center.x - 15;
     this.addTaxLow.x   = this.bg_mg.bgArray[0].getVarsCenter().center.x + 30;

@@ -97,15 +97,18 @@ Background_Manager.prototype.sendTo = function(source, destination, group) {
 		}
 		this.updateRatios(destination);
         // console.log(transType.happinessModifier);
-        for (var person in group.members) {
-        	console.log(transType.happinessModifier);
-            group.happinessModifier = transType.happinessMsodifier;
-        	// console.log(group.happinessModifier);
-        }
+		// console.log(transType.happinessModifier);
+        group.happinessModifier = transType.happinessModifier;
+		// console.log(group.happinessModifier);
+        // for (var person in group.members) {
+        // 	// console.log(transType.happinessModifier);
+        //     // group.happinessModifier = transType.happinessMsodifier;
+        // 	// console.log(group.happinessModifier);
+        // }
 		// var test = destination.getVarsCenter();
 		// console.log(test);
 	}
-	console.log(group.happinessModifier);
+	// console.log(group.happinessModifier);
 };
 Background_Manager.prototype.numPeople = function() {
 	var count = 0;

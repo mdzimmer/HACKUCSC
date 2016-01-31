@@ -246,10 +246,12 @@ Group.prototype.onMove = function() {
 //     return this.happinessModifier;
 // };
 Group.prototype.applyHappiness = function() {
+	// console.log('apply');
 	var flag = false;
 	for (var member in this.members) {
 		member = this.members[member];
-		console.log(member.happiness, this.happinessModifier);
+		// console.log(member.happiness, this.happinessModifier);
+		// console.logqmember.happiness, this.happinessModifier);
 		member.happiness += this.happinessModifier;
 		// member.happiness -= 50;
 		if (member.happiness > 100) {
