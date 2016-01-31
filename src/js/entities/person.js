@@ -7,6 +7,8 @@ var Person = function (game, x, y, id) {
 	this.id = id;
 	this.eduLevel = Person.EDULEVEL.unemployed;
 	this.happiness = 100;
+    this.fatigue = 0;
+    this.happinessModifier = 0;
 };
 Person.prototype = Object.create(Phaser.Sprite.prototype);
 Person.prototype.constructor = Person;
@@ -23,7 +25,7 @@ Person.prototype.update = function() {
 	this.y += this.velocity.y * this.speed;
 	//console.log(this.velocity);
 };
-//TODO adjust tax by tax rate and happiness
+
 Person.prototype.getTax = function() {
 	// console.log('get tax', this.group.myManager.background.type);
 	if (this.group.myManager.background.type === 'house') {

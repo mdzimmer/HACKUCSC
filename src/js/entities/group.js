@@ -23,8 +23,10 @@ var Group = function (game, centerX, centerY, state) {
 	this.book.height = 25;
 	this.book.visible = false;
 	this.learningTime = .01;
+    this.hover = false;
 	
 	this.state.input.onDown.add(this.onInputDown, this);
+    this.state.input.addMoveCallback(this.onMove, this);
 }
 Group.prototype.constructor = Group;
 Group.prototype.update = function() {
@@ -95,6 +97,9 @@ Group.prototype.endEducation = function() {
 	this.book.visible = false;
 };
 Group.prototype.clicked = function() {
+    if (this.members.length == 0) {
+        return false;
+    }
 	var mouseX = this.game.input.x;
 	var mouseY = this.game.input.y;
 	var diffX = mouseX - this.center.x;
@@ -107,21 +112,32 @@ Group.prototype.clicked = function() {
 };
 Group.prototype.click = function() {
 	if (this.selected) {
+        // this.state.hm.groupSelected = false;
 		this.setSelected(false);
 	} else {
+        // this.state.hm.groupSelected = true;
 		this.setSelected(true);
 	}
 };
+/*
 Group.prototype.move = function() {
 	var mouseX = this.game.input.x;
 	var mouseY = this.game.input.y;
 	this.changeCenter({x : mouseX, y : mouseY});
 	this.setSelected(false);
-	// console.log({x : mouseX, y : mouseY});s
+    this.state.hm.groupSelected = false;
 };
+*/
 Group.prototype.setSelected = function(newSelected) {
 	this.selected = newSelected;
 	this.selection.visible = newSelected;
+    if (newSelected == true) {
+        this.state.hm.groupSelected = this;
+    } else {
+        if (this.state.hm.groupSelected == this) {
+            this.state.hm.groupSelected = null;
+        }
+    }
 };
 Group.prototype.changeCenter = function(newCenter) {
 	this.selection.x = newCenter.x;
@@ -133,8 +149,83 @@ Group.prototype.changeCenter = function(newCenter) {
 Group.prototype.numPeople = function() {
 	return this.members.length;
 };
-Group.prototype.mouseDown = function() {
+Group.prototype.lowestEducation = function() {
+    var lowest = 3;
+    for (var member in this.members) {
+        member = this.members[member];
+        if (member.eduLevel < lowest) {
+            lowest = member.eduLevel;
+        }
+    }
+    return lowest;
+};
+Group.prototype.averageHappiness = function() {
+    var happiness = 0;
+    for (var member in this.members) {
+        member = this.members[member];
+        happiness += member.happiness;
+    }
+    happiness /= this.members.length;
+    return happiness;
+};
+Group.prototype.averageFatigue = function() {
+    var fatigue = 0;
+    for (var member in this.members) {
+        member = this.members[member];
+        fatigue += member.fatigue;
+    }
+    fatigue /= this.members.length;
+    return fatigue;
+};
+Group.prototype.income = function() {
+    var income = 0;
+    for (var member in this.members) {
+        member = this.members[member];
+        income += member.getTax();
+    }
+    return income;
+};
+// Group.prototype.happinessChange = function() {
+    
+// };
+// Group.prototype.incomeChange = function() {
+    
+// };
+// Group.prototype.mouseDown = function() {
 	
+// };
+Group.prototype.onMove = function() {
+    if (this.members.length == 0) {
+        return;
+    }
+	var mouseX = this.game.input.x;
+	var mouseY = this.game.input.y;
+    var dist = util.hypotenuse(this.center.x - mouseX, this.center.y - mouseY);
+    if (dist <= this.clickDist) {
+        if (!this.state.hm.groupSelected && this.state.hm.groupSelected != this) {
+            // console.log('a');
+            this.state.hm.showStatic({people : this.numPeople(), education : this.lowestEducation(), happiness : this.averageHappiness(), fatigue : this.averageFatigue(), income : this.income()}, this.center.x, this.center.y - 50, 100);
+            this.hover = true;
+        }
+    } else {
+        if (this.hover) {
+            this.hover = false;
+            this.state.hm.hide();
+        }
+        if (this.state.hm.groupSelected == this && this.myManager.background.myManager.whereClicked() != this.myManager.background
+            && this.myManager.background.myManager.canTransfer(this.myManager.background, this.myManager.background.myManager.whereClicked(), this)) {
+            // console.log('a');
+            var bgManager = this.myManager.background.myManager
+            var transferType = bgManager.transferType(this.myManager.background, bgManager.whereClicked(), this);
+            this.state.hm.showChange(transferType.can, {happinessChange : transferType.happinessChange, incomeChange : transferType.incomeChange}, mouseX, mouseY);
+        } else {
+            // console.log('b');
+            this.state.hm.hide();
+        }
+    }
+};
+Group.prototype.happinessModifier = function() {
+    return this.members[0].happinessModifier;
 };
 
 module.exports = Group;
