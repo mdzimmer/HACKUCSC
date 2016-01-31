@@ -28,7 +28,7 @@ var Game = function () {
 	this.moneyChangeFadeDelay = 0.01;
 	this.moneyChangeFadeRate = 0.025;
 	this.moneyChangeHoldDelay = 1;
-	this.migrantDelay = 1;
+	this.migrantDelay = 3;
 };
 
 module.exports = Game;
@@ -97,9 +97,9 @@ Game.prototype = {
     // this.hm.anchor.setTo(0.5, 1);
 	this.hm.visible = false;
 	this.game.time.events.add(Phaser.Timer.SECOND * this.moneyChangeFadeDelay, this.fadeMoneyChange, this);
-	// this.game.time.events.add(Phaser.Timer.SECOND * this.migrantDelay, this.spawnMigrant, this);
+	 this.game.time.events.add(Phaser.Timer.SECOND * this.migrantDelay, this.spawnMigrant, this);
 
-	this.game.input.keyboard.onPressCallback = this.spawnMigrantNoRepeat;
+	//this.game.input.keyboard.onPressCallback = this.spawnMigrantNoRepeat;
   // console.log(this.game.input.keyboard);
 	this.game.input.keyboard.state = this;
 	this.game.input.keyboard.utils = Utils;
