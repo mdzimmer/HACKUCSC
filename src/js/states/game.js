@@ -4,6 +4,7 @@ var Person = require('../entities/person');
 var Group = require('../entities/group');
 var GroupManager = require('../entities/groupManager');
 var UIBuilder = require('../entities/uiBuilder');
+var HoverMenu = require('../entities/hoverMenu');
 
 var Game = function () {
   this.testentity = null;
@@ -53,6 +54,8 @@ Game.prototype = {
 	this.happy.anchor.setTo(0.5, 0.5);
 	
 	this.game.time.events.add(Phaser.Timer.SECOND * this.taxTime, this.collectTax, this);
+    this.hm = new HoverMenu(this.game, 200, 200);
+	// this.hm.visible = false;
   },
 
   update: function () {

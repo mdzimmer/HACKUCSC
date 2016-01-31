@@ -23,7 +23,7 @@ Person.prototype.update = function() {
 	this.y += this.velocity.y * this.speed;
 	//console.log(this.velocity);
 };
-//TODO adjust tax by tax rate and happiness
+
 Person.prototype.getTax = function() {
 	// console.log('get tax', this.group.myManager.background.type);
 	if (this.group.myManager.background.type === 'house') {

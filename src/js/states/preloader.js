@@ -22,6 +22,7 @@ Preloader.prototype = {
     this.load.image('adult', 'assets/adult.png');
     this.load.image('old', 'assets/old.png');
 	this.load.image('happyface', 'assets/happyface_better.png');
+	this.load.image('bordered', 'assets/bordered.png');
 	this.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
   },
 
