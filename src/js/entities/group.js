@@ -249,6 +249,7 @@ Group.prototype.onMove = function() {
     var dist = util.hypotenuse(this.center.x - mouseX, this.center.y - mouseY);
     if (dist <= this.clickDist) {
         if (!this.state.hm.groupSelected || this.state.hm.groupSelected == this) {
+    	// if (!this.state.hm.groupSelected) {
             // console.log('a');
             // console.log(this.happinessModifier);
             this.state.hm.showStatic({people : this.numPeople(), education : this.lowestEducation(), happiness : this.averageHappiness(), fatigue : this.averageFatigue(), income : this.income(), happinessModifier : this.happinessModifier}, this.center.x, this.center.y - 50, 100);
@@ -260,6 +261,7 @@ Group.prototype.onMove = function() {
         //     this.state.hm.hide();
         // }
         if (this.state.hm.groupSelected == this) {
+<<<<<<< HEAD
 	    	if (this.myManager.background.myManager.whereClicked() != this.myManager.background && this.myManager.background.myManager.canTransfer(this.myManager.background, this.myManager.background.myManager.whereClicked(), this)) {
 		        // console.log('a');
 		        var bgManager = this.myManager.background.myManager
@@ -271,8 +273,16 @@ Group.prototype.onMove = function() {
         //     // console.log('b');
         //     this.state.hm.hide();
         // }
+=======
+			if (this.myManager.background.myManager.whereClicked() != this.myManager.background && this.myManager.background.myManager.canTransfer(this.myManager.background, this.myManager.background.myManager.whereClicked(), this)) {
+			    console.log('a');
+			    var bgManager = this.myManager.background.myManager;
+			    var transferType = bgManager.transferType(this.myManager.background, bgManager.whereClicked(), this);
+			    this.state.hm.showChange(transferType.can, {happinessChange : transferType.happinessChange, incomeChange : transferType.incomeChange}, mouseX, mouseY);
+			} 
+        } 
+>>>>>>> gh-pages
     }
-};
 // Group.prototype.happinessModifier = function() {
 //     return this.happinessModifier;
 // };

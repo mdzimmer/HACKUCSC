@@ -1,11 +1,10 @@
 //Controls background elements
 
-var Background = require('./background');
+// var Background = require('./background');
 var Person = require('./person');
 var util = require('../utils');
 
-var Group = require('./group');
-
+// var Group = require('./group');
 var Background_Manager = function(game, state) {
 	this.game = game;
 	this.state = state;
@@ -218,7 +217,6 @@ Background_Manager.prototype.backgroundBy = function(type, incomeLevel) {
 	}
 	return null;
 };
-
 Background_Manager.prototype.whereClicked = function() {
 	
 	var mouseX = this.game.input.x;
@@ -286,6 +284,7 @@ Background_Manager.prototype.findOther = function(source, destination) {
 	}
 };
 
+
 // Background_Manager.prototype.updateRatios = function(destination) {
 	// work 0 - 2 house 3 - 5 unemployed 6
 Background_Manager.prototype.updateRatios = function() {
@@ -339,7 +338,6 @@ Background_Manager.prototype.updateRatios = function() {
 	this.bgArray[6].updateVars(unemployed);
 
 };
-
 Background_Manager.prototype.endQuit = function() {
     this.justQuit = false;
 };
