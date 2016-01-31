@@ -49,19 +49,20 @@ var Background_Manager = function(game, state) {
 		else { // Unemployed background
 			this.bgArray[i].tint = 0x939393;
 		}
+		this.border = 100;
 	}
 	
 	var test = this.bgArray[6].group_manager;
-	var testFlock = new Group(this.game, this.game.width / 2 + 100, this.game.height / 2 + 100, state);
+	var testFlock = new Group(this.game, this.game.width / 2 + 100, (this.game.height - this.border) / 2 + 100, state);
     for (var i = 0; i < 10; i++) {
-    	var testPerson = new Person(this.game, this.game.width / 2 + i * 15, this.game.height / 2 + i * 15, i);
+    	var testPerson = new Person(this.game, this.game.width / 2 + i * 15, (this.game.height - this.border) / 2 + i * 15, i);
     	this.game.add.existing(testPerson);
     	testFlock.addMember(testPerson);
     }
     test.addMember(testFlock);
-	// testFlock = new Group(this.game, this.game.width / 2 - 100, this.game.height / 2 + 100, state);
+	// testFlock = new Group(this.game, this.game.width / 2 - 100, (this.game.height - this.border) / 2 + 100, state);
 	// for (var i = 0; i < 10; i++) {
-    	// var testPerson = new Person(this.game, this.game.width / 2 + i * 15 - 100, this.game.height / 2 + i * 15 + 100, i);
+    	// var testPerson = new Person(this.game, this.game.width / 2 + i * 15 - 100, (this.game.height - this.border) / 2 + i * 15 + 100, i);
     	// this.game.add.existing(testPerson);
     	// testFlock.addMember(testPerson);
     // }
@@ -83,7 +84,6 @@ Background_Manager.prototype.constructor = Background_Manager;
 Background_Manager.prototype.sendTo = function(source, destination, group) {
 	// console.log(destination);
 	if (destination === null) {
-		console.log('sadasasdhasdjhadjkad')
 		return;
 	}
 	var transType = this.transferType(source, destination, group)
@@ -230,12 +230,10 @@ Background_Manager.prototype.update = function() {
     	else if (this.bgArray[i].incomeLevel === Person.EDULEVEL.high) {
     	    this.bgArray[i].x = this.bgArray[1].getVars()[0] + this.bgArray[1].getVars()[2];
     	}
-    	this.bgArray[i].y = this.bgArray[i].baseY * this.bgArray[i].vRatio * this.game.height;
+    	this.bgArray[i].y = (this.bgArray[i].baseY * this.bgArray[i].vRatio * (this.game.height - this.border)) + this.border;
 		this.bgArray[i].update();
 	}
 	var test = this.bgArray[3].getVarsCenter();
-	// console.log(test.center.x, test.center.y);
-	// console.log(this.bgArray[3].group_manager.center);
 };
 
 module.exports = Background_Manager;
