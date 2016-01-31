@@ -11,6 +11,7 @@ var Background = function (game, baseX, baseY, hRatio, vRatio, income, type, sta
     this.newHRatio = hRatio;
     this.newVRatio = vRatio;
     this.minRatio = .1;
+    this.maxRatio = .6;
     this.group_manager = new Group_Manager(this.game, state);
 	this.group_manager.background = this;
    	this.type = type;
@@ -42,6 +43,8 @@ Background.prototype.numPeople = function() {
 Background.prototype.update = function() {
 	if (this.newHRatio < this.minRatio) this.newHRatio = this.minRatio;
     if (this.newVRatio < this.minRatio) this.newVRatio = this.minRatio;
+    if (this.newHRatio > this.maxRatio) this.newHRatio = this.maxRatio;
+    if (this.newVRatio > this.maxRatio) this.newVRatio = this.maxRatio;
     if (this.hRatio !== this.newHRatio) {
         if (this.hRatio + .01 < this.newHRatio) this.hRatio += .01;
         else if (this.hRatio - .01 > this.newHRatio) this.hRatio -= .01;
