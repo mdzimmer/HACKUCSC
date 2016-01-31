@@ -71,20 +71,11 @@ Person.prototype.getTax = function() {
 		}
 	} else if (this.group.myManager.background.type === 'work') {
 		if (this.group.myManager.background.incomeLevel === Person.EDULEVEL.low) {
-			var overloadMult = 1;
-			if ((this.group.myManager.background.myManager.bgArray[0].group_manager.numPeople() / this.group.myManager.background.myManager.numPeople()) > .5)
-				overloadMult = .25;
-			return overloadMult * (Person.INCOMES.low * this.group.myManager.background.myManager.state.taxMod.low);
+			return Person.INCOMES.low * this.group.myManager.background.myManager.state.taxMod.low;
 		} else if (this.group.myManager.background.incomeLevel === Person.EDULEVEL.mid) {
-			var overloadMult = 1;
-			if ((this.group.myManager.background.myManager.bgArray[1].group_manager.numPeople() / this.group.myManager.background.myManager.numPeople()) > .5)
-				overloadMult = .25;
-			return overloadMult * (Person.INCOMES.mid * this.group.myManager.background.myManager.state.taxMod.mid);
+			return Person.INCOMES.mid * this.group.myManager.background.myManager.state.taxMod.mid;
 		} else if (this.group.myManager.background.incomeLevel === Person.EDULEVEL.high) {
-			var overloadMult = 1;
-			if ((this.group.myManager.background.myManager.bgArray[2].group_manager.numPeople() / this.group.myManager.background.myManager.numPeople()) > .5)
-				overloadMult = .25;
-			return overloadMult * (Person.INCOMES.high * this.group.myManager.background.myManager.state.taxMod.high);
+			return Person.INCOMES.high * this.group.myManager.background.myManager.state.taxMod.high;
 		}
 	}
 	return 0;
