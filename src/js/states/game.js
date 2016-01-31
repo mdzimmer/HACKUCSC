@@ -20,6 +20,7 @@ var Game = function () {
   this.happinessUpdateDelay = 0.001;
   this.happinessIncrementing = false;
   this.taxTime = 3;
+  this.minHappiness = 50;
 };
 
 module.exports = Game;
@@ -44,7 +45,7 @@ Game.prototype = {
     this.money.setShadow(3, 3, 'rgba(0,0,0,0.5)', 5);
 	
 	this.uib = new UIBuilder(this);
-	this.bar = this.uib.buildProgressBar("growing", this.game.width / 2, 25, 300, 25, 100);
+	this.bar = this.uib.buildProgressBar("growing", this.game.width / 2, 25, 300, 25, 100 - this.minHappiness);
 	//this.bar.addValue(100);
 	this.happy = this.game.add.sprite(this.game.width * .73, 25, 'happyface');
 	this.happy.width = 40;
@@ -67,6 +68,8 @@ Game.prototype = {
 		  }
 	  }
 	  happiness /= this.bg_mg.numPeople();
+	  happiness -= this.minHappiness;
+	  // console.log(happiness);
 	  // console.log(happiness);
 	  this.setHappiness(happiness);
   },

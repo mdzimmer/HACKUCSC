@@ -215,9 +215,9 @@ Background_Manager.prototype.updateRatios = function(destination) {
 		}
 		else bgArray[i].newVRatio = vRatios[0]; // Unemployed bg
 	}
-	console.log(this.bgArray[0].hRatio);
-	console.log(this.bgArray[3].hRatio);
-	console.log(this.bgArray[6].minRatio);
+	// console.log(this.bgArray[0].hRatio);
+	// console.log(this.bgArray[3].hRatio);
+	// console.log(this.bgArray[6].minRatio);
 };
 
 Background_Manager.prototype.update = function() {
