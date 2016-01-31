@@ -88,6 +88,7 @@ HoverMenu.prototype.update = function() {
 };
 //people, education, happiness, fatigue, income
 HoverMenu.prototype.showStatic = function(state, x, y, over) {
+    // console.log('static');
     x -= this.width / 2;
     y -= this.height;
 	this.people.text = 'People: ' + state.people;

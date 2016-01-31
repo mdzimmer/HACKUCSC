@@ -5,6 +5,7 @@ var Group = require('../entities/group');
 var GroupManager = require('../entities/groupManager');
 var UIBuilder = require('../entities/uiBuilder');
 var HoverMenu = require('../entities/hoverMenu');
+var Utils = require('../utils');
 
 var Game = function () {
   this.testentity = null;
@@ -36,7 +37,7 @@ module.exports = Game;
 Game.prototype = {
 
   create: function () {
-  	// console.log('foo5');
+  	console.log('foo');
 	  // console.log(this);
     this.game.stage.backgroundColor = "#ededed";
     this.menu_bg = this.game.add.image(0, 0, 'menu_bg');  
@@ -97,9 +98,17 @@ Game.prototype = {
     // this.hm.anchor.setTo(0.5, 1);
 	// this.hm.visible = false;
 	this.game.time.events.add(Phaser.Timer.SECOND * this.moneyChangeFadeDelay, this.fadeMoneyChange, this);
-	this.game.time.events.add(Phaser.Timer.SECOND * this.migrantDelay, this.spawnMigrant, this);
-  },
+	// this.game.time.events.add(Phaser.Timer.SECOND * this.migrantDelay, this.spawnMigrant, this);
 
+	this.game.input.keyboard.onPressCallback = this.spawnMigrantNoRepeat;
+	this.game.input.keyboard.state = this;
+	this.game.input.keyboard.utils = Utils;
+  this.input.addMoveCallback(this.onMouseMove, this);
+  },
+  testFun: function() {
+  	// console.log('fun');
+  		this.spawnMigrantNoRepeat()
+  },
   update: function () {
 	this.bg_mg.update();
 	//this.gm.update();
@@ -134,10 +143,15 @@ Game.prototype = {
   },
 
   onInputDown: function () {
-	 // console.log(this.game.width, this.game.height);
+     var bg = this.bg_mg.whereClicked();
+     var gm = bg.group_manager;
+	   console.log(this.input.x, this.input.y, gm.center, gm.width, gm.height);
+  },
+  onMouseMove: function () {
+    // var here = this.bg_mg.whereClicked();
+    // console.log(this.input.x, this.input.y, here.type, here.incomeLevel, here.width, here.height);
   },
   spawnMigrant: function () {
-  	// console.log('spawn');
   	// var newMigrant = new Person(this.game, this.game.width / 2, this.game.height + 15);
   	var newMigrant = new Person(this.game, this.game.width / 2 + Math.random() * 800 - 400, this.game.height + 15);
   	this.game.add.existing(newMigrant);
@@ -145,6 +159,16 @@ Game.prototype = {
   	bg.group_manager.addPerson(newMigrant);
   	this.game.time.events.add(Phaser.Timer.SECOND * this.migrantDelay, this.spawnMigrant, this);
   	// console.log(bg)
+  },
+  spawnMigrantNoRepeat: function () {
+  	// console.log(this);
+	   var newMigrant = new Person(this.game, this.game.width / 2 + Math.random() * 800 - 400, this.game.height + 15);
+  	this.game.add.existing(newMigrant);
+  	// console.log(this.state);s
+  	var bg = this.state.bg_mg.bgArray[6];
+  	bg.group_manager.addPerson(newMigrant);
+
+  	// console.log(this.utils.ratio(0, 0, 0, .2));
   },
   collectTax: function () {
 	  // console.log('collect tax');
