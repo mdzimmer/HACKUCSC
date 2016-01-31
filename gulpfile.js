@@ -15,6 +15,7 @@ var gulp = require('gulp')
   , watchify = require('watchify')
   , gulpif = require('gulp-if')
   , vinylPaths = require('vinyl-paths')
+  // , deleteIt = require('delete')
   , paths;
 
 var watching = false;
@@ -31,20 +32,25 @@ paths = {
 };
 
 gulp.task('clean', function () {
-  
-	return gulp.src(paths.dist)
-    .pipe(vinylPaths(del))
-    .on('error', gutil.log);
-    
+  // del(['dist/main.min.js'], function(err) {
+  //   if (err) throw err;
+  //   console.log('done!');
+  // });
+  console.log('clean');
+	// return gulp.src(paths.dist)
+ //    .pipe(vinylPaths(del))
+ //    .on('error', gutil.log);
 });
 
 gulp.task('copy', ['clean'], function () {
+  console.log('copy');
   gulp.src(paths.assets)
     .pipe(gulp.dest(paths.dist + 'assets'))
     .on('error', gutil.log);
 });
 
 gulp.task('copylibs', ['clean'], function () {
+  console.log('copylibs');
   gulp.src(paths.libs)
     .pipe(gulpif(!watching, uglify({outSourceMaps: false})))
     .pipe(gulp.dest(paths.dist + 'js/lib'))
@@ -52,6 +58,7 @@ gulp.task('copylibs', ['clean'], function () {
 });
 
 gulp.task('compile', ['clean'], function () {
+  console.log('compile');
   var bundler = browserify({
     cache: {}, packageCache: {}, fullPaths: true,
     entries: [paths.entry],
@@ -78,6 +85,7 @@ gulp.task('compile', ['clean'], function () {
 });
 
 gulp.task('minifycss', ['clean'], function () {
+  console.log('minifycss');
  gulp.src(paths.css)
     .pipe(gulpif(!watching, minifycss({
       keepSpecialComments: false,
@@ -89,12 +97,14 @@ gulp.task('minifycss', ['clean'], function () {
 });
 
 gulp.task('processhtml', ['clean'], function() {
+  console.log('processhtml');
   return gulp.src('src/index.html')
     .pipe(processhtml({}))
     .pipe(gulp.dest(paths.dist));
 });
 
 gulp.task('minifyhtml', ['processhtml'], function() {
+  console.log('minifyhtml');
   gulp.src('dist/index.html')
     .pipe(gulpif(!watching, minifyhtml()))
     .pipe(gulp.dest(paths.dist))

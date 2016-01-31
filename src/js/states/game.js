@@ -31,6 +31,7 @@ module.exports = Game;
 Game.prototype = {
 
   create: function () {
+  	// console.log('foof');
 	  // console.log(this);
 	this.game.stage.backgroundColor = "#ffffff";
 	  
