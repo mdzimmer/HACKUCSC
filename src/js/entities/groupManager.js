@@ -1,8 +1,10 @@
 var Util = require('../utils');
+var Group = require('./group');
 
-var GroupManager = function (game) {
+var GroupManager = function (game, state) {
 	this.game = game;
 	this.members = [];
+	this.state = state;
 };
 GroupManager.prototype.constructor = GroupManager;
 GroupManager.prototype.update = function() {
@@ -64,6 +66,14 @@ GroupManager.prototype.addMember = function(member) {
 	var smaller = (this.width < this.height) ? this.width : this.height;
 	this.minDist = smaller / this.members.length;
 	// console.log(this.minDist);
+};
+GroupManager.prototype.addPerson = function(newPerson) {
+	if (this.members.length == 0) {
+		// console.log(this.center);
+		this.addMember(new Group(this.game, this.center.x, this.center.y, this.state));
+		// console.log('new group');
+	}
+	this.members[0].addMember(newPerson);
 };
 GroupManager.prototype.numPeople = function() {
 	var count = 0;

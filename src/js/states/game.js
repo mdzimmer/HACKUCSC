@@ -28,6 +28,7 @@ var Game = function () {
 	this.moneyChangeFadeDelay = 0.01;
 	this.moneyChangeFadeRate = 0.025;
 	this.moneyChangeHoldDelay = 1;
+	this.migrantDelay = 1;
 };
 
 module.exports = Game;
@@ -96,6 +97,7 @@ Game.prototype = {
     // this.hm.anchor.setTo(0.5, 1);
 	// this.hm.visible = false;
 	this.game.time.events.add(Phaser.Timer.SECOND * this.moneyChangeFadeDelay, this.fadeMoneyChange, this);
+	this.game.time.events.add(Phaser.Timer.SECOND * this.migrantDelay, this.spawnMigrant, this);
   },
 
   update: function () {
@@ -133,6 +135,16 @@ Game.prototype = {
 
   onInputDown: function () {
 	 // console.log(this.game.width, this.game.height);
+  },
+  spawnMigrant: function () {
+  	// console.log('spawn');
+  	// var newMigrant = new Person(this.game, this.game.width / 2, this.game.height + 15);
+  	var newMigrant = new Person(this.game, this.game.width / 2 + Math.random() * 800 - 400, this.game.height + 15);
+  	this.game.add.existing(newMigrant);
+  	var bg = this.bg_mg.bgArray[6];
+  	bg.group_manager.addPerson(newMigrant);
+  	this.game.time.events.add(Phaser.Timer.SECOND * this.migrantDelay, this.spawnMigrant, this);
+  	// console.log(bg)
   },
   collectTax: function () {
 	  // console.log('collect tax');
