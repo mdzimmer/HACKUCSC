@@ -3,26 +3,6 @@ var Util = require('../utils');
 var GroupManager = function (game) {
 	this.game = game;
 	this.members = [];
-	/*
-	this.bound = {
-		upper : center.y - height / 2,
-		lower : center.y + height / 2,
-		left : center.x - width / 2,
-		right : center.x + width / 2
-	};
-	this.width = width;
-	this.height = height;
-	this.center = center;
-	this.minDist = width / 2;
-	*/
-	/*
-	Phaser.Sprite.call(this, game, x, y, 'person');
-	this.velocity = {x:0, y:0};
-	this.width = 10;
-	this.height = 10;
-	this.speed = .05;
-	this.id = id;
-	*/
 };
 GroupManager.prototype.constructor = GroupManager;
 GroupManager.prototype.update = function() {
@@ -74,12 +54,6 @@ GroupManager.prototype.update = function() {
 GroupManager.prototype.transfer = function(otherGM, myMember) {
 	var testVals = otherGM.background.getVarsCenter();
 	// console.log('transfer to', otherGM.background.type, otherGM.background.incomeLevel, testVals.center.y, testVals.y, testVals.visHeight, testVals.vRatio);
-	/*
-	if (!(myMember in this.members)) {
-		console.log('ERROR', myMember, 'not in', this);
-		return;
-	}
-	*/
 	var index = this.members.indexOf(myMember);
 	this.members.splice(index, 1);
 	otherGM.addMember(myMember);

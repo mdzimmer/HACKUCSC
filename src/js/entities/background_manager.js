@@ -83,6 +83,7 @@ Background_Manager.prototype.constructor = Background_Manager;
 
 Background_Manager.prototype.sendTo = function(source, destination, group) {
 	// console.log(destination);
+	// console.log(source, destination);
 	if (destination === null) {
 		return;
 	}
@@ -97,14 +98,18 @@ Background_Manager.prototype.sendTo = function(source, destination, group) {
 		if (source.incomeLevel !== destination.incomeLevel)
 			this.updateRatios(destination);
         // console.log(transType.happinessModifier);
-        for (var person in group.members) {
-        	// console.log(transType.happinessModifier);
-            group.happinessModifier = transType.happinessMsodifier;
-        	// console.log(group.happinessModifier);
-        }
+		// console.log(transType.happinessModifier);
+        group.happinessModifier = transType.happinessModifier;
+		// console.log(group.happinessModifier);
+        // for (var person in group.members) {
+        // 	// console.log(transType.happinessModifier);
+        //     // group.happinessModifier = transType.happinessMsodifier;
+        // 	// console.log(group.happinessModifier);
+        // }
 		// var test = destination.getVarsCenter();
 		// console.log(test);
 	}
+	// console.log(group.happinessModifier);
 };
 Background_Manager.prototype.numPeople = function() {
 	var count = 0;
@@ -165,6 +170,7 @@ Background_Manager.prototype.transferType = function(source, destination, group)
  	}
  	// console.log(happinessModifier, group.happinessModifier);
     var happinessChange = happinessModifier - group.happinessModifier;
+    // console.log(happinessChange, happinessModifier, group.happinessModifier);
     var incomeChange = 0;
     var baseIncome = group.income();
     var newIncome = 0;
@@ -189,6 +195,7 @@ Background_Manager.prototype.transferType = function(source, destination, group)
  	}
  	// console.log(newIncome, baseIncome)
  	var incomeChange = newIncome - baseIncome;
+ 	// console.log(happinessModifier);
 	return {can : can, educate : educate, happinessChange : happinessChange, incomeChange : incomeChange, happinessModifier : happinessModifier};
 };
 Background_Manager.prototype.canTransfer = function(source, destination, group) {
@@ -228,7 +235,7 @@ Background_Manager.prototype.canTransfer = function(source, destination, group) 
 Background_Manager.prototype.backgroundBy = function(type, incomeLevel) {
 	for (var bg in this.bgArray) {
 		bg = this.bgArray[bg];
-		if (bg.type == type && bg.incomeLevel == bg.incomeLevel) {
+		if (bg.type == type && bg.incomeLevel == incomeLevel) {
 			return bg;
 		}
 	}

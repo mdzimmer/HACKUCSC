@@ -43,19 +43,19 @@ Person.prototype.update = function() {
 };
 
 Person.prototype.ageTick = function() {
-	this.turnCount += 1;
-	if (this.turnCount >= this.ageThreshold) {
-		// console.log('happy birthday');
-		if (this.age == 0) {
-			this.age = Person.AGE.adult;
-			this.frame = 3;
-		} else if (this.age == 1) {
-			this.age = Person.AGE.old;
-			this.frame = 1;
-		} else if (this.age == 2) {
+	// this.turnCount += 1;
+	// if (this.turnCount >= this.ageThreshold) {
+	// 	// console.log('happy birthday');
+	// 	if (this.age == 0) {
+	// 		this.age = Person.AGE.adult;
+	// 		this.frame = 3;
+	// 	} else if (this.age == 1) {
+	// 		this.age = Person.AGE.old;
+	// 		this.frame = 1;
+	// 	} else if (this.age == 2) {
 
-		}
-	}
+	// 	}
+	// }
 };
 
 Person.prototype.getTax = function() {
