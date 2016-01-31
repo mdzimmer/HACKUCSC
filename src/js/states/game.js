@@ -95,7 +95,7 @@ Game.prototype = {
 	this.game.time.events.add(Phaser.Timer.SECOND * this.taxTime, this.collectTax, this);
     this.hm = new HoverMenu(this.game, 200, 200, this);
     // this.hm.anchor.setTo(0.5, 1);
-	// this.hm.visible = false;
+	this.hm.visible = false;
 	this.game.time.events.add(Phaser.Timer.SECOND * this.moneyChangeFadeDelay, this.fadeMoneyChange, this);
 	// this.game.time.events.add(Phaser.Timer.SECOND * this.migrantDelay, this.spawnMigrant, this);
 
