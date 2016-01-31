@@ -121,14 +121,46 @@ Background_Manager.prototype.transferType = function(source, destination, group)
 	var educate = (destination.type === 'house' && destination.incomeLevel) > groupEdu;
     var happinessModifier = 0;
     if (destination.type == 'unemployed' && source.type != 'unemployed') {
+    	// console.log('unemployment');
         happinessModifier -= 1;
     }
     if (destination.incomeLevel < groupEdu) {
+    	// console.log('education');
         happinessModifier -= groupEdu - destination.incomeLevel;
     }
     if (destination.type == 'housing') {
+    	// console.log('housing');
     	happinessModifier += 1;
     }
+    if (destination.type == 'work') {
+    	// console.log('tax', destination.incomeLevel, this.state.taxMod.low);
+    	if (destination.incomeLevel == 0) {
+	    	if (this.state.taxMod.low == .5) {
+	    		happinessModifier += 1;
+	    	} else if (this.state.taxMod.low == 1) {
+	    		
+	    	} else if (this.state.taxMod.low == 1.5) {
+	    		happinessModifier -= 1;
+	    	}
+    	} else if (destination.incomeLevel == 1) {
+	    	if (this.state.taxMod.mid == .5) {
+	    		happinessModifier += 1;
+	    	} else if (this.state.taxMod.mid == 1) {
+	    		
+	    	} else if (this.state.taxMod.mid == 1.5) {
+	    		happinessModifier -= 1;
+	    	}
+    	} else if (destination.incomeLevel == 2) {
+	    	if (this.state.taxMod.high == .5) {
+	    		happinessModifier += 1;
+	    	} else if (this.state.taxMod.high == 1) {
+
+	    	} else if (this.state.taxMod.high == 1.5) {
+	    		happinessModifier -= 1;
+	    	}
+    	}
+ 	}
+ 	// console.log(happinessModifier, group.happinessModifier);
     var happinessChange = happinessModifier - group.happinessModifier;
     var incomeChange = 0;
 	return {can : can, educate : educate, happinessChange : happinessChange, incomeChange : incomeChange, happinessModifier : happinessModifier};
