@@ -119,10 +119,10 @@ Background_Manager.prototype.transferType = function(source, destination, group)
 	var educate = (destination.type === 'house' && destination.incomeLevel) > groupEdu;
     var happinessModifier = 0;
     if (destination.type == 'unemployed' && source.type != 'unemployed') {
-        happinessChange -= 1;
+        happinessModifier -= 1;
     }
     if (destination.incomeLevel < groupEdu) {
-        happinessChange -= groupEdu - destination.incomeLevel;
+        happinessModifier -= groupEdu - destination.incomeLevel;
     }
     var happinessChange = happinessModifier - group.happinessModifier();
     var incomeChange = 0;
