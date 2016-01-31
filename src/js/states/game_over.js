@@ -11,8 +11,8 @@ Game_Over.prototype = {
     var x = this.game.width / 2;
     var y = this.game.height / 2;
 
-    var style = { font: "65px Arial", fill: "#ffffff", align: "center" };
-    var smallStyle = { font: '35px "Lucida Console"', fill: "#ffffff", align: "center" };
+    var style = { font: "Roboto", fontSize: 64, fill: "#000000", align: "center" };
+    var smallStyle = { font: "Roboto", fontSize: 32, fill: "#000000", align: "left" };
 
     this.text = this.add.text(x - 300, y - 200, "Game Over", style);
     this.textSmall = this.add.text(x - 300, y - 100, "your happiness went under 50%\n" + "click to continue", smallStyle);
@@ -28,6 +28,6 @@ Game_Over.prototype = {
   },
 
   onDown: function () {
-    this.game.state.start(playerState.currentLevel);
+    this.game.state.start('Menu');
   }
 };
