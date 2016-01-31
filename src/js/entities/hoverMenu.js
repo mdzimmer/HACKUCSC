@@ -89,10 +89,11 @@ var HoverMenu = function (game, x, y, state) {
 HoverMenu.prototype = Object.create(Phaser.Sprite.prototype);
 HoverMenu.prototype.constructor = HoverMenu;
 HoverMenu.prototype.update = function() {
-	
+	// console.log(this.x, this.y, this.visible, this.alpha);
 };
 //people, education, happiness, fatigue, income
 HoverMenu.prototype.showStatic = function(state, x, y, over) {
+    this.changeText.alpha = 0;
     // console.log('static');
     x -= this.width / 2;
     y -= this.height;
@@ -119,6 +120,7 @@ HoverMenu.prototype.showStatic = function(state, x, y, over) {
     }
     // this.staticText.visible = true;
     // this.visible = true;
+    this.visible = true;
     this.alpha = 1;
     // console.log(this.alpha);
     this.wait = true;
@@ -149,10 +151,12 @@ HoverMenu.prototype.showChange = function(can, state, x, y) {
     if (!can) {
         return;
     }
+    this.staticText.alpha = 0;
 	this.happinessChange.text = 'Happiness change: ' + state.happinessChange;
     this.incomeChange.text = 'Income change: ' + state.incomeChange;
     // this.changeText.visible = true;
     // this.visible = true;
+    this.visible = true;
     this.alpha = 1;
     this.changeText.alpha = 1;
     this.width = this.changeWidth;
