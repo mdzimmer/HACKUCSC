@@ -37,9 +37,9 @@ gulp.task('clean', function () {
   //   console.log('done!');
   // });
   console.log('clean');
-	// return gulp.src(paths.dist)
- //    .pipe(vinylPaths(del))
- //    .on('error', gutil.log);
+	return gulp.src(paths.dist)
+    .pipe(vinylPaths(del))
+    .on('error', gutil.log);
 });
 
 gulp.task('copy', ['clean'], function () {
