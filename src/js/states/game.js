@@ -13,7 +13,7 @@ var Game = function () {
   // this.selectedGroup = null;
   this.money = null;
   this.moneyVal = 0;
-  this.curMoney = 2000;
+  this.curMoney = 500;
   this.moneyUpdateDelay = 0.001;
   this.moneyIncrementing = false;
   this.happinessVal = 0;
@@ -45,7 +45,7 @@ Game.prototype = {
 
     this.bg_mg = new Background_Manager(this.game, this);
 	
-    this.input.onDown.add(this.onInputDown, this);
+    //this.input.onDown.add(this.onInputDown, this);
 	
 	this.money = this.game.add.text(20, 15, '$0');
 	this.money.font = "Roboto";
@@ -103,7 +103,7 @@ Game.prototype = {
   // console.log(this.game.input.keyboard);
 	this.game.input.keyboard.state = this;
 	this.game.input.keyboard.utils = Utils;
-  this.input.addMoveCallback(this.onMouseMove, this);
+  // this.input.addMoveCallback(this.onMouseMove, this);
   this.personGroup = this.game.add.group();
   this.personGroup.z = 5;
   },
@@ -143,17 +143,17 @@ Game.prototype = {
   	}
   	// console.log(this.moneyChange.alpha);
   },
-
-  onInputDown: function () {
-     var bg = this.bg_mg.whereClicked();
-     var gm = bg.group_manager;
+  
+  // onInputDown: function () {
+     // var bg = this.bg_mg.whereClicked();
+     // var gm = bg.group_manager;
 	   // console.log('mouse', this.input.x, this.input.y, 'bg x-y-width-height', bg.x, bg.y, bg.width, bg.height);
      // console.log('gm', gm.center.x, gm.center.y, gm.width, gm.height);
-  },
-  onMouseMove: function () {
+  // },
+  // onMouseMove: function () {
     // var here = this.bg_mg.whereClicked();
     // console.log(this.input.x, this.input.y, here.type, here.incomeLevel, here.width, here.height);
-  },
+  // },
   spawnMigrant: function () {
   	// var newMigrant = new Person(this.game, this.game.width / 2, this.game.height + 15);
   	var newMigrant = new Person(this.game, this.game.width / 2 + Math.random() * 800 - 400, this.game.height + 15);
@@ -161,7 +161,7 @@ Game.prototype = {
   	var bg = this.bg_mg.bgArray[6];
   	bg.group_manager.addPerson(newMigrant);
     this.personGroup.add(newMigrant);
-  	this.game.time.events.add(Phaser.Timer.SECOND * this.migrantDelasy, this.spawnMigrant, this);
+  	this.game.time.events.add(Phaser.Timer.SECOND * this.migrantDelay, this.spawnMigrant, this);
   	// console.log(bg)
   },
   spawnMigrantNoRepeat: function () {
@@ -269,9 +269,9 @@ Game.prototype = {
 		return;
 	}
 	if (this.curMoney > this.moneyVal) {
-		this.moneyVal += 10;
+		this.moneyVal += 1;
 	} else if (this.curMoney < this.moneyVal) {
-		this.moneyVal -= 10;
+		this.moneyVal -= 1;
 	}
 	this.money.text = '$' + this.moneyVal;
 	this.game.time.events.add(Phaser.Timer.SECOND * this.moneyUpdateDelay, this.incrementMoney, this);
