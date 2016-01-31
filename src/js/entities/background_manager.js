@@ -82,6 +82,7 @@ Background_Manager.prototype.constructor = Background_Manager;
 };*/
 
 Background_Manager.prototype.sendTo = function(source, destination, group) {
+	// console.log('send to', source, destination, group);
 	// console.log(destination);
 	// console.log(source, destination);
 	if (destination === null) {
@@ -90,24 +91,15 @@ Background_Manager.prototype.sendTo = function(source, destination, group) {
 	var transType = this.transferType(source, destination, group)
 	// console.log(source, destination, group, transType);
 	if (transType.can) {	// Check if they can transfer up
-		// console.log('b');
+		// console.log('can');
 		source.group_manager.transfer(destination.group_manager, group, transType.happiness);
 		if (transType.educate) {
 			group.startEducation();
 		}
-		if (source.incomeLevel !== destination.incomeLevel)
+		if (source.incomeLevel !== destination.incomeLevel) {
 			this.updateRatios(destination);
-        // console.log(transType.happinessModifier);
-		// console.log(transType.happinessModifier);
+		}
         group.happinessModifier = transType.happinessModifier;
-		// console.log(group.happinessModifier);
-        // for (var person in group.members) {
-        // 	// console.log(transType.happinessModifier);
-        //     // group.happinessModifier = transType.happinessMsodifier;
-        // 	// console.log(group.happinessModifier);
-        // }
-		// var test = destination.getVarsCenter();
-		// console.log(test);
 	}
 	// console.log(group.happinessModifier);
 };
@@ -201,6 +193,9 @@ Background_Manager.prototype.transferType = function(source, destination, group)
 Background_Manager.prototype.canTransfer = function(source, destination, group) {
 	// console.log(source, destination, group);
 	if (source === null || destination === null) return false;
+	if (source.type == destination.type && source.incomeLevel == destination.incomeLevel) {
+		return false;
+	}
 	var sourceEdu = group.members[0].eduLevel;
 	if (destination.type === 'unemployed') {
 		return true;

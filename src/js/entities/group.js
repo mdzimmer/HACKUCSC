@@ -31,12 +31,12 @@ var Group = function (game, centerX, centerY, state) {
 	this.lock.visible = false;
 	this.lockTime = 5;
 	this.happinessModifier = 0;
-	this.selecionWeight = 1;
-	this.minSelectionSize = 10;
+	this.selectionWeight = 2.5;
+	this.minSelectionSize = 40;
 	
 	this.state.input.onDown.add(this.onInputDown, this);
     this.state.input.addMoveCallback(this.onMove, this);
-}
+};
 Group.prototype.constructor = Group;
 Group.prototype.update = function() {
 	// console.log(this.center);
@@ -75,21 +75,26 @@ Group.prototype.update = function() {
 		// }
 		member.velocity = velocity;
 	}
-	// var furthest = 0;
+
+	// var average = 0;
 	// for (var member in this.members) {
 	// 	member = this.members[member];
-	// 	var dist = util.hypotenuse(this.center.x - member.x, this.center.y - member.y));
-	// 	if (dist > furthest) {
-	// 		furthest = dist;
-	// 	}
+	// 	var dist = util.hypotenuse(this.center.x - member.x, this.center.y - member.y);
+	// 	// if (dist > furthest) {
+	// 	// 	furthest = dist;
+	// 	// }
+	// 	average += dist;
 	// }
-	// var newSelectionSize = furthest * this.selectionWeight;
+	// average /= this.members.length;
+	// // console.log(this.selectionWeight);
+	// var newSelectionSize = average * this.selectionWeight;
 	// if (newSelectionSize <= this.minSelectionSize) {
-	// 	console.log('a');
+	// 	// console.log('a');
 	// 	newSelectionSize = this.minSelectionSize;
 	// }
-	// this.selection.width = newSelectionSize;
-	// this.selection.height = newSelectionSize;
+	var newSelectionSize = this.minSelectionSize + this.members.length * this.selectionWeight;
+	this.selection.width = newSelectionSize;
+	this.selection.height = newSelectionSize;
 };
 Group.prototype.addMember = function(member) {
 	this.members.push(member);
@@ -99,10 +104,7 @@ Group.prototype.addMember = function(member) {
 Group.prototype.onInputDown = function() {
 	// console.log('a');
 	if (this.selected) {
-		// console.log('c');
-		// console.log(this.myManager, this.myManager.background);
 		var bg = this.myManager.background.myManager.whereClicked();
-		// console.log(bg);
 		this.myManager.background.myManager.sendTo(this.myManager.background, bg, this);
 		this.setSelected(false);
 	} else if (this.clicked()) {
