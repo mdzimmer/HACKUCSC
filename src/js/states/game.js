@@ -13,7 +13,7 @@ var Game = function () {
   // this.selectedGroup = null;
   this.money = null;
   this.moneyVal = 0;
-  this.curMoney = 0;
+  this.curMoney = 2000;
   this.moneyUpdateDelay = 0.001;
   this.moneyIncrementing = false;
   this.happinessVal = 0;
@@ -47,13 +47,13 @@ Game.prototype = {
 	
     this.input.onDown.add(this.onInputDown, this);
 	
-	this.money = this.game.add.text(20, 20, '$0');
+	this.money = this.game.add.text(20, 15, '$0');
 	this.money.font = "Roboto";
 	this.money.fontSize = 24;
 	this.money.fill = '#000000';
 	this.money.text = '$0';
 
-	this.moneyChange = this.game.add.text(80, 20, '$0');
+	this.moneyChange = this.game.add.text(120, 15, '$0');
 	this.moneyChange.font = "Roboto";
 	this.moneyChange.fontSize = 24;
 	this.moneyChange.fill = '#000000';
