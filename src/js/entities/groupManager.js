@@ -19,7 +19,7 @@ GroupManager.prototype.update = function() {
 	// console.log(this.center);
 	//update bounds
 	if (this.background) {
-		var vars = this.background.getVarsCenter();
+		var vars = this.background.getVarsTrue();
 		this.width = vars.width;
 		this.height = vars.height;
 		this.center = vars.center;

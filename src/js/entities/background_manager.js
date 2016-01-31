@@ -11,13 +11,6 @@ var Background_Manager = function(game, state) {
 	this.state = state;
 	//Create array of backgrounds
 	this.bgArray = [
-		// new Background(this.game, 0, 0, .33, .33, Person.EDULEVEL.low , 'work' , state),	// this.bgArray[0] == workLow
-		// new Background(this.game, 1, 0, .33, .33, Person.EDULEVEL.mid , 'work' , state),	// this.bgArray[1] == workMid
-		// new Background(this.game, 2, 0, .33, .33, Person.EDULEVEL.high, 'work' , state),	// this.bgArray[2] == workMid
-		// new Background(this.game, 0, 1, .33, .33, Person.EDULEVEL.low , 'house', state),	// this.bgArray[3] == houseLow
-		// new Background(this.game, 1, 1, .33, .33, Person.EDULEVEL.mid , 'house', state),	// this.bgArray[4] == houseMid
-		// new Background(this.game, 2, 1, .33, .33, Person.EDULEVEL.high, 'house', state),	// this.bgArray[5] == houseMid
-		// new Background(this.game, 0, 2,   1, .33, '',              'unemployed', state)		// this.bgArray[6] == unemployed
 		new Background(this.game, Person.EDULEVEL.low , 'work' , state),	// this.bgArray[0] == workLow
 		new Background(this.game, Person.EDULEVEL.mid , 'work' , state),	// this.bgArray[1] == workMid
 		new Background(this.game, Person.EDULEVEL.high, 'work' , state),	// this.bgArray[2] == workMid
@@ -61,40 +54,11 @@ var Background_Manager = function(game, state) {
 	this.border = 100;
 	this.minRatio = .2;
 	this.updateRatios();
-
-	// var test = this.bgArray[6].group_manager;
-	// var testFlock = new Group(this.game, this.game.width / 2 + 100, (this.game.height - this.border) / 2 + 100, state);
- //    for (var i = 0; i < 10; i++) {
- //    	var testPerson = new Person(this.game, this.game.width / 2 + i * 15, (this.game.height - this.border) / 2 + i * 15, i);
- //    	this.game.add.existing(testPerson);
- //    	testFlock.addMember(testPerson);
- //    }
- //    test.addMember(testFlock);
-	// testFlock = new Group(this.game, this.game.width / 2 - 100, (this.game.height - this.border) / 2 + 100, state);
-	// for (var i = 0; i < 10; i++) {
-    	// var testPerson = new Person(this.game, this.game.width / 2 + i * 15 - 100, (this.game.height - this.border) / 2 + i * 15 + 100, i);
-    	// this.game.add.existing(testPerson);
-    	// testFlock.addMember(testPerson);
-    // }
-    // test.addMember(testFlock);
 };
 
 Background_Manager.prototype.constructor = Background_Manager;
 
-/*Background_Manager.BGNAMES = {
-		workLow    : this.bgArray[0],
-		workMid    : this.bgArray[1],
-		workHigh   : this.bgArray[2],
-		houseLow   : this.bgArray[3],
-		houseMid   : this.bgArray[4],
-		houseHigh  : this.bgArray[5],
-		unemployed : this.bgArray[6]
-};*/
-
 Background_Manager.prototype.sendTo = function(source, destination, group) {
-	// console.log('send to', source, destination, group);
-	// console.log(destination);
-	// console.log(source, destination);
 	if (destination === null) {
 		return;
 	}
@@ -106,10 +70,6 @@ Background_Manager.prototype.sendTo = function(source, destination, group) {
 		if (transType.educate) {
 			group.startEducation();
 		}
-		// if (source.incomeLevel !== destination.incomeLevel) {
-		// 	this.updateRatios(destination);
-		// }
-		// console.log(source, destination, group);
 		this.updateRatios(destination);
         group.happinessModifier = transType.happinessModifier;
 	}
@@ -209,7 +169,9 @@ Background_Manager.prototype.transferType = function(source, destination, group)
  	// console.log(happinessModifier);
 	return {can : can, educate : educate, happinessChange : happinessChange, incomeChange : incomeChange, happinessModifier : happinessModifier};
 };
+
 Background_Manager.prototype.canTransfer = function(source, destination, group) {
+	
 	// console.log(source, destination, group);
 	if (source === null || destination === null) return false;
 	if (source.type == destination.type && source.incomeLevel == destination.incomeLevel) {
@@ -245,6 +207,7 @@ Background_Manager.prototype.canTransfer = function(source, destination, group) 
 		return true;
 	}
 	return false;
+	
 };
 Background_Manager.prototype.backgroundBy = function(type, incomeLevel) {
 	for (var bg in this.bgArray) {
@@ -257,17 +220,7 @@ Background_Manager.prototype.backgroundBy = function(type, incomeLevel) {
 };
 
 Background_Manager.prototype.whereClicked = function() {
-	// for (var i in this.bgArray) {
-	// 	var curDimensions = this.bgArray[i].getVars();
-	// 	var mouseX = this.game.input.x;
-	// 	var mouseY = this.game.input.y;
-	// 	// if(i == 6) console.log('curDimensions: ' + curDimensions);
-	// 	if (mouseX > curDimensions[0] && mouseX <= curDimensions[0] + curDimensions[2]) {
-	// 		if (mouseY > curDimensions[1] && mouseY <= curDimensions[1] + curDimensions[3]) {
-	// 			return this.bgArray[i];
-	// 		}
-	// 	}
-	// }
+	
 	var mouseX = this.game.input.x;
 	var mouseY = this.game.input.y;
 	if (mouseY >= this.border) {
@@ -299,6 +252,7 @@ Background_Manager.prototype.whereClicked = function() {
 		}
 	}
 	return null;
+	
 };
 
 Background_Manager.prototype.findOther = function(source, destination) {
@@ -335,29 +289,7 @@ Background_Manager.prototype.findOther = function(source, destination) {
 // Background_Manager.prototype.updateRatios = function(destination) {
 	// work 0 - 2 house 3 - 5 unemployed 6
 Background_Manager.prototype.updateRatios = function() {
-	// if (destination.type === 'work') {
-	// 	var hRatios = util.ratio(this.bgArray[0].numPeople(), this.bgArray[1].numPeople(), this.bgArray[2].numPeople());
-	// }
-	// else{
-	// 	var hRatios = util.ratio(this.bgArray[3].numPeople(), this.bgArray[4].numPeople(), this.bgArray[5].numPeople());
-	// }
-	// var employed = 0;
-	// for (var j = 0; j < 6; j++)
-	// 	employed += this.bgArray[j].numPeople();
-	// var vRatios = util.ratio(this.bgArray[6].numPeople(), employed);
-	// for (var i = 0 in this.bgArray) {
-	// 	if (i !== 6) {		// If not unemployed bg
-	// 		if (i < 3) {	// If work bg
-	// 			this.bgArray[i].newHRatio = hRatios[i];
-	// 			this.bgArray[i].newVRatio = vRatios[1] / 2;
-	// 		}
-	// 		else {			// If house bg
-	// 			this.bgArray[i].newHRatio = hRatios[i - 3];
-	// 			this.bgArray[i].newVRatio = vRatios[1] / 2;
-	// 		}
-	// 	}
-	// 	else bgArray[i].newVRatio = vRatios[0]; // Unemployed bg
-	// }
+	
 	var lowSum = this.bgArray[0].numPeople() + this.bgArray[3].numPeople();
 	var midSum = this.bgArray[1].numPeople() + this.bgArray[4].numPeople();
 	var highSum = this.bgArray[2].numPeople() + this.bgArray[5].numPeople();
@@ -405,25 +337,7 @@ Background_Manager.prototype.updateRatios = function() {
 	var unemployed = {width : gWidth * 1, height : unemHeight, center : null};
 	unemployed.center = {x : unemployed.width / 2, y : offsetY + unemHeight / 2};
 	this.bgArray[6].updateVars(unemployed);
-	// console.log(vRatios);
-	// for (var bg in this.bgArray) {
-	// 	bg = this.bgArray[bg];
-	// 	bg.group_manager.updateVars();
-	// }
-};
 
-Background_Manager.prototype.update = function() {
-	// for (var i in this.bgArray) {
- //    	if (this.bgArray[i].incomeLevel === Person.EDULEVEL.mid) {
- //    		this.bgArray[i].x = this.bgArray[0].getVars()[2];
- //    	}
- //    	else if (this.bgArray[i].incomeLevel === Person.EDULEVEL.high) {
- //    	    this.bgArray[i].x = this.bgArray[1].getVars()[0] + this.bgArray[1].getVars()[2];
- //    	}
- //    	this.bgArray[i].y = (this.bgArray[i].baseY * this.bgArray[i].vRatio * (this.game.height - this.border)) + this.border;
-	// 	this.bgArray[i].update();
-	// }
-	// var test = this.bgArray[3].getVarsCenter();
 };
 
 Background_Manager.prototype.endQuit = function() {
