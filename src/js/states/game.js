@@ -20,7 +20,7 @@ var Game = function () {
   this.curHappiness = 0;
   this.happinessUpdateDelay = 0.001;
   this.happinessIncrementing = false;
-  this.taxTime = 2;
+  this.taxTime = 5;
   this.taxMod = {low: 1, mid: 1, high: 1};
   this.minHappiness = 50;
 	this.fatiguePerTick = 10;
@@ -28,7 +28,7 @@ var Game = function () {
 	this.moneyChangeFadeDelay = 0.01;
 	this.moneyChangeFadeRate = 0.025;
 	this.moneyChangeHoldDelay = 1;
-	this.migrantDelay = 1;
+	this.migrantDelay = 5;
 };
 
 module.exports = Game;
@@ -221,9 +221,9 @@ Game.prototype = {
 		return;
 	}
 	if (this.curMoney > this.moneyVal) {
-		this.moneyVal += 5;
+		this.moneyVal += 10;
 	} else if (this.curMoney < this.moneyVal) {
-		this.moneyVal -= 5;
+		this.moneyVal -= 10;
 	}
 	this.money.text = '$' + this.moneyVal;
 	this.game.time.events.add(Phaser.Timer.SECOND * this.moneyUpdateDelay, this.incrementMoney, this);
