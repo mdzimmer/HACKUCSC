@@ -116,6 +116,7 @@ Game.prototype = {
 	  var taxes = 0;
 	  for (var bg in this.bg_mg.bgArray) {
 		  for (var group in this.bg_mg.bgArray[bg].group_manager.members) {
+	  		// console.log(this.bg_mg.bgArray[bg].group_manager.members[group], this.bg_mg.bgArray[bg].group_manager.members[group].happinessModifier);
 			  for (var person in this.bg_mg.bgArray[bg].group_manager.members[group].members) {
 				  taxes += this.bg_mg.bgArray[bg].group_manager.members[group].members[person].getTax();
 				  this.bg_mg.bgArray[bg].group_manager.members[group].members[person].ageTick();
@@ -126,6 +127,8 @@ Game.prototype = {
 			  	this.bg_mg.bgArray[bg].group_manager.members[group].addFatigue(-1 * this.fatiguePerTick);
 			  }
 			  if (this.bg_mg.bgArray[bg].group_manager.members[group]) {
+			  	// console.log('a');
+			  	// console.log(this.bg_mg.bgArray[bg].group_manager.members[group], this.bg_mg.bgArray[bg].group_manager.members[group].happinessModifier);
 			  	this.bg_mg.bgArray[bg].group_manager.members[group].applyHappiness();
 			  }
 		  }

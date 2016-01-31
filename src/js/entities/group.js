@@ -31,6 +31,8 @@ var Group = function (game, centerX, centerY, state) {
 	this.lock.visible = false;
 	this.lockTime = 5;
 	this.happinessModifier = 0;
+	this.selecionWeight = 1;
+	this.minSelectionSize = 10;
 	
 	this.state.input.onDown.add(this.onInputDown, this);
     this.state.input.addMoveCallback(this.onMove, this);
@@ -73,6 +75,21 @@ Group.prototype.update = function() {
 		// }
 		member.velocity = velocity;
 	}
+	// var furthest = 0;
+	// for (var member in this.members) {
+	// 	member = this.members[member];
+	// 	var dist = util.hypotenuse(this.center.x - member.x, this.center.y - member.y));
+	// 	if (dist > furthest) {
+	// 		furthest = dist;
+	// 	}
+	// }
+	// var newSelectionSize = furthest * this.selectionWeight;
+	// if (newSelectionSize <= this.minSelectionSize) {
+	// 	console.log('a');
+	// 	newSelectionSize = this.minSelectionSize;
+	// }
+	// this.selection.width = newSelectionSize;
+	// this.selection.height = newSelectionSize;
 };
 Group.prototype.addMember = function(member) {
 	this.members.push(member);
@@ -126,15 +143,6 @@ Group.prototype.click = function() {
 		this.setSelected(true);
 	}
 };
-/*
-Group.prototype.move = function() {
-	var mouseX = this.game.input.x;
-	var mouseY = this.game.input.y;
-	this.changeCenter({x : mouseX, y : mouseY});
-	this.setSelected(false);
-    this.state.hm.groupSelected = false;
-};
-*/
 Group.prototype.setSelected = function(newSelected) {
 	this.selected = newSelected;
 	this.selection.visible = newSelected;
@@ -241,6 +249,7 @@ Group.prototype.applyHappiness = function() {
 	var flag = false;
 	for (var member in this.members) {
 		member = this.members[member];
+		console.log(member.happiness, this.happinessModifier);
 		member.happiness += this.happinessModifier;
 		// member.happiness -= 50;
 		if (member.happiness > 100) {
@@ -278,7 +287,7 @@ Group.prototype.getOutOfTown = function() {
 		console.log('ERROR');
 		return;
 	}
-	this.myManager.background.myManager.sendTo(this.myManager.background, newBG.group_manager.background, this);
+	this.myManager.background.myManager.sendTo(this.myManager.background, newBG, this);
 	this.lockIt();
 }
 Group.prototype.lockIt = function() {
