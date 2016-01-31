@@ -46,13 +46,13 @@ Game.prototype = {
 	
     this.input.onDown.add(this.onInputDown, this);
 	
-	this.money = this.game.add.text(20, 20, '$0');
+	this.money = this.game.add.text(20, 15, '$0');
 	this.money.font = "Roboto";
 	this.money.fontSize = 24;
 	this.money.fill = '#000000';
 	this.money.text = '$0';
 
-	this.moneyChange = this.game.add.text(80, 20, '$0');
+	this.moneyChange = this.game.add.text(120, 15, '$0');
 	this.moneyChange.font = "Roboto";
 	this.moneyChange.fontSize = 24;
 	this.moneyChange.fill = '#000000';
