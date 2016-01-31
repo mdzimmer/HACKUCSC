@@ -20,7 +20,7 @@ var Game = function () {
   this.curHappiness = 0;
   this.happinessUpdateDelay = 0.001;
   this.happinessIncrementing = false;
-  this.taxTime = 5;
+  this.taxTime = 3;
   this.taxMod = {low: 1, mid: 1, high: 1};
   this.minHappiness = 50;
 	this.fatiguePerTick = 10;
@@ -28,7 +28,7 @@ var Game = function () {
 	this.moneyChangeFadeDelay = 0.01;
 	this.moneyChangeFadeRate = 0.025;
 	this.moneyChangeHoldDelay = 1;
-	this.migrantDelay = 5;
+	this.migrantDelay = 1;
 };
 
 module.exports = Game;
@@ -150,10 +150,30 @@ Game.prototype = {
 	  // console.log('collect tax');
 	  var taxes = 0;
 	  for (var bg in this.bg_mg.bgArray) {
-		  for (var group in this.bg_mg.bgArray[bg].group_manager.members) {
+      var diminishing = false;
+      var maxNum = 10000;
+      var curNum = 0;
+      var dimFactor = 1;
+      if (bg == 1 || bg == 2) {
+        diminishing = true;
+        maxNum = this.bg_mg.bgArray[bg - 1];
+      }
+      for (var group in this.bg_mg.bgArray[bg].group_manager.members) {
 	  		// console.log(this.bg_mg.bgArray[bg].group_manager.members[group], this.bg_mg.bgArray[bg].group_manager.members[group].happinessModifier);
 			  for (var person in this.bg_mg.bgArray[bg].group_manager.members[group].members) {
-				  taxes += this.bg_mg.bgArray[bg].group_manager.members[group].members[person].getTax();
+				  if (diminishing) {  
+            curNum++;
+            if (curNum > maxNum) {
+              if (curNum > 10) dimFactor = 0;
+              else dimFactor = .1 * (10 - curNum);
+            }
+          }
+          if (this.bg_mg.bgArray[bg].group_manager.background.type == 'work') {
+            taxes += this.bg_mg.bgArray[bg].group_manager.members[group].members[person].getTax() * dimFactor;
+          }
+          else {
+            taxes += this.bg_mg.bgArray[bg].group_manager.members[group].members[person].getTax();
+          }
 				  this.bg_mg.bgArray[bg].group_manager.members[group].members[person].ageTick();
 			  }
 			  if (this.bg_mg.bgArray[bg].group_manager.background.type == 'work') {
