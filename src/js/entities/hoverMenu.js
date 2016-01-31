@@ -4,12 +4,12 @@ var HoverMenu = function (game, x, y, state) {
 	this.x = x;
 	this.y = y;
     this.groupSelected = null;
-	this.width = 265;
-	this.height = 125;
-    this.staticWidth = 265;
-    this.staticHeight = 135;
-    this.changeWidth = 225;
-    this.changeHeight = 65;
+	this.width = 256;
+	this.height = 128;
+    this.staticWidth = 256;
+    this.staticHeight = 128;
+    this.changeWidth = 224;
+    this.changeHeight = 64;
     this.state = state;
 	
 	this.staticText = this.game.add.group();
@@ -25,29 +25,29 @@ var HoverMenu = function (game, x, y, state) {
     
     // this.state.input.addMoveCallback(this.onInputMove, this);
 	
-	this.people = this.game.add.text(10, 10, 'People 0');
-	this.people.font = 'VT323';
-	this.people.fontSize = 24;
+	this.people = this.game.add.text(10, 10, 'People: 0');
+	this.people.font = 'Roboto';
+	this.people.fontSize = 18;
 	this.people.fill = '#000000';
 	
-	this.education = this.game.add.text(10, 10, 'Education Low');
-	this.education.font = 'VT323';
-	this.education.fontSize = 24;
+	this.education = this.game.add.text(10, 10, 'Education: Low');
+	this.education.font = 'Roboto';
+	this.education.fontSize = 18;
 	this.education.fill = '#000000';
 	
-	this.happiness = this.game.add.text(10, 10, 'Happiness %100');
-	this.happiness.font = 'VT323';
-	this.happiness.fontSize = 24;
+	this.happiness = this.game.add.text(10, 10, 'Happiness: %100');
+	this.happiness.font = 'Roboto';
+	this.happiness.fontSize = 18;
 	this.happiness.fill = '#000000';
 	
-	this.fatigue = this.game.add.text(10, 10, 'Fatigue %0');
-	this.fatigue.font = 'VT323';
-	this.fatigue.fontSize = 24;
+	this.fatigue = this.game.add.text(10, 10, 'Fatigue: %0');
+	this.fatigue.font = 'Roboto';
+	this.fatigue.fontSize = 18;
 	this.fatigue.fill = '#000000';
 	
-    this.income = this.game.add.text(10, 10, 'Income $0');
-	this.income.font = 'VT323';
-	this.income.fontSize = 24;
+    this.income = this.game.add.text(10, 10, 'Income: $0');
+	this.income.font = 'Roboto';
+	this.income.fontSize = 18;
 	this.income.fill = '#000000';
     
 	this.staticText.add(this.people);
@@ -65,13 +65,13 @@ var HoverMenu = function (game, x, y, state) {
     this.staticText.y = this.y;
 	
 	this.happinessChange = this.game.add.text(10, 10, 'Happiness =');
-	this.happinessChange.font = 'VT323';
-	this.happinessChange.fontSize = 24;
+	this.happinessChange.font = 'Roboto';
+	this.happinessChange.fontSize = 18;
 	this.happinessChange.fill = '#000000';
 	
 	this.incomeChange = this.game.add.text(10, 10, 'Income =');
-	this.incomeChange.font = 'VT323';
-	this.incomeChange.fontSize = 24;
+	this.incomeChange.font = 'Roboto';
+	this.incomeChange.fontSize = 18;
 	this.incomeChange.fill = '#000000';
     
     this.changeText.add(this.happinessChange);
@@ -90,11 +90,11 @@ HoverMenu.prototype.update = function() {
 HoverMenu.prototype.showStatic = function(state, x, y, over) {
     x -= this.width / 2;
     y -= this.height;
-	this.people.text = 'People ' + state.people;
-    this.education.text = 'Education ' + state.education;
-    this.happiness.text = 'Happiness %' + state.happiness;
-    this.fatigue.text = 'Fatigue %' + state.fatigue;
-    this.income.text = 'Income $' + state.income;
+	this.people.text = 'People: ' + state.people;
+    this.education.text = 'Education: ' + state.education;
+    this.happiness.text = 'Happiness: %' + state.happiness;
+    this.fatigue.text = 'Fatigue: %' + state.fatigue;
+    this.income.text = 'Income: $' + state.income;
     var happinessModifier = state.happinessModifier;
     if (happinessModifier == -3) {
         this.chevron.frame = 2;
@@ -126,8 +126,8 @@ HoverMenu.prototype.showChange = function(can, state, x, y) {
     if (!can) {
         return;
     }
-	this.happinessChange.text = 'Happiness change ' + state.happinessChange;
-    this.incomeChange.text = 'Income change ' + state.incomeChange;
+	this.happinessChange.text = 'Happiness change: ' + state.happinessChange;
+    this.incomeChange.text = 'Income change: ' + state.incomeChange;
     this.changeText.visible = true;
     this.visible = true;
     this.width = this.changeWidth;
