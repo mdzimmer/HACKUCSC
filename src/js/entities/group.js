@@ -30,6 +30,7 @@ var Group = function (game, centerX, centerY, state) {
 	this.lock.height = 35;
 	this.lock.visible = false;
 	this.lockTime = 5;
+	this.happinessModifier = 0;
 	
 	this.state.input.onDown.add(this.onInputDown, this);
     this.state.input.addMoveCallback(this.onMove, this);
@@ -232,11 +233,28 @@ Group.prototype.onMove = function() {
         }
     }
 };
-Group.prototype.happinessModifier = function() {
-    return this.members[0].happinessModifier;
+// Group.prototype.happinessModifier = function() {
+//     return this.happinessModifier;
+// };
+Group.prototype.applyHappiness = function() {
+	var flag = false;
+	for (var member in this.members) {
+		member = this.members[member];
+		member.happiness += this.happinessModifier;
+		// member.happiness -= 50;
+		if (member.happiness > 100) {
+			member.happiness = 100;
+		} else if (member.happiness <= 0) {
+			member.happiness = 0;
+			flag = true;
+		}
+	}
+	if (flag) {
+		this.getOutOfTown();
+	}
 };
 Group.prototype.addFatigue = function(amt) {
-	console.log(amt);
+	// console.log(amt);
 	if (this.members[0].fatigue <= 0 && amt <= 0) {
 		return;
 	}
@@ -249,15 +267,18 @@ Group.prototype.addFatigue = function(amt) {
 	}
 	if (flag) {
 		// console.log(this);
-		var newBG = this.myManager.background.myManager.backgroundBy('house', this.myManager.background.incomeLevel);
-		if (!newBG) {
-			console.log('ERROR');
-			return;
-		}
-		this.myManager.background.myManager.sendTo(this.myManager.background, newBG.group_manager.background, this);
-		this.lockIt();
+		this.getOutOfTown();
 		//console.log('fatigue too dam high');
 	}
+};
+Group.prototype.getOutOfTown = function() {
+	var newBG = this.myManager.background.myManager.backgroundBy('house', this.myManager.background.incomeLevel);
+	if (!newBG) {
+		console.log('ERROR');
+		return;
+	}
+	this.myManager.background.myManager.sendTo(this.myManager.background, newBG.group_manager.background, this);
+	this.lockIt();
 }
 Group.prototype.lockIt = function() {
     this.locked = true;

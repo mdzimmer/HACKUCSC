@@ -23,7 +23,7 @@ var Game = function () {
   this.taxTime = 3;
   this.taxMod = {low: 1, mid: 1, high: 1};
   this.minHappiness = 50;
-	this.fatiguePerTick = 50;
+	this.fatiguePerTick = 1;
 };
 
 module.exports = Game;
@@ -123,6 +123,9 @@ Game.prototype = {
 			  	this.bg_mg.bgArray[bg].group_manager.members[group].addFatigue(this.fatiguePerTick);
 			  } else {
 			  	this.bg_mg.bgArray[bg].group_manager.members[group].addFatigue(-1 * this.fatiguePerTick);
+			  }
+			  if (this.bg_mg.bgArray[bg].group_manager.members[group]) {
+			  	this.bg_mg.bgArray[bg].group_manager.members[group].applyHappiness();
 			  }
 		  }
 	  }

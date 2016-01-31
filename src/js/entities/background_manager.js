@@ -97,7 +97,7 @@ Background_Manager.prototype.sendTo = function(source, destination, group) {
 		this.updateRatios(destination);
         // console.log(transType.happinessModifier);
         for (var person in group.members) {
-            group.members[person].happinessModifier = transType.happinessModifier;
+            group.happinessModifier = transType.happinessModifier;
         }
 		// var test = destination.getVarsCenter();
 		// console.log(test);
@@ -129,7 +129,7 @@ Background_Manager.prototype.transferType = function(source, destination, group)
     if (destination.type == 'housing') {
     	happinessModifier += 1;
     }
-    var happinessChange = happinessModifier - group.happinessModifier();
+    var happinessChange = happinessModifier - group.happinessModifier;
     var incomeChange = 0;
 	return {can : can, educate : educate, happinessChange : happinessChange, incomeChange : incomeChange, happinessModifier : happinessModifier};
 };
