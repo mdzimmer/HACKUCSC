@@ -47,7 +47,7 @@ var Background_Manager = function(game, state) {
 			}
 		}
 		else { // Unemployed background
-			this.bgArray[i].tint = 0x939393;
+			this.bgArray[i].tint = 0xe7e7e7;
 		}
 		this.border = 100;
 	}

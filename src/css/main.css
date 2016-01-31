@@ -1,3 +1,4 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto|VT323);
 * {
   -webkit-user-select: none;
   user-select: none;
@@ -8,12 +9,14 @@ html, body {
   height: 100%;
   overflow: hidden;
   background: #000;
+  font-family: Roboto, VT323;
 }
 
 .game {
   width: 640px;
   height: 480px;
   margin: 20px auto;
+  font-family: Roboto, VT323;
 }
 
 h1,h2,h3 {

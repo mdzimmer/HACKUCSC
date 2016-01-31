@@ -31,8 +31,8 @@ Game.prototype = {
 
   create: function () {
 	  // console.log(this);
-	this.game.stage.backgroundColor = "#ffffff";
-	  
+    this.game.stage.backgroundColor = "#ededed";
+    this.menu_bg = this.game.add.image(0, 0, 'menu_bg');  
     var x = (this.game.width / 2) - 100;
     var y = (this.game.height / 2) - 50;
 
@@ -40,36 +40,41 @@ Game.prototype = {
 	
     this.input.onDown.add(this.onInputDown, this);
 	
-	this.money = this.game.add.text(10, 10, '$0');
-	this.money.font = 'VT323';
+	this.money = this.game.add.text(20, 20, '$0');
+	this.money.font = "Roboto";
 	this.money.fontSize = 24;
 	this.money.fill = '#000000';
+  this.money.text = '$0';
 	this.uib = new UIBuilder(this);
-	this.bar = this.uib.buildProgressBar("growing", this.game.width / 2, 25, 300, 25, 100 - this.minHappiness);
+	this.bar = this.uib.buildProgressBar("growing", this.game.width / 2, 25, 300, 16, 100 - this.minHappiness);
 	//this.bar.addValue(100);
-	this.happy = this.game.add.sprite(this.game.width * .73, 25, 'happyface');
-	this.happy.width = 40;
-	this.happy.height = 40;
+	this.happy = this.game.add.sprite(this.game.width * .29, 25, 'happyface');
 	this.happy.anchor.setTo(0.5, 0.5);
 
   // Tax buttons
   this.redTaxLow   = this.game.add.button(this.bg_mg.bgArray[0].getVarsCenter().center.x - 15, 75, 'taxReduce', this.decTaxLow, this);
-  this.textTaxLow  = this.game.add.text(this.bg_mg.bgArray[0].getVarsCenter().center.x, 55, 'Med');
+  this.textTaxLow  = this.game.add.text(this.bg_mg.bgArray[0].getVars()[0], 78, '$$');
+  this.textTaxLow.font = "Roboto";
+  this.textTaxLow.fontSize = 18;
   this.addTaxLow   = this.game.add.button(this.bg_mg.bgArray[0].getVarsCenter().center.x + 15, 75, 'taxAdd', this.incTaxLow, this);
   this.redTaxLow.anchor.setTo(.5, .5);
-  this.textTaxLow.anchor.setTo(.5, .5);
+  this.textTaxLow.anchor.setTo(0, .5);
   this.addTaxLow.anchor.setTo(.5, .5);
   this.redTaxMid   = this.game.add.button(this.bg_mg.bgArray[1].getVarsCenter().center.x - 15, 75, 'taxReduce', this.decTaxMid, this);
-  this.textTaxMid  = this.game.add.text(this.bg_mg.bgArray[1].getVarsCenter().center.x, 55, 'Med');
+  this.textTaxMid  = this.game.add.text(this.bg_mg.bgArray[1].getVarsCenter().center.x, 78, '$$');
+  this.textTaxMid.font = "Roboto";
+  this.textTaxMid.fontSize = 18;
   this.addTaxMid   = this.game.add.button(this.bg_mg.bgArray[1].getVarsCenter().center.x + 15, 75, 'taxAdd', this.incTaxMid, this);
   this.redTaxMid.anchor.setTo(.5, .5);
-  this.textTaxMid.anchor.setTo(.5, .5);
+  this.textTaxMid.anchor.setTo(0, .5);
   this.addTaxMid.anchor.setTo(.5, .5);
   this.redTaxHigh  = this.game.add.button(this.bg_mg.bgArray[2].getVarsCenter().center.x - 15, 75, 'taxReduce', this.decTaxHigh, this);
-  this.textTaxHigh = this.game.add.text(this.bg_mg.bgArray[1].getVarsCenter().center.x, 55, 'Med');
+  this.textTaxHigh = this.game.add.text(this.bg_mg.bgArray[1].getVarsCenter().center.x, 78, '$$');
+  this.textTaxHigh.font = "Roboto";
+  this.textTaxHigh.fontSize = 18;
   this.addTaxHigh  = this.game.add.button(this.bg_mg.bgArray[2].getVarsCenter().center.x + 15, 75, 'taxAdd', this.incTaxHigh, this);
   this.redTaxHigh.anchor.setTo(.5, .5);
-  this.textTaxHigh.anchor.setTo(.5, .5);
+  this.textTaxHigh.anchor.setTo(0, .5);
   this.addTaxHigh.anchor.setTo(.5, .5);
 
 	this.game.time.events.add(Phaser.Timer.SECOND * this.taxTime, this.collectTax, this);
@@ -95,15 +100,18 @@ Game.prototype = {
 	  // console.log(happiness);
 	  // console.log(happiness);
 	  this.setHappiness(happiness);
-    this.redTaxLow.x   = this.bg_mg.bgArray[0].getVarsCenter().center.x - 15;
-    this.textTaxLow.x  = this.bg_mg.bgArray[0].getVarsCenter().center.x;
-    this.addTaxLow.x   = this.bg_mg.bgArray[0].getVarsCenter().center.x + 15;
-    this.redTaxMid.x   = this.bg_mg.bgArray[1].getVarsCenter().center.x - 15;
-    this.textTaxMid.x  = this.bg_mg.bgArray[1].getVarsCenter().center.x;
-    this.addTaxMid.x   = this.bg_mg.bgArray[1].getVarsCenter().center.x + 15;
-    this.redTaxHigh.x  = this.bg_mg.bgArray[2].getVarsCenter().center.x - 15;
-    this.textTaxHigh.x = this.bg_mg.bgArray[2].getVarsCenter().center.x;
-    this.addTaxHigh.x  = this.bg_mg.bgArray[2].getVarsCenter().center.x + 15;
+    this.redTaxLow.x   = this.bg_mg.bgArray[0].getVarsCenter().center.x - 30;
+    this.textTaxLow.x  = this.bg_mg.bgArray[0].getVarsCenter().center.x - 15;
+    this.addTaxLow.x   = this.bg_mg.bgArray[0].getVarsCenter().center.x + 30;
+    this.redTaxMid.x   = this.bg_mg.bgArray[1].getVarsCenter().center.x - 30;
+    this.textTaxMid.x  = this.bg_mg.bgArray[1].getVarsCenter().center.x - 15;
+    this.addTaxMid.x   = this.bg_mg.bgArray[1].getVarsCenter().center.x + 30;
+    this.redTaxHigh.x  = this.bg_mg.bgArray[2].getVarsCenter().center.x - 30;
+    this.textTaxHigh.x = this.bg_mg.bgArray[2].getVarsCenter().center.x - 15;
+    this.addTaxHigh.x  = this.bg_mg.bgArray[2].getVarsCenter().center.x + 30;
+
+    if (this.curHappiness < this.minHappiness)
+      this.game.state.start('Game_Over');
   },
 
   onInputDown: function () {
@@ -167,61 +175,61 @@ Game.prototype = {
   decTaxLow: function () {
     if (this.taxMod.low == 1) {
       this.taxMod.low = .5;
-      this.textTaxLow.text = 'Low';
+      this.textTaxLow.text = '$';
     }
     else if (this.taxMod.low == 1.5) {
       this.taxMod.low = 1;
-      this.textTaxLow.text = 'Med';
+      this.textTaxLow.text = '$$';
     }
   },
   incTaxLow: function () {
     if (this.taxMod.low == .5) {
       this.taxMod.low = 1;
-      this.textTaxLow.text = 'Med';
+      this.textTaxLow.text = '$$';
     }
     else if (this.taxMod.low == 1) {
       this.taxMod.low = 1.5;
-      this.textTaxLow.text = 'High';
+      this.textTaxLow.text = '$$$';
     }
   },
   decTaxMid: function () {
     if (this.taxMod.mid == 1) {
       this.taxMod.mid = .5;
-      this.textTaxMid.text = 'Low';
+      this.textTaxMid.text = '$';
     }
     else if (this.taxMod.mid == 1.5) {
       this.taxMod.mid = 1;
-      this.textTaxMid.text = 'Med';
+      this.textTaxMid.text = '$$';
     }
   },
   incTaxMid: function () {
     if (this.taxMod.mid == .5) {
       this.taxMod.mid = 1;
-      this.textTaxMid.text = 'Med';
+      this.textTaxMid.text = '$$';
     }
     else if (this.taxMod.mid == 1) {
       this.taxMod.mid = 1.5;
-      this.textTaxMid.text = 'High';
+      this.textTaxMid.text = '$$$';
     }
   },
   decTaxHigh: function () {
     if (this.taxMod.high == 1) {
       this.taxMod.high = .5;
-      this.textTaxHigh.text = 'Low';
+      this.textTaxHigh.text = '$';
     }
     else if (this.taxMod.high == 1.5) {
       this.taxMod.high = 1;
-      this.textTaxHigh.text = 'Med';
+      this.textTaxHigh.text = '$$';
     }
   },
   incTaxHigh: function () {
     if (this.taxMod.high == .5) {
       this.taxMod.high = 1;
-      this.textTaxHigh.text = 'Med';
+      this.textTaxHigh.text = '$$';
     }
     else if (this.taxMod.high == 1) {
       this.taxMod.high = 1.5;
-      this.textTaxHigh.text = 'High';
+      this.textTaxHigh.text = '$$$';
     }
   }
 };
