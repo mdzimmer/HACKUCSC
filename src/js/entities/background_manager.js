@@ -87,7 +87,9 @@ Background_Manager.prototype.sendTo = function(source, destination, group) {
 		return;
 	}
 	var transType = this.transferType(source, destination, group)
+	// console.log(source, destination, group, transType);
 	if (transType.can) {	// Check if they can transfer up
+		// console.log('b');
 		source.group_manager.transfer(destination.group_manager, group, transType.happiness);
 		if (transType.educate) {
 			group.startEducation();
@@ -165,7 +167,7 @@ Background_Manager.prototype.canTransfer = function(source, destination, group) 
 	}
 	return false;
 };
-Background_Manager.prototype.backgroudBy = function(type, incomeLevel) {
+Background_Manager.prototype.backgroundBy = function(type, incomeLevel) {
 	for (var bg in this.bgArray) {
 		bg = this.bgArray[bg];
 		if (bg.type == type && bg.incomeLevel == bg.incomeLevel) {

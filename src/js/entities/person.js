@@ -9,7 +9,6 @@ var Person = function (game, x, y, id) {
 	this.happiness = 100;
     this.fatigue = 0;
     this.happinessModifier = 0;
-    this.fatigue = 0;
 };
 Person.prototype = Object.create(Phaser.Sprite.prototype);
 Person.prototype.constructor = Person;
@@ -31,7 +30,7 @@ Person.prototype.getTax = function() {
 	// console.log('get tax', this.group.myManager.background.type);
 	if (this.group.myManager.background.type === 'house') {
 		if (this.group.myManager.background.incomeLevel === Person.EDULEVEL.low) {
-			console.log(this.group.myManager.background.myManager.state.taxMod.low);
+			// console.log(this.group.myManager.background.myManager.state.taxMod.low);
 			return -10;
 		} else if (this.group.myManager.background.incomeLevel === Person.EDULEVEL.mid) {
 			return -20;
@@ -49,17 +48,5 @@ Person.prototype.getTax = function() {
 	}
 	return 0;
 };
-
-Person.prototype.addFatigue = function(amt) {
-	this.fatigue += amt;
-	if (this.fatigue >= 100) {
-		var newBG = this.group.myManager.background.myManager.backgroundBy('house', this.group.myManager.background.incomeLevel);
-		if (!newBG) {
-			console.log('ERROR');
-			return;
-		}
-		
-	}
-}
 
 module.exports = Person;

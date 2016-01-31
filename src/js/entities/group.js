@@ -227,6 +227,25 @@ Group.prototype.onMove = function() {
 Group.prototype.happinessModifier = function() {
     return this.members[0].happinessModifier;
 };
+Group.prototype.addFatigue = function(amt) {
+	var flag = false;
+	for (var member in this.members) {
+		this.members[member].fatigue += amt;
+		if (this.members[member].fatigue >= 100) {
+			flag = true;
+		}
+	}
+	if (flag) {
+		// console.log(this);
+		var newBG = this.myManager.background.myManager.backgroundBy('house', this.myManager.background.incomeLevel);
+		if (!newBG) {
+			console.log('ERROR');
+			return;
+		}
+		this.myManager.background.myManager.sendTo(this.myManager.background, newBG.group_manager.background, this);
+		//console.log('fatigue too dam high');
+	}
+}
 
 module.exports = Group;
 
