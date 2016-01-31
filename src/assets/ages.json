@@ -1,0 +1,36 @@
+{"frames": {
+
+"adult.png":
+{
+	"frame": {"x":34,"y":1,"w":23,"h":42},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":23,"h":42},
+	"sourceSize": {"w":23,"h":42}
+},
+"old.png":
+{
+	"frame": {"x":1,"y":1,"w":31,"h":48},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":31,"h":48},
+	"sourceSize": {"w":31,"h":48}
+},
+"young.png":
+{
+	"frame": {"x":59,"y":1,"w":23,"h":27},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":23,"h":27},
+	"sourceSize": {"w":23,"h":27}
+}},
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "ages.png",
+	"format": "RGBA8888",
+	"size": {"w":83,"h":50},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:de8309aa30093f15fd6ee636eeb352a2:2b0e0d4bc17637665a0876fe2d9091b1:55a1d65ce5f286b718ace8c1035f1e1a$"
+}
+}

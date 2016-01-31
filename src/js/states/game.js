@@ -31,7 +31,7 @@ module.exports = Game;
 Game.prototype = {
 
   create: function () {
-  	// console.log('foof');
+  	// console.log('fooff');
 	  // console.log(this);
 	this.game.stage.backgroundColor = "#ffffff";
 	  
@@ -118,7 +118,7 @@ Game.prototype = {
 		  for (var group in this.bg_mg.bgArray[bg].group_manager.members) {
 			  for (var person in this.bg_mg.bgArray[bg].group_manager.members[group].members) {
 				  taxes += this.bg_mg.bgArray[bg].group_manager.members[group].members[person].getTax();
-				  // this.bg_mg.bgArray[bg].group_manager.members[group].members[person].addFatigue(this.fatiguePerTick);
+				  this.bg_mg.bgArray[bg].group_manager.members[group].members[person].ageTick();
 			  }
 			  if (this.bg_mg.bgArray[bg].group_manager.background.type == 'work') {
 			  	this.bg_mg.bgArray[bg].group_manager.members[group].addFatigue(this.fatiguePerTick);
