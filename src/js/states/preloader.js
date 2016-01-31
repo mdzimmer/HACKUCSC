@@ -24,6 +24,16 @@ Preloader.prototype = {
     this.load.image('taxReduce', 'assets/taxReduce.png');
     this.load.image('taxAdd', 'assets/taxAdd.png');
     this.load.image('lock', 'assets/lock.png');
+    /*
+    this.load.image('down1', 'assets/downChevron1.png');
+    this.load.image('down2', 'assets/downChevron2.png');
+    this.load.image('down3', 'assets/downChevron3.png');
+    this.load.image('up1', 'assets/upChevron1.png');
+    this.load.image('up2', 'assets/upChevron2.png');
+    this.load.image('up3', 'assets/upChevron3.png');
+    */
+    // this.load.spritesheet('chevrons', 'assets/chevron_sheet.png', 600, 780);
+    this.load.atlasJSONHash('chevrons', 'assets/chevrons.png', 'assets/chevrons.json');
 	this.load.image('happyface', 'assets/happyface_better.png');
 	this.load.image('bordered', 'assets/bordered.png');
 	this.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');

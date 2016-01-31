@@ -20,6 +20,12 @@ Person.EDULEVEL = {
 	high : 2
 };
 
+Person.INCOMES = {
+	low : 10,
+	mid : 20,
+	high : 30
+}
+
 Person.prototype.update = function() {
 	this.x += this.velocity.x * this.speed;
 	this.y += this.velocity.y * this.speed;
@@ -31,19 +37,19 @@ Person.prototype.getTax = function() {
 	if (this.group.myManager.background.type === 'house') {
 		if (this.group.myManager.background.incomeLevel === Person.EDULEVEL.low) {
 			// console.log(this.group.myManager.background.myManager.state.taxMod.low);
-			return -10;
+			return -1 * Person.INCOMES.low;
 		} else if (this.group.myManager.background.incomeLevel === Person.EDULEVEL.mid) {
-			return -20;
+			return -2 * Person.INCOMES.mid;
 		} else if (this.group.myManager.background.incomeLevel === Person.EDULEVEL.high) {
-			return -30;
+			return -3 * Person.INCOMES.high;
 		}
 	} else if (this.group.myManager.background.type === 'work') {
 		if (this.group.myManager.background.incomeLevel === Person.EDULEVEL.low) {
-			return 10 * this.group.myManager.background.myManager.state.taxMod.low;
+			return Person.INCOMES.low * this.group.myManager.background.myManager.state.taxMod.low;
 		} else if (this.group.myManager.background.incomeLevel === Person.EDULEVEL.mid) {
-			return 20 * this.group.myManager.background.myManager.state.taxMod.mid;
+			return Person.INCOMES.mid * this.group.myManager.background.myManager.state.taxMod.mid;
 		} else if (this.group.myManager.background.incomeLevel === Person.EDULEVEL.high) {
-			return 30 * this.group.myManager.background.myManager.state.taxMod.high;
+			return Person.INCOMES.high * this.group.myManager.background.myManager.state.taxMod.high;
 		}
 	}
 	return 0;

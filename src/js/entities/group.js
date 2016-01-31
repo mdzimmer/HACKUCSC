@@ -213,7 +213,8 @@ Group.prototype.onMove = function() {
     if (dist <= this.clickDist) {
         if (!this.state.hm.groupSelected || this.state.hm.groupSelected == this) {
             // console.log('a');
-            this.state.hm.showStatic({people : this.numPeople(), education : this.lowestEducation(), happiness : this.averageHappiness(), fatigue : this.averageFatigue(), income : this.income()}, this.center.x, this.center.y - 50, 100);
+            // console.log(this.happinessModifier);
+            this.state.hm.showStatic({people : this.numPeople(), education : this.lowestEducation(), happiness : this.averageHappiness(), fatigue : this.averageFatigue(), income : this.income(), happinessModifier : this.happinessModifier}, this.center.x, this.center.y - 50, 100);
             this.hover = true;
         }
     } else {

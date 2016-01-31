@@ -97,7 +97,9 @@ Background_Manager.prototype.sendTo = function(source, destination, group) {
 		this.updateRatios(destination);
         // console.log(transType.happinessModifier);
         for (var person in group.members) {
-            group.happinessModifier = transType.happinessModifier;
+        	// console.log(transType.happinessModifier);
+            group.happinessModifier = transType.happinessMsodifier;
+        	// console.log(group.happinessModifier);
         }
 		// var test = destination.getVarsCenter();
 		// console.log(test);
@@ -128,7 +130,7 @@ Background_Manager.prototype.transferType = function(source, destination, group)
     	// console.log('education');
         happinessModifier -= groupEdu - destination.incomeLevel;
     }
-    if (destination.type == 'housing') {
+    if (destination.type == 'house') {
     	// console.log('housing');
     	happinessModifier += 1;
     }
@@ -163,6 +165,29 @@ Background_Manager.prototype.transferType = function(source, destination, group)
  	// console.log(happinessModifier, group.happinessModifier);
     var happinessChange = happinessModifier - group.happinessModifier;
     var incomeChange = 0;
+    var baseIncome = group.income();
+    var newIncome = 0;
+    var numPeople = group.numPeople();
+    if (destination.type == 'work') {
+    	// console.log('tax', destination.incomeLevel, this.state.taxMod.low);
+    	if (destination.incomeLevel == 0) {
+	    	newIncome += numPeople * Person.INCOMES.low * this.state.taxMod.low;
+    	} else if (destination.incomeLevel == 1) {
+	    	newIncome += numPeople * Person.INCOMES.mid * this.state.taxMod.mid;
+    	} else if (destination.incomeLevel == 2) {
+	    	newIncome += numPeople * Person.INCOMES.high * this.state.taxMod.high;
+    	}
+ 	} else if (destination.type == 'home') {
+ 		if (destination.incomeLevel == 0) {
+	    	newIncome -= numPeople * Person.INCOMES.low;
+    	} else if (destination.incomeLevel == 1) {
+	    	newIncome -= numPeople * Person.INCOMES.mid;
+    	} else if (destination.incomeLevel == 2) {
+	    	newIncome -= numPeople * Person.INCOMES.high;
+    	}
+ 	}
+ 	// console.log(newIncome, baseIncome)
+ 	var incomeChange = newIncome - baseIncome;
 	return {can : can, educate : educate, happinessChange : happinessChange, incomeChange : incomeChange, happinessModifier : happinessModifier};
 };
 Background_Manager.prototype.canTransfer = function(source, destination, group) {
