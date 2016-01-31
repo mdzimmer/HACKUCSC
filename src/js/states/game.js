@@ -1,4 +1,3 @@
-var Player = require('../entities/player');
 var Background_Manager = require('../entities/background_manager');
 var Person = require('../entities/person');
 var Group = require('../entities/group');
@@ -68,27 +67,27 @@ Game.prototype = {
 	this.happy.anchor.setTo(0.5, 0.5);
 
   // Tax buttons
-  this.redTaxLow   = this.game.add.button(this.bg_mg.bgArray[0].getVarsCenter().center.x - 15, 75, 'taxReduce', this.decTaxLow, this);
-  this.textTaxLow  = this.game.add.text(this.bg_mg.bgArray[0].getVars()[0], 78, '$$');
+  this.redTaxLow   = this.game.add.button(this.bg_mg.bgArray[0].getVarsTrue().center.x - 15, 75, 'taxReduce', this.decTaxLow, this);
+  this.textTaxLow  = this.game.add.text(this.bg_mg.bgArray[0].getVarsTrue()[0], 78, '$$');
   this.textTaxLow.font = "Roboto";
   this.textTaxLow.fontSize = 18;
-  this.addTaxLow   = this.game.add.button(this.bg_mg.bgArray[0].getVarsCenter().center.x + 15, 75, 'taxAdd', this.incTaxLow, this);
+  this.addTaxLow   = this.game.add.button(this.bg_mg.bgArray[0].getVarsTrue().center.x + 15, 75, 'taxAdd', this.incTaxLow, this);
   this.redTaxLow.anchor.setTo(.5, .5);
   this.textTaxLow.anchor.setTo(0, .5);
   this.addTaxLow.anchor.setTo(.5, .5);
-  this.redTaxMid   = this.game.add.button(this.bg_mg.bgArray[1].getVarsCenter().center.x - 15, 75, 'taxReduce', this.decTaxMid, this);
-  this.textTaxMid  = this.game.add.text(this.bg_mg.bgArray[1].getVarsCenter().center.x, 78, '$$');
+  this.redTaxMid   = this.game.add.button(this.bg_mg.bgArray[1].getVarsTrue().center.x - 15, 75, 'taxReduce', this.decTaxMid, this);
+  this.textTaxMid  = this.game.add.text(this.bg_mg.bgArray[1].getVarsTrue().center.x, 78, '$$');
   this.textTaxMid.font = "Roboto";
   this.textTaxMid.fontSize = 18;
-  this.addTaxMid   = this.game.add.button(this.bg_mg.bgArray[1].getVarsCenter().center.x + 15, 75, 'taxAdd', this.incTaxMid, this);
+  this.addTaxMid   = this.game.add.button(this.bg_mg.bgArray[1].getVarsTrue().center.x + 15, 75, 'taxAdd', this.incTaxMid, this);
   this.redTaxMid.anchor.setTo(.5, .5);
   this.textTaxMid.anchor.setTo(0, .5);
   this.addTaxMid.anchor.setTo(.5, .5);
-  this.redTaxHigh  = this.game.add.button(this.bg_mg.bgArray[2].getVarsCenter().center.x - 15, 75, 'taxReduce', this.decTaxHigh, this);
-  this.textTaxHigh = this.game.add.text(this.bg_mg.bgArray[1].getVarsCenter().center.x, 78, '$$');
+  this.redTaxHigh  = this.game.add.button(this.bg_mg.bgArray[2].getVarsTrue().center.x - 15, 75, 'taxReduce', this.decTaxHigh, this);
+  this.textTaxHigh = this.game.add.text(this.bg_mg.bgArray[1].getVarsTrue().center.x, 78, '$$');
   this.textTaxHigh.font = "Roboto";
   this.textTaxHigh.fontSize = 18;
-  this.addTaxHigh  = this.game.add.button(this.bg_mg.bgArray[2].getVarsCenter().center.x + 15, 75, 'taxAdd', this.incTaxHigh, this);
+  this.addTaxHigh  = this.game.add.button(this.bg_mg.bgArray[2].getVarsTrue().center.x + 15, 75, 'taxAdd', this.incTaxHigh, this);
   this.redTaxHigh.anchor.setTo(.5, .5);
   this.textTaxHigh.anchor.setTo(0, .5);
   this.addTaxHigh.anchor.setTo(.5, .5);
@@ -101,16 +100,19 @@ Game.prototype = {
 	// this.game.time.events.add(Phaser.Timer.SECOND * this.migrantDelay, this.spawnMigrant, this);
 
 	this.game.input.keyboard.onPressCallback = this.spawnMigrantNoRepeat;
+  // console.log(this.game.input.keyboard);
 	this.game.input.keyboard.state = this;
 	this.game.input.keyboard.utils = Utils;
   this.input.addMoveCallback(this.onMouseMove, this);
+  this.personGroup = this.game.add.group();
+  this.personGroup.z = 5;
   },
   testFun: function() {
   	// console.log('fun');
   		this.spawnMigrantNoRepeat()
   },
   update: function () {
-	this.bg_mg.update();
+	// this.bg_mg.update();
 	//this.gm.update();
 	this.uib.render();
 	var happiness = 0;
@@ -126,15 +128,15 @@ Game.prototype = {
 	  happiness -= this.minHappiness;
 	  // console.log(happiness);
 	  // console.log(happiness);
-    this.redTaxLow.x   = this.bg_mg.bgArray[0].getVarsCenter().center.x - 30;
-    this.textTaxLow.x  = this.bg_mg.bgArray[0].getVarsCenter().center.x - 15;
-    this.addTaxLow.x   = this.bg_mg.bgArray[0].getVarsCenter().center.x + 30;
-    this.redTaxMid.x   = this.bg_mg.bgArray[1].getVarsCenter().center.x - 30;
-    this.textTaxMid.x  = this.bg_mg.bgArray[1].getVarsCenter().center.x - 15;
-    this.addTaxMid.x   = this.bg_mg.bgArray[1].getVarsCenter().center.x + 30;
-    this.redTaxHigh.x  = this.bg_mg.bgArray[2].getVarsCenter().center.x - 30;
-    this.textTaxHigh.x = this.bg_mg.bgArray[2].getVarsCenter().center.x - 15;
-    this.addTaxHigh.x  = this.bg_mg.bgArray[2].getVarsCenter().center.x + 30;
+    this.redTaxLow.x   = this.bg_mg.bgArray[0].getVarsTrue().center.x - 30;
+    this.textTaxLow.x  = this.bg_mg.bgArray[0].getVarsTrue().center.x - 15;
+    this.addTaxLow.x   = this.bg_mg.bgArray[0].getVarsTrue().center.x + 30;
+    this.redTaxMid.x   = this.bg_mg.bgArray[1].getVarsTrue().center.x - 30;
+    this.textTaxMid.x  = this.bg_mg.bgArray[1].getVarsTrue().center.x - 15;
+    this.addTaxMid.x   = this.bg_mg.bgArray[1].getVarsTrue().center.x + 30;
+    this.redTaxHigh.x  = this.bg_mg.bgArray[2].getVarsTrue().center.x - 30;
+    this.textTaxHigh.x = this.bg_mg.bgArray[2].getVarsTrue().center.x - 15;
+    this.addTaxHigh.x  = this.bg_mg.bgArray[2].getVarsTrue().center.x + 30;
 
     if (this.curHappiness < this.minHappiness) {
       this.game.state.start('Game_Over');
@@ -145,7 +147,8 @@ Game.prototype = {
   onInputDown: function () {
      var bg = this.bg_mg.whereClicked();
      var gm = bg.group_manager;
-	   console.log(this.input.x, this.input.y, gm.center, gm.width, gm.height);
+	   console.log('mouse', this.input.x, this.input.y, 'bg x-y-width-height', bg.x, bg.y, bg.width, bg.height);
+     console.log('gm', gm.center.x, gm.center.y, gm.width, gm.height);
   },
   onMouseMove: function () {
     // var here = this.bg_mg.whereClicked();
@@ -157,14 +160,15 @@ Game.prototype = {
   	this.game.add.existing(newMigrant);
   	var bg = this.bg_mg.bgArray[6];
   	bg.group_manager.addPerson(newMigrant);
-  	this.game.time.events.add(Phaser.Timer.SECOND * this.migrantDelay, this.spawnMigrant, this);
+    this.personGroup.add(newMigrant);
+  	this.game.time.events.add(Phaser.Timer.SECOND * this.migrantDelasy, this.spawnMigrant, this);
   	// console.log(bg)
   },
   spawnMigrantNoRepeat: function () {
-  	// console.log(this);
+  	// console.log(Qthis);
 	   var newMigrant = new Person(this.game, this.game.width / 2 + Math.random() * 800 - 400, this.game.height + 15);
   	this.game.add.existing(newMigrant);
-  	// console.log(this.state);s
+  	// console.log(newMigrant);
   	var bg = this.state.bg_mg.bgArray[6];
   	bg.group_manager.addPerson(newMigrant);
 
