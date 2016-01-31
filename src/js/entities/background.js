@@ -59,6 +59,7 @@ Background.prototype.updateVars = function(vars) {
 };
 
 Background.prototype.update = function() {
+<<<<<<< HEAD
 	// if (this.newHRatio < this.minRatio) this.newHRatio = this.minRatio;
  //    if (this.newVRatio < this.minRatio) this.newVRatio = this.minRatio;
  //    if (this.hRatio !== this.newHRatio) {
@@ -73,6 +74,24 @@ Background.prototype.update = function() {
  //    }
  //    if (this.type === 'unemployed')
  //        this.hRatio = 1;
+=======
+	if (this.newHRatio < this.minRatio) this.newHRatio = this.minRatio;
+    if (this.newVRatio < this.minRatio) this.newVRatio = this.minRatio;
+    if (this.newHRatio > this.maxRatio) this.newHRatio = this.maxRatio;
+    if (this.newVRatio > this.maxRatio) this.newVRatio = this.maxRatio;
+    if (this.hRatio !== this.newHRatio) {
+        if (this.hRatio + .01 < this.newHRatio) this.hRatio += .01;
+        else if (this.hRatio - .01 > this.newHRatio) this.hRatio -= .01;
+        else this.hRatio = this.newHRatio;
+    }
+    if (this.vRatio !== this.newVRatio) {
+        if (this.vRatio + .01 < this.newVRatio) this.vRatio += .01;
+        else if (this.vRatio - .01 > this.newVRatio) this.vRatio -= .01;
+        else this.vRatio = this.newVRatio;
+    }
+    if (this.type === 'unemployed')
+        this.hRatio = 1;
+>>>>>>> 1f3ac272f7ca9f833fe9d59fb87f75f685ff6709
     this.group_manager.update();
 };
 

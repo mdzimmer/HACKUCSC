@@ -18,8 +18,7 @@ var HoverMenu = function (game, x, y, state) {
 
     this.chevron = this.game.add.sprite(this.x, this.y, 'chevrons');
     this.chevron.anchor.setTo(0.5, 0.5);
-    this.chevron.width = 50;
-    this.chevron.height = 50;
+    this.chevron.frame = 3;
     this.chevron.y -= this.height;
     this.chevron.x += 25;
     
@@ -98,11 +97,11 @@ HoverMenu.prototype.showStatic = function(state, x, y, over) {
     this.income.text = 'Income: $' + state.income;
     var happinessModifier = state.happinessModifier;
     if (happinessModifier == -3) {
-        this.chevron.frame = 2;
+        this.chevron.frame = 0;
     } else if (happinessModifier == -2) {
         this.chevron.frame = 1;
     } else if (happinessModifier == -1) {
-        this.chevron.frame = 0;
+        this.chevron.frame = 2;
     } else if (happinessModifier == 0) {
         this.chevron.frame = 3;
     } else if (happinessModifier == 1) {

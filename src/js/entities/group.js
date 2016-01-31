@@ -19,8 +19,6 @@ var Group = function (game, centerX, centerY, state) {
 	this.state = state;
 	this.book = this.game.add.sprite(this.center.x, this.center.y, 'book');
 	this.book.anchor.setTo(0.5, 0.5);
-	this.book.width = 25;
-	this.book.height = 25;
 	this.book.visible = false;
 	this.learningTime = .01;
     this.hover = false;

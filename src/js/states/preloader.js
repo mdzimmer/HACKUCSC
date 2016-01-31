@@ -25,7 +25,8 @@ Preloader.prototype = {
     this.load.image('taxReduce', 'assets/taxReduce.png');
     this.load.image('taxAdd', 'assets/taxAdd.png');
     this.load.image('lock', 'assets/lock.png');
-    this.load.atlasJSONHash('chevrons', 'assets/chevrons.png', 'assets/chevrons.json');
+    this.load.spritesheet('chevrons', 'assets/chevron_sheet.png', 40, 50);
+    // this.load.atlasJSONHash('chevrons', 'assets/chevrons.png', 'assets/chevrons.json');
     this.load.atlasJSONHash('ages', 'assets/ages.png', 'assets/ages.json');
     this.load.image('happyface', 'assets/happyface_better.png');
     this.load.image('bordered', 'assets/bordered.png');
