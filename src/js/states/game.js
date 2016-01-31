@@ -1,7 +1,7 @@
 var Background_Manager = require('../entities/background_manager');
 var Person = require('../entities/person');
 var Group = require('../entities/group');
-var GroupManager = require('../entities/groupManager');
+// var GroupManager = require('../entities/groupManager');
 var UIBuilder = require('../entities/uiBuilder');
 var HoverMenu = require('../entities/hoverMenu');
 var Utils = require('../utils');
@@ -36,7 +36,7 @@ module.exports = Game;
 Game.prototype = {
 
   create: function () {
-  	console.log('foo');
+  	console.log('foo2');
 	  // console.log(this);
     this.game.stage.backgroundColor = "#ededed";
     this.menu_bg = this.game.add.image(0, 0, 'menu_bg');  
@@ -147,8 +147,8 @@ Game.prototype = {
   onInputDown: function () {
      var bg = this.bg_mg.whereClicked();
      var gm = bg.group_manager;
-	   console.log('mouse', this.input.x, this.input.y, 'bg x-y-width-height', bg.x, bg.y, bg.width, bg.height);
-     console.log('gm', gm.center.x, gm.center.y, gm.width, gm.height);
+	   // console.log('mouse', this.input.x, this.input.y, 'bg x-y-width-height', bg.x, bg.y, bg.width, bg.height);
+     // console.log('gm', gm.center.x, gm.center.y, gm.width, gm.height);
   },
   onMouseMove: function () {
     // var here = this.bg_mg.whereClicked();

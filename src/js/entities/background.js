@@ -27,7 +27,7 @@ Background.prototype.updateVars = function(vars) {
     // console.log(vars);
     // console.log(this.type, this.incomeLevel, vars.width, vars.height, vars.center);
     this.x = vars.center.x
-    this.y = vars.center.y+ this.myManager.border;
+    this.y = vars.center.y + this.myManager.border;
     this.width = vars.width;
     this.height = vars.height;
     this.group_manager.updateVars();
