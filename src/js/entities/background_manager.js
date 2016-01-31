@@ -81,6 +81,10 @@ Background_Manager.prototype.constructor = Background_Manager;
 };*/
 
 Background_Manager.prototype.sendTo = function(source, destination, group) {
+	// console.log(destination);
+	if (destination === null) {
+		return;
+	}
 	var transType = this.transferType(source, destination, group)
 	if (transType.can) {	// Check if they can transfer up
 		source.group_manager.transfer(destination.group_manager, group);
@@ -90,7 +94,7 @@ Background_Manager.prototype.sendTo = function(source, destination, group) {
 		this.updateRatios();
 		
 		var test = destination.getVarsCenter();
-		console.log(test);
+		// console.log(test);
 	}
 };
 Background_Manager.prototype.numPeople = function() {
@@ -103,7 +107,9 @@ Background_Manager.prototype.numPeople = function() {
 Background_Manager.prototype.transferType = function(source, destination, group) {
 	var groupEdu = group.members[0].eduLevel;
 	var can = this.canTransfer(source, destination, group);
-	var educate = destination.type === 'house' && destination.incomeLevel > groupEdu
+	// console.log(destination);
+	// console.log(destination.type, destination.incomeLevel);
+	var educate = (destination.type === 'house' && destination.incomeLevel) > groupEdu;
 	return {can : can, educate : educate};
 };
 Background_Manager.prototype.canTransfer = function(source, destination, group) {

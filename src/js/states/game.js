@@ -72,10 +72,10 @@ Game.prototype = {
   },
 
   onInputDown: function () {
-	 
+	 // console.log(this.game.width, this.game.height);
   },
   collectTax: function () {
-	  console.log('collect tax');
+	  // console.log('collect tax');
 	  var taxes = 0;
 	  for (var bg in this.bg_mg.bgArray) {
 		  for (var group in this.bg_mg.bgArray[bg].group_manager.members) {

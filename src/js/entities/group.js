@@ -22,7 +22,7 @@ var Group = function (game, centerX, centerY, state) {
 	this.book.width = 25;
 	this.book.height = 25;
 	this.book.visible = false;
-	this.learningTime = 5;
+	this.learningTime = .01;
 	
 	this.state.input.onDown.add(this.onInputDown, this);
 }
@@ -54,9 +54,14 @@ Group.prototype.update = function() {
 			if (totalDist <= this.minDist) {
 				velocity.x = -1 * oDiff.x;
 				velocity.y = -1 * oDiff.y;
-				continue;
+				// velocity.x -= oDiff.x;
+				// velocity.y -= oDiff.y;
+				break;
 			}
 		}
+		// if (util.hypotenuse(velocity.x, velocity.y) < this.minVelocity) {
+			// velocity.x = velocity.y = 0;
+		// }
 		member.velocity = velocity;
 	}
 };
