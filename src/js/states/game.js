@@ -43,7 +43,7 @@ Game.prototype = {
 	this.money.font = 'VT323';
 	this.money.fontSize = 24;
 	this.money.fill = '#ffffff';
-    this.money.setShadow(3, 3, 'rgba(0,0,0,0.5)', 5);
+    // this.money.setShadow(3, 3, 'rgba(0,0,0,0.5)', 5);
 	
 	this.uib = new UIBuilder(this);
 	this.bar = this.uib.buildProgressBar("growing", this.game.width / 2, 25, 300, 25, 100 - this.minHappiness);
@@ -54,7 +54,8 @@ Game.prototype = {
 	this.happy.anchor.setTo(0.5, 0.5);
 	
 	this.game.time.events.add(Phaser.Timer.SECOND * this.taxTime, this.collectTax, this);
-    this.hm = new HoverMenu(this.game, 200, 200);
+    this.hm = new HoverMenu(this.game, 200, 200, this);
+    // this.hm.anchor.setTo(0.5, 1);
 	// this.hm.visible = false;
   },
 

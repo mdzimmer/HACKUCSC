@@ -1,17 +1,22 @@
-var HoverMenu = function (game, x, y) {
+var HoverMenu = function (game, x, y, state) {
 	Phaser.Sprite.call(this, game, x, y, 'bordered');
 	game.add.existing(this);
 	this.x = x;
 	this.y = y;
+    this.groupSelected = null;
 	this.width = 265;
 	this.height = 125;
     this.staticWidth = 265;
     this.staticHeight = 125;
     this.changeWidth = 150;
-    this.changeHeight = 85;
+    this.changeHeight = 60;
+    this.state = state;
 	
 	this.staticText = this.game.add.group();
 	this.changeText = this.game.add.group();
+    this.visible = false;
+    
+    // this.state.input.addMoveCallback(this.onInputMove, this);
 	
 	this.people = this.game.add.text(10, 10, 'People 0');
 	this.people.font = 'VT323';
@@ -47,26 +52,31 @@ var HoverMenu = function (game, x, y) {
     this.fatigue.y += 20 * 3;
 	this.staticText.add(this.income);
     this.income.y += 20 * 4;
-    this.staticText.visible = true;
+    this.staticText.visible = false;
     this.staticText.x = this.x;
     this.staticText.y = this.y;
+	
+	this.happinessChange = this.game.add.text(10, 10, 'Happiness =');
+	this.happinessChange.font = 'VT323';
+	this.happinessChange.fontSize = 24;
+	this.happinessChange.fill = '#000000';
+	
+	this.incomeChange = this.game.add.text(10, 10, 'Income =');
+	this.incomeChange.font = 'VT323';
+	this.incomeChange.fontSize = 24;
+	this.incomeChange.fill = '#000000';
+    
+    this.changeText.add(this.happinessChange);
+    this.changeText.add(this.incomeChange);
+    this.incomeChange.y += 20 * 1;
+    this.changeText.visible = false;
     this.changeText.x = this.x;
     this.changeText.y = this.y;
-	
-	this.happinessEffect = this.game.add.text(10, 10, 'Happiness =');
-	this.happinessEffect.font = 'VT323';
-	this.happinessEffect.fontSize = 24;
-	this.happinessEffect.fill = '#000000';
-	
-	this.incomeEffect = this.game.add.text(10, 10, 'Income =');
-	this.incomeEffect.font = 'VT323';
-	this.incomeEffect.fontSize = 24;
-	this.incomeEffect.fill = '#000000';
     
-    this.changeText.add(this.happinessEffect);
-    this.changeText.add(this.incomeEffect);
-    this.incomeEffect.y += 20 * 1;
-    this.changeText.visible = false;
+    // this.mover = this.game.add.group();
+    // this.mover.add(this);
+    // this.mover.add(this.staticText);
+    // this.mover.add(this.changeText);
 };
 HoverMenu.prototype = Object.create(Phaser.Sprite.prototype);
 HoverMenu.prototype.constructor = HoverMenu;
@@ -74,25 +84,84 @@ HoverMenu.prototype.update = function() {
 	
 };
 //people, education, happiness, fatigue, income
-HoverMenu.prototype.showStatic = function(state) {
+HoverMenu.prototype.showStatic = function(state, x, y, over) {
+    x -= this.width / 2;
+    y -= this.height;
 	this.people.text = 'People ' + state.people;
     this.education.text = 'Education ' + state.education;
     this.happiness.text = 'Happiness %' + state.happiness;
     this.fatigue.text = 'Fatigue %' + state.fatigue;
     this.income.text = 'Income $' + state.income;
     this.staticText.visible = true;
+    this.visible = true;
+    this.width = this.staticWidth;
+    this.height = this.staticHeight;
+    this.x = x;
+    this.y = y;
+    this.staticText.x = x;
+    this.staticText.y = y;
+    this.adjustStatic(over);
 };
-//happinessEffect, incomeEffect
-HoverMenu.prototype.showChange = function(state) {
-	this.happinessEffect.text = 'Happiness =' + state.happinessEffect;
-    this.incomeEffect.text = 'Income ' + state.incomeEffect;
+//happinessChange, incomeChange
+HoverMenu.prototype.showChange = function(can, state, x, y) {
+    if (!can) {
+        return;
+    }
+	this.happinessChange.text = 'Happiness ' + state.happinessChange;
+    this.incomeChange.text = 'Income ' + state.incomeChange;
     this.changeText.visible = true;
+    this.visible = true;
+    this.width = this.changeWidth;
+    this.height = this.changeHeight;
+    y -= this.height;
+    this.x = x;
+    this.y = y;
+    this.changeText.x = x;
+    this.changeText.y = y;
+    this.adjustChange();
+};
+HoverMenu.prototype.adjustStatic = function(over) {
+    var maxWidth = this.game.width;
+    var maxHeight = this.game.height;
+    if (this.y - this.height <= 0) { // over top of screen
+        this.y += over;
+        this.y += this.height;
+        this.staticText.y = this.y;
+        this.changeText.y = this.y;
+    }
+    if (this.x - this.width / 2 < 0) { // over left of screen
+        this.x += this.width / 2;
+        this.staticText.x = this.x;
+        this.changeText.x = this.x;
+    } else if (this.x + this.width / 2 > maxWidth) { // over right of screen
+        this.x -= this.width / 2;
+        this.staticText.x = this.x;
+        this.changeText.x = this.x;
+    }
+};
+HoverMenu.prototype.adjustChange = function() {
+    var maxWidth = this.game.width;
+    var maxHeight = this.game.height;
+    if (this.y - this.height <= 0) { // over top of screen
+        this.y += this.height;
+        this.staticText.y = this.y;
+        this.changeText.y = this.y;
+    }
+    if (this.x + this.width > maxWidth) { // over right of screen
+        this.x -= this.width;
+        this.staticText.x = this.x;
+        this.changeText.x = this.x;
+    }
 };
 HoverMenu.prototype.hide = function() {
 	this.staticText.visible = false;
     this.changeText.visible = false;
     this.visible = false;
 };
+// HoverMenu.prototype.onInputMove = function() {
+  // console.log('move');
+  
+// };
 
 module.exports = HoverMenu;
 

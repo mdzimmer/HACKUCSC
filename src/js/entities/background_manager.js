@@ -88,12 +88,16 @@ Background_Manager.prototype.sendTo = function(source, destination, group) {
 	}
 	var transType = this.transferType(source, destination, group)
 	if (transType.can) {	// Check if they can transfer up
-		source.group_manager.transfer(destination.group_manager, group);
+		source.group_manager.transfer(destination.group_manager, group, transType.happiness);
 		if (transType.educate) {
 			group.startEducation();
 		}
 		this.updateRatios(destination);
-		var test = destination.getVarsCenter();
+        // console.log(transType.happinessModifier);
+        for (var person in group.members) {
+            group.members[person].happinessModifier = transType.happinessModifier;
+        }
+		// var test = destination.getVarsCenter();
 		// console.log(test);
 	}
 };
@@ -105,12 +109,24 @@ Background_Manager.prototype.numPeople = function() {
 	return count;
 };
 Background_Manager.prototype.transferType = function(source, destination, group) {
+    if (destination == null) {
+        return;
+    }
 	var groupEdu = group.members[0].eduLevel;
 	var can = this.canTransfer(source, destination, group);
 	// console.log(destination);
 	// console.log(destination.type, destination.incomeLevel);
 	var educate = (destination.type === 'house' && destination.incomeLevel) > groupEdu;
-	return {can : can, educate : educate};
+    var happinessModifier = 0;
+    if (destination.type == 'unemployed' && source.type != 'unemployed') {
+        happinessChange -= 1;
+    }
+    if (destination.incomeLevel < groupEdu) {
+        happinessChange -= groupEdu - destination.incomeLevel;
+    }
+    var happinessChange = happinessModifier - group.happinessModifier();
+    var incomeChange = 0;
+	return {can : can, educate : educate, happinessChange : happinessChange, incomeChange : incomeChange, happinessModifier : happinessModifier};
 };
 Background_Manager.prototype.canTransfer = function(source, destination, group) {
 	// console.log(source, destination, group);
@@ -152,7 +168,7 @@ Background_Manager.prototype.whereClicked = function() {
 		var curDimensions = this.bgArray[i].getVars();
 		var mouseX = this.game.input.x;
 		var mouseY = this.game.input.y;
-		if(i == 6) console.log('curDimensions: ' + curDimensions);
+		// if(i == 6) console.log('curDimensions: ' + curDimensions);
 		if (mouseX > curDimensions[0] && mouseX <= curDimensions[0] + curDimensions[2]) {
 			if (mouseY > curDimensions[1] && mouseY <= curDimensions[1] + curDimensions[3]) {
 				return this.bgArray[i];
