@@ -20,7 +20,7 @@ var Group = function (game, centerX, centerY, state) {
 	this.book = this.game.add.sprite(this.center.x, this.center.y, 'book');
 	this.book.anchor.setTo(0.5, 0.5);
 	this.book.visible = false;
-	this.learningTime = 6;
+	this.learningTime = .01;
     this.hover = false;
     this.lock = this.game.add.sprite(this.center.x, this.center.y, 'lock');
 	this.lock.anchor.setTo(0.5, 0.5);

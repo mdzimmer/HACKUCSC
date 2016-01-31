@@ -2,8 +2,8 @@ var Person = function (game, x, y, id) {
 	Phaser.Sprite.call(this, game, x, y, 'ages');
 	this.frame = 2;
 	this.velocity = {x:0, y:0};
-	//this.width = 10;
-	//this.height = 10;
+	this.width = 10;
+	this.height = 10;
 	this.speed = .05;
 	this.id = id;
 	this.eduLevel = Person.EDULEVEL.unemployed;
