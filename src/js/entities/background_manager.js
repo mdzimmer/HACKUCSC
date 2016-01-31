@@ -124,6 +124,9 @@ Background_Manager.prototype.transferType = function(source, destination, group)
     if (destination.incomeLevel < groupEdu) {
         happinessModifier -= groupEdu - destination.incomeLevel;
     }
+    if (destination.type == 'housing') {
+    	happinessModifier += 1;
+    }
     var happinessChange = happinessModifier - group.happinessModifier();
     var incomeChange = 0;
 	return {can : can, educate : educate, happinessChange : happinessChange, incomeChange : incomeChange, happinessModifier : happinessModifier};
@@ -161,6 +164,15 @@ Background_Manager.prototype.canTransfer = function(source, destination, group) 
 		return true;
 	}
 	return false;
+};
+Background_Manager.prototype.backgroudBy = function(type, incomeLevel) {
+	for (var bg in this.bgArray) {
+		bg = this.bgArray[bg];
+		if (bg.type == type && bg.incomeLevel == bg.incomeLevel) {
+			return bg;
+		}
+	}
+	return null;
 };
 
 Background_Manager.prototype.whereClicked = function() {

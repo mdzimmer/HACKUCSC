@@ -43,6 +43,7 @@ Game.prototype = {
 	this.money.font = 'VT323';
 	this.money.fontSize = 24;
 	this.money.fill = '#ffffff';
+	this.fatiguePerTick = 1;
     // this.money.setShadow(3, 3, 'rgba(0,0,0,0.5)', 5);
 	
 	this.uib = new UIBuilder(this);
@@ -88,6 +89,7 @@ Game.prototype = {
 		  for (var group in this.bg_mg.bgArray[bg].group_manager.members) {
 			  for (var person in this.bg_mg.bgArray[bg].group_manager.members[group].members) {
 				  taxes += this.bg_mg.bgArray[bg].group_manager.members[group].members[person].getTax();
+				  this.bg_mg.bgArray[bg].group_manager.members[group].members[person].addFatigue(this.fatiguePerTick);
 			  }
 		  }
 	  }
