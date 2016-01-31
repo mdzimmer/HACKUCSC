@@ -24,6 +24,10 @@ var Game = function () {
   this.taxMod = {low: 1, mid: 1, high: 1};
   this.minHappiness = 50;
 	this.fatiguePerTick = 10;
+	// this.moneyChangeFading = false;
+	this.moneyChangeFadeDelay = 0.01;
+	this.moneyChangeFadeRate = 0.025;
+	this.moneyChangeHoldDelay = 1;
 };
 
 module.exports = Game;
@@ -46,7 +50,15 @@ Game.prototype = {
 	this.money.font = "Roboto";
 	this.money.fontSize = 24;
 	this.money.fill = '#000000';
-  this.money.text = '$0';
+	this.money.text = '$0';
+
+	this.moneyChange = this.game.add.text(80, 20, '$0');
+	this.moneyChange.font = "Roboto";
+	this.moneyChange.fontSize = 24;
+	this.moneyChange.fill = '#000000';
+	this.moneyChange.text = '+$0';
+	this.moneyChange.alpha = 0;
+
 	this.uib = new UIBuilder(this);
 	this.bar = this.uib.buildProgressBar("growing", this.game.width / 2, 25, 300, 16, 100 - this.minHappiness);
 	//this.bar.addValue(100);
@@ -83,6 +95,7 @@ Game.prototype = {
     this.hm = new HoverMenu(this.game, 200, 200, this);
     // this.hm.anchor.setTo(0.5, 1);
 	// this.hm.visible = false;
+	this.game.time.events.add(Phaser.Timer.SECOND * this.moneyChangeFadeDelay, this.fadeMoneyChange, this);
   },
 
   update: function () {
@@ -112,8 +125,10 @@ Game.prototype = {
     this.textTaxHigh.x = this.bg_mg.bgArray[2].getVarsCenter().center.x - 15;
     this.addTaxHigh.x  = this.bg_mg.bgArray[2].getVarsCenter().center.x + 30;
 
-    if (this.curHappiness < this.minHappiness)
+    if (this.curHappiness < this.minHappiness) {
       this.game.state.start('Game_Over');
+  	}
+  	// console.log(this.moneyChange.alpha);
   },
 
   onInputDown: function () {
@@ -142,7 +157,22 @@ Game.prototype = {
 		  }
 	  }
 	  this.addMoney(taxes);
+	  this.moneyChange.text = ((taxes >= 0) ? '+' : '-') + '$' + taxes;
+	  this.moneyChange.fill = (taxes >= 0) ? '#16fb04' : '#ff0000';
+	  this.moneyChange.alpha = 1;
+	  this.moneyChangeHold = true;
+
 	  this.game.time.events.add(Phaser.Timer.SECOND * this.taxTime, this.collectTax, this);
+  },
+  fadeMoneyChange: function () {
+  		// console.log(this.moneyChange.alpha);
+  		if (this.moneyChangeHold) {
+  			this.moneyChangeHold = false;
+  			this.game.time.events.add(Phaser.Timer.SECOND * this.moneyChangeHoldDelay, this.fadeMoneyChange, this);
+  		} else {
+	  		this.moneyChange.alpha -= this.moneyChangeFadeRate;
+	  		this.game.time.events.add(Phaser.Timer.SECOND * this.moneyChangeFadeDelay, this.fadeMoneyChange, this);
+	  	}
   },
   setHappiness: function (amt) {
 	  this.curHappiness = amt;
